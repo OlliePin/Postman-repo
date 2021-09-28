@@ -2285,106 +2285,6 @@
               "response": []
             },
             {
-              "name": "Register Fan Account Copy",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "1584bc9f-74bd-4e8d-8ae9-a69ff8d12de6",
-                    "exec": [
-                      "console.log(\"This is a pre request script for Creating Account\");",
-                      "pm.environment.set(\"password\", \"Password123\");",
-                      "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
-                      "let randomNumber = Math.floor(Math.random() * 10000);",
-                      "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
-                      "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "d48e48a1-85a2-4f08-a44a-46430e4485db",
-                    "exec": [
-                      "console.log(\"-----Executing Finished-----\");",
-                      "var responseData = JSON.parse(responseBody);",
-                      "console.log(\"adding auth Token value\")",
-                      "pm.environment.set(\"authToken\", responseData.access_token);",
-                      "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
-                      "pm.environment.set(\"consumerID\", responseData.account.id);",
-                      "pm.test(\"Successfull POST Request\", function (){",
-                      "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
-                      "});",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "e2e9c804-a9ca-457f-8060-f9b90104711a",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "full_name",
-                      "value": "{{CreateAccFullName}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password_confirmation",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "type",
-                      "value": "consumer",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "metadata[phone]",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "metadata[datePicker]",
-                      "value": "2021-09-17",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts"
-              },
-              "response": []
-            },
-            {
               "name": "Authenticate/Login with Fan",
               "event": [
                 {
@@ -2871,6 +2771,106 @@
                 "method": "GET",
                 "header": [],
                 "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+              },
+              "response": []
+            },
+            {
+              "name": "Register Fan Account Copy",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "1584bc9f-74bd-4e8d-8ae9-a69ff8d12de6",
+                    "exec": [
+                      "console.log(\"This is a pre request script for Creating Account\");",
+                      "pm.environment.set(\"password\", \"Password123\");",
+                      "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
+                      "let randomNumber = Math.floor(Math.random() * 10000);",
+                      "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
+                      "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "d48e48a1-85a2-4f08-a44a-46430e4485db",
+                    "exec": [
+                      "console.log(\"-----Executing Finished-----\");",
+                      "var responseData = JSON.parse(responseBody);",
+                      "console.log(\"adding auth Token value\")",
+                      "pm.environment.set(\"authToken\", responseData.access_token);",
+                      "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
+                      "pm.environment.set(\"consumerID\", responseData.account.id);",
+                      "pm.test(\"Successfull POST Request\", function (){",
+                      "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "e2e9c804-a9ca-457f-8060-f9b90104711a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "full_name",
+                      "value": "{{CreateAccFullName}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "{{CreateAccountEmail}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{password}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "{{password}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "type",
+                      "value": "consumer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "{{clientID}}",
+                      "type": "text",
+                      "description": "oliver.pinev+connected@email.com"
+                    },
+                    {
+                      "key": "metadata[phone]",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "metadata[datePicker]",
+                      "value": "2021-09-17",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": "{{baseUrl}}/v2/accounts"
               },
               "response": []
             }
