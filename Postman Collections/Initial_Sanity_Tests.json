@@ -3172,6 +3172,19 @@
                 "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
               },
               "response": []
+            },
+            {
+              "name": "New Request",
+              "id": "66af89c0-542c-4ac5-99ef-3eff99a7a76d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": null
+              },
+              "response": []
             }
           ],
           "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
