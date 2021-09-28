@@ -2350,6 +2350,71 @@
               "response": []
             },
             {
+              "name": "Authenticate/Login with Fan Copy",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1257b306-21a5-43c8-bc89-fa5d1dfb1686",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "var responseData = JSON.parse(responseBody);",
+                      "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "c6c3979a-21cb-4871-a4ff-30fcc17607ad",
+                    "exec": [
+                      "console.log(\"-----Executing Authenticate POST Request-----\");",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "f33795ab-68fb-42dc-bc85-d27d7e95647d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "username",
+                      "value": "{{CreateAccountEmail}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{password}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "{{clientID}}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": "{{baseUrl}}/v2/accounts/authenticate"
+              },
+              "response": []
+            },
+            {
               "name": "Authenticate/Login with Merchant",
               "event": [
                 {
@@ -2771,71 +2836,6 @@
                 "method": "GET",
                 "header": [],
                 "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Fan Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "1257b306-21a5-43c8-bc89-fa5d1dfb1686",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"Fan_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "c6c3979a-21cb-4871-a4ff-30fcc17607ad",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "f33795ab-68fb-42dc-bc85-d27d7e95647d",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
               },
               "response": []
             }
