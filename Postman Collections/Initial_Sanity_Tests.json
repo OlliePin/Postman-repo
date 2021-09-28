@@ -3180,9 +3180,9 @@
                 "disableBodyPruning": true
               },
               "request": {
-                "method": "GET",
+                "method": "POST",
                 "header": [],
-                "url": null
+                "url": "https://{{baseUrl}}/vouchers"
               },
               "response": []
             }
