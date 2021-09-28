@@ -2420,76 +2420,6 @@
               "response": []
             },
             {
-              "name": "Authenticate/Login with Merchant Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "c55f6e32-a3cb-4b72-a6ca-67fef28713ed",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
-                      "",
-                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "c71fc924-0901-4cf4-82e7-db9a6bfd129c",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      "",
-                      "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
-                      "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "a096d286-40bc-4995-af6e-b6b26a0d359a",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{MerchantUser}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{SystemInPlayerAcc}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
               "name": "GET all items",
               "event": [
                 {
@@ -3007,6 +2937,76 @@
                     {
                       "key": "client_id",
                       "value": "{{clientID}}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": "{{baseUrl}}/v2/accounts/authenticate"
+              },
+              "response": []
+            },
+            {
+              "name": "Authenticate/Login with Merchant Copy",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "c55f6e32-a3cb-4b72-a6ca-67fef28713ed",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "var responseData = JSON.parse(responseBody);",
+                      "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                      "",
+                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "c71fc924-0901-4cf4-82e7-db9a6bfd129c",
+                    "exec": [
+                      "console.log(\"-----Executing Authenticate POST Request-----\");",
+                      "",
+                      "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
+                      "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "a096d286-40bc-4995-af6e-b6b26a0d359a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "username",
+                      "value": "{{MerchantUser}}",
+                      "type": "text",
+                      "description": "oliver.pinev+connected@email.com"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{password}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "{{SystemInPlayerAcc}}",
                       "type": "text"
                     }
                   ]
