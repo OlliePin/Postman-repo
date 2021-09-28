@@ -2773,7 +2773,13 @@
                 "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
               },
               "response": []
-            },
+            }
+          ],
+          "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+        },
+        {
+          "name": "Credit Card + DC",
+          "item": [
             {
               "name": "Register Fan Account Copy",
               "event": [
@@ -2875,11 +2881,6 @@
               "response": []
             }
           ],
-          "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
-        },
-        {
-          "name": "Credit Card + DC",
-          "item": [],
           "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
         }
       ],
