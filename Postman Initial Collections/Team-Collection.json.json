@@ -3175,6 +3175,19 @@
             },
             {
               "name": "New Request",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "e35864ea-10d8-450e-9b90-f023729bb721",
+                    "exec": [
+                      "let randomNumber = Math.floor(Math.random() * 100);",
+                      "pm.environment.set(\"discountVoucher\", `${randomNumber}`);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
               "id": "66af89c0-542c-4ac5-99ef-3eff99a7a76d",
               "protocolProfileBehavior": {
                 "disableBodyPruning": true
@@ -3182,7 +3195,58 @@
               "request": {
                 "method": "POST",
                 "header": [],
-                "url": "https://{{baseUrl}}/vouchers"
+                "url": {
+                  "raw": "https://{{baseUrl}}/vouchers?-d name%3D'Voucher title' \\=&-d length%3D7 \\=&-d perfix%3DAB17 \\=&-d perfix%3DBA17 \\=&-d discount%3D30 \\=&-d start_date%3D2017-01-10 \\=&-d end_date%3D2017-03-12 \\=&-d usage_limit%3D50=",
+                  "protocol": "https",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vouchers"
+                  ],
+                  "query": [
+                    {
+                      "key": "-d name='Voucher title' \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d length=7 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d perfix=AB17 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d perfix=BA17 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d discount=30 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d start_date=2017-01-10 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d end_date=2017-03-12 \\",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d usage_limit=50",
+                      "value": "",
+                      "type": "text"
+                    }
+                  ]
+                }
               },
               "response": []
             }
