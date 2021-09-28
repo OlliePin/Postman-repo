@@ -2577,92 +2577,6 @@
               "response": []
             },
             {
-              "name": "POST PPV Access Fee for PAYMENT Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "dfecfcb6-4125-4ee3-81f8-e9ec35bc97df",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "",
-                      "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "1a74e5de-2efc-4711-a653-bad25eb32a5a",
-                    "exec": [
-                      "let rndInt = Math.floor(Math.random() * 8) + 2",
-                      "",
-                      "",
-                      "pm.environment.set(\"priceForPayment\", rndInt);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "5d735165-c9af-4e59-a939-5256a92c38e9",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Merchant_Token}}"
-                  }
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "access_type_id",
-                      "value": "1",
-                      "type": "text"
-                    },
-                    {
-                      "key": "amount",
-                      "value": "{{priceForPayment}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "currency",
-                      "value": "EUR",
-                      "type": "text"
-                    },
-                    {
-                      "key": "description",
-                      "value": "test fee for payments",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_quantity",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_period",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_description",
-                      "value": "",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
-              },
-              "response": []
-            },
-            {
               "name": "GET access for particular item",
               "event": [
                 {
@@ -2857,6 +2771,92 @@
                 "method": "GET",
                 "header": [],
                 "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+              },
+              "response": []
+            },
+            {
+              "name": "POST PPV Access Fee for PAYMENT Copy",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "dfecfcb6-4125-4ee3-81f8-e9ec35bc97df",
+                    "exec": [
+                      "let responseData = pm.response.json();",
+                      "",
+                      "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "1a74e5de-2efc-4711-a653-bad25eb32a5a",
+                    "exec": [
+                      "let rndInt = Math.floor(Math.random() * 8) + 2",
+                      "",
+                      "",
+                      "pm.environment.set(\"priceForPayment\", rndInt);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "5d735165-c9af-4e59-a939-5256a92c38e9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{Merchant_Token}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "access_type_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "amount",
+                      "value": "{{priceForPayment}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "EUR",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "test fee for payments",
+                      "type": "text"
+                    },
+                    {
+                      "key": "trial_period_quantity",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "trial_period_period",
+                      "value": "",
+                      "type": "text"
+                    },
+                    {
+                      "key": "trial_period_description",
+                      "value": "",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
               },
               "response": []
             }
