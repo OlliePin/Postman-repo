@@ -2613,157 +2613,129 @@
                 "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
               },
               "response": []
+            },
+            {
+              "name": "Purchase PPV",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "0c191a40-ae11-4dde-8ada-ffccf8d55797",
+                    "exec": [
+                      "let responseData = pm.response.json();",
+                      "",
+                      "if(responseData.message == \"Submitted for payment\")",
+                      "{",
+                      "    setTimeout(function(){",
+                      "        console.log(\"Sleeping for 7 seconds before next request.\");",
+                      "    }, 7000);",
+                      "",
+                      "    postman.setNextRequest(\"GET access for particular item after wait\");",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{Fan_Token}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "access_fee",
+                      "value": "{{PAYMENTS_feeID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "payment_method",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "number",
+                      "value": "4242424242424242",
+                      "type": "text"
+                    },
+                    {
+                      "key": "cvv",
+                      "value": "123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "exp_month",
+                      "value": "11",
+                      "type": "text"
+                    },
+                    {
+                      "key": "exp_year",
+                      "value": "22",
+                      "type": "text"
+                    },
+                    {
+                      "key": "card_name",
+                      "value": "api card",
+                      "type": "text"
+                    },
+                    {
+                      "key": "-d voucher_code=F00B4R!@",
+                      "value": "",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": "https://{{baseUrl}}/payments"
+              },
+              "response": []
+            },
+            {
+              "name": "GET access for particular item after wait",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                    "exec": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{Fan_Token}}"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+              },
+              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
-        },
-        {
-          "name": "Purchase PPV",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "0c191a40-ae11-4dde-8ada-ffccf8d55797",
-                "exec": [
-                  "let responseData = pm.response.json();",
-                  "",
-                  "if(responseData.message == \"Submitted for payment\")",
-                  "{",
-                  "    setTimeout(function(){",
-                  "        console.log(\"Sleeping for 7 seconds before next request.\");",
-                  "    }, 7000);",
-                  "",
-                  "    postman.setNextRequest(\"GET access for particular item after wait\");",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{Fan_Token}}"
-              }
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [
-                {
-                  "key": "access_fee",
-                  "value": "{{PAYMENTS_feeID}}",
-                  "type": "text"
-                },
-                {
-                  "key": "payment_method",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "number",
-                  "value": "4242424242424242",
-                  "type": "text"
-                },
-                {
-                  "key": "cvv",
-                  "value": "123",
-                  "type": "text"
-                },
-                {
-                  "key": "exp_month",
-                  "value": "11",
-                  "type": "text"
-                },
-                {
-                  "key": "exp_year",
-                  "value": "22",
-                  "type": "text"
-                },
-                {
-                  "key": "card_name",
-                  "value": "api card",
-                  "type": "text"
-                },
-                {
-                  "key": "-d voucher_code=F00B4R!@",
-                  "value": "",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            },
-            "url": "https://{{baseUrl}}/payments"
-          },
-          "response": []
-        },
-        {
-          "name": "GET access for particular item after wait",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
-                "exec": [
-                  "",
-                  "",
-                  "",
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{Fan_Token}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-          },
-          "response": []
-        },
-        {
-          "name": "New Request Copy",
-          "id": "c8170632-7895-4747-be0e-c1f9f1594674",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [
-                {
-                  "key": "customer",
-                  "value": "5f63bb40-0474-4aa7-9e49-51f27b922473",
-                  "type": "text"
-                },
-                {
-                  "key": "merchant",
-                  "value": "f6be7cea-5dd3-4362-927d-f10ba859819c",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": "https://{{baseUrl}}/v1/customers"
-          },
-          "response": []
         },
         {
           "name": "req2get all access fees",
