@@ -2,6 +2,7 @@
   "info": {
     "_postman_id": "3f5ee637-5be1-4e18-b013-b2c91f32260d",
     "name": "B - SANITY Automation Tests",
+    "description": "# Introduction\nThis Collection cover all the parts devided separately in order to be tested under isolation\n\n# Overview\nAll the tests written in this collection can be used from Developers in order to Verify everything works as expected when varios endpoints were affected with the new functionality\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nThere are no limitation of the number of Requests",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
   "item": [
@@ -2699,136 +2700,82 @@
                 "url": "https://{{baseUrl}}/payments"
               },
               "response": []
+            },
+            {
+              "name": "GET access for particular item after wait",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                    "exec": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{Fan_Token}}"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Access Fees for Previous Item",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
+                    "exec": [
+                      "let responseData = pm.response.json()",
+                      "let responseData1 = pm.response.json()",
+                      "",
+                      "if(responseData.length){",
+                      "    pm.test(\"array is empty next Request will be Requested\", function () {",
+                      "",
+                      "    });",
+                      "",
+                      "}else{",
+                      "    //let var1 = responseData1.collection[0].id;",
+                      "   // console.log(var1)",
+                      "    pm.test(\"else statement\", function () {",
+                      "        throw new Error(\"this item doesn't have Fee\")",
+                      "    });",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "12d02ba0-32c0-486a-b6c2-c06f625f9ef3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+              },
+              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
-        },
-        {
-          "name": "GET access for particular item after wait",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
-                "exec": [
-                  "",
-                  "",
-                  "",
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{Fan_Token}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-          },
-          "response": []
-        },
-        {
-          "name": "New Request Copy",
-          "id": "c8170632-7895-4747-be0e-c1f9f1594674",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [
-                {
-                  "key": "customer",
-                  "value": "5f63bb40-0474-4aa7-9e49-51f27b922473",
-                  "type": "text"
-                },
-                {
-                  "key": "merchant",
-                  "value": "f6be7cea-5dd3-4362-927d-f10ba859819c",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": "https://{{baseUrl}}/v1/customers"
-          },
-          "response": []
-        },
-        {
-          "name": "req2get all access fees",
-          "id": "8f27850c-8d8e-49a2-ba08-4c4d3828eae4",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": null
-          },
-          "response": []
-        },
-        {
-          "name": "req3 get all items on page",
-          "id": "8c05a534-1242-4f3b-95a6-22cf2186d53d",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": null
-          },
-          "response": []
-        },
-        {
-          "name": "Get Access Fees for Previous Item",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
-                "exec": [
-                  "let responseData = pm.response.json()",
-                  "let responseData1 = pm.response.json()",
-                  "",
-                  "if(responseData.length){",
-                  "    pm.test(\"array is empty next Request will be Requested\", function () {",
-                  "",
-                  "    });",
-                  "",
-                  "}else{",
-                  "    //let var1 = responseData1.collection[0].id;",
-                  "   // console.log(var1)",
-                  "    pm.test(\"else statement\", function () {",
-                  "        throw new Error(\"this item doesn't have Fee\")",
-                  "    });",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "id": "12d02ba0-32c0-486a-b6c2-c06f625f9ef3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
-          },
-          "response": []
         }
       ],
       "id": "a0ef51e6-1ece-4042-a9cb-b3f0cdc20903",
