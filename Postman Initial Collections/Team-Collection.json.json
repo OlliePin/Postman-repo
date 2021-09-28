@@ -2181,561 +2181,614 @@
       "name": "PAYMENTS",
       "item": [
         {
-          "name": "Credit Card Payment",
-          "item": [
+          "name": "New Folder",
+          "item": [],
+          "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+        },
+        {
+          "name": "Register Account",
+          "event": [
             {
-              "name": "Register Account",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "a734ad18-b720-4727-9d58-78163158fa36",
-                    "exec": [
-                      "console.log(\"This is a pre request script for Creating Account\");",
-                      "pm.environment.set(\"password\", \"Password123\");",
-                      "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
-                      "let randomNumber = Math.floor(Math.random() * 10000);",
-                      "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
-                      "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "da01ab3a-f674-4847-9d3c-6a06c485e0af",
-                    "exec": [
-                      "console.log(\"-----Executing Finished-----\");",
-                      "var responseData = JSON.parse(responseBody);",
-                      "console.log(\"adding auth Token value\")",
-                      "pm.environment.set(\"authToken\", responseData.access_token);",
-                      "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
-                      "pm.environment.set(\"consumerID\", responseData.account.id);",
-                      "pm.test(\"Successfull POST Request\", function (){",
-                      "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
-                      "});",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "2e9c7b52-4cbf-44ac-a961-d1e2429a0bbd",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "full_name",
-                      "value": "{{CreateAccFullName}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password_confirmation",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "type",
-                      "value": "consumer",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "metadata[phone]",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "metadata[datePicker]",
-                      "value": "2021-09-17",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Fan",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "96a4fea9-90db-4249-86c3-c679da604653",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"Fan_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "f55987da-5bf6-4b64-a01e-8bd4855cf1b4",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Merchant",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "2e8c7f05-c0a1-44bc-8da4-b0766f940e70",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
-                      "",
-                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      "",
-                      "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
-                      "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "cc01afd9-e1fe-4f77-8274-b4763b7a5eb5",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{MerchantUser}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{SystemInPlayerAcc}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "GET all items",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "7129396a-779c-4828-8486-d994852b0aa1",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "let counter = responseData.collection.length;",
-                      "console.log(counter)",
-                      "let var1 = responseData.collection[0].id;",
-                      "console.log(var1)",
-                      "",
-                      "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "e95ad25b-aab8-4ef3-acae-a5410ed777d2",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "{{Merchant_Token}}",
-                    "type": "text"
-                  }
+              "listen": "prerequest",
+              "script": {
+                "id": "a734ad18-b720-4727-9d58-78163158fa36",
+                "exec": [
+                  "console.log(\"This is a pre request script for Creating Account\");",
+                  "pm.environment.set(\"password\", \"Password123\");",
+                  "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
+                  "let randomNumber = Math.floor(Math.random() * 10000);",
+                  "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
+                  "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
                 ],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": []
-                },
-                "url": {
-                  "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
-                  "protocol": "https",
-                  "host": [
-                    "staging-v2",
-                    "inplayer",
-                    "com"
-                  ],
-                  "path": [
-                    "items",
-                    "collection"
-                  ],
-                  "query": [
-                    {
-                      "key": "page",
-                      "value": "1"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "15"
-                    },
-                    {
-                      "key": "is_active",
-                      "value": "true"
-                    }
-                  ]
-                }
-              },
-              "response": []
+                "type": "text/javascript"
+              }
             },
             {
-              "name": "POST PPV Access Fee for PAYMENT",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "1be7dbe5-58e0-43e5-9447-86f9cb407638",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "",
-                      "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "6fd21746-5974-4475-b478-359c1f280fc4",
-                    "exec": [
-                      "let rndInt = Math.floor(Math.random() * 8) + 2",
-                      "",
-                      "",
-                      "pm.environment.set(\"priceForPayment\", rndInt);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "a5357418-a8ea-4135-adcb-af03fe8b3710",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Merchant_Token}}"
-                  }
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "access_type_id",
-                      "value": "1",
-                      "type": "text"
-                    },
-                    {
-                      "key": "amount",
-                      "value": "{{priceForPayment}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "currency",
-                      "value": "EUR",
-                      "type": "text"
-                    },
-                    {
-                      "key": "description",
-                      "value": "test fee for payments",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_quantity",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_period",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_description",
-                      "value": "",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
-              },
-              "response": []
-            },
-            {
-              "name": "GET access for particular item",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "a1c80264-6f0c-4107-bea4-fe6f89e46cad",
-                    "exec": [
-                      "let responseData = pm.response.json()",
-                      "",
-                      "console.log(\"this is just a validation that the given user doesnt have an access before he purchase the asset\")",
-                      "",
-                      "pm.test(`Status code is ${responseData.code} but its ok, since we need to ensure the Fan doesn't ahve access for this asset`, function () {",
-                      "    pm.response.to.have.status(402);",
-                      "});",
-                      "",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "973fba67-686f-4850-95a1-e8da7dfb48e6",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Fan_Token}}"
-                  }
-                },
-                "method": "GET",
-                "header": [],
-                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-              },
-              "response": []
-            },
-            {
-              "name": "Purchase PPV",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "0c191a40-ae11-4dde-8ada-ffccf8d55797",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "",
-                      "if(responseData.message == \"Submitted for payment\")",
-                      "{",
-                      "    setTimeout(function(){",
-                      "        console.log(\"Sleeping for 7 seconds before next request.\");",
-                      "    }, 7000);",
-                      "",
-                      "    postman.setNextRequest(\"GET access for particular item after wait\");",
-                      "}"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Fan_Token}}"
-                  }
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "access_fee",
-                      "value": "{{PAYMENTS_feeID}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "payment_method",
-                      "value": "1",
-                      "type": "text"
-                    },
-                    {
-                      "key": "number",
-                      "value": "4242424242424242",
-                      "type": "text"
-                    },
-                    {
-                      "key": "cvv",
-                      "value": "123",
-                      "type": "text"
-                    },
-                    {
-                      "key": "exp_month",
-                      "value": "11",
-                      "type": "text"
-                    },
-                    {
-                      "key": "exp_year",
-                      "value": "22",
-                      "type": "text"
-                    },
-                    {
-                      "key": "card_name",
-                      "value": "api card",
-                      "type": "text"
-                    },
-                    {
-                      "key": "-d voucher_code=F00B4R!@",
-                      "value": "",
-                      "type": "text",
-                      "disabled": true
-                    }
-                  ]
-                },
-                "url": "https://{{baseUrl}}/payments"
-              },
-              "response": []
-            },
-            {
-              "name": "GET access for particular item after wait",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
-                    "exec": [
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Fan_Token}}"
-                  }
-                },
-                "method": "GET",
-                "header": [],
-                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-              },
-              "response": []
+              "listen": "test",
+              "script": {
+                "id": "da01ab3a-f674-4847-9d3c-6a06c485e0af",
+                "exec": [
+                  "console.log(\"-----Executing Finished-----\");",
+                  "var responseData = JSON.parse(responseBody);",
+                  "console.log(\"adding auth Token value\")",
+                  "pm.environment.set(\"authToken\", responseData.access_token);",
+                  "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
+                  "pm.environment.set(\"consumerID\", responseData.account.id);",
+                  "pm.test(\"Successfull POST Request\", function (){",
+                  "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
             }
           ],
-          "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+          "id": "2e9c7b52-4cbf-44ac-a961-d1e2429a0bbd",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "full_name",
+                  "value": "{{CreateAccFullName}}",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "{{CreateAccountEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "consumer",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientID}}",
+                  "type": "text",
+                  "description": "oliver.pinev+connected@email.com"
+                },
+                {
+                  "key": "metadata[phone]",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[datePicker]",
+                  "value": "2021-09-17",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts"
+          },
+          "response": []
+        },
+        {
+          "name": "Authenticate/Login with Fan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "96a4fea9-90db-4249-86c3-c679da604653",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "f55987da-5bf6-4b64-a01e-8bd4855cf1b4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{CreateAccountEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientID}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "Authenticate/Login with Merchant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2e8c7f05-c0a1-44bc-8da4-b0766f940e70",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                  "",
+                  "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  "",
+                  "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
+                  "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "cc01afd9-e1fe-4f77-8274-b4763b7a5eb5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{MerchantUser}}",
+                  "type": "text",
+                  "description": "oliver.pinev+connected@email.com"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{SystemInPlayerAcc}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "GET all items",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7129396a-779c-4828-8486-d994852b0aa1",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "let counter = responseData.collection.length;",
+                  "console.log(counter)",
+                  "let var1 = responseData.collection[0].id;",
+                  "console.log(var1)",
+                  "",
+                  "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "e95ad25b-aab8-4ef3-acae-a5410ed777d2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Merchant_Token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
+              "protocol": "https",
+              "host": [
+                "staging-v2",
+                "inplayer",
+                "com"
+              ],
+              "path": [
+                "items",
+                "collection"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                },
+                {
+                  "key": "is_active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST PPV Access Fee for PAYMENT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1be7dbe5-58e0-43e5-9447-86f9cb407638",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "6fd21746-5974-4475-b478-359c1f280fc4",
+                "exec": [
+                  "let rndInt = Math.floor(Math.random() * 8) + 2",
+                  "",
+                  "",
+                  "pm.environment.set(\"priceForPayment\", rndInt);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "a5357418-a8ea-4135-adcb-af03fe8b3710",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Merchant_Token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "{{priceForPayment}}",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": "EUR",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "test fee for payments",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_description",
+                  "value": "",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
+          },
+          "response": []
+        },
+        {
+          "name": "GET access for particular item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a1c80264-6f0c-4107-bea4-fe6f89e46cad",
+                "exec": [
+                  "let responseData = pm.response.json()",
+                  "",
+                  "console.log(\"this is just a validation that the given user doesnt have an access before he purchase the asset\")",
+                  "",
+                  "pm.test(`Status code is ${responseData.code} but its ok, since we need to ensure the Fan doesn't ahve access for this asset`, function () {",
+                  "    pm.response.to.have.status(402);",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "973fba67-686f-4850-95a1-e8da7dfb48e6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+          },
+          "response": []
+        },
+        {
+          "name": "Purchase PPV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0c191a40-ae11-4dde-8ada-ffccf8d55797",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "",
+                  "if(responseData.message == \"Submitted for payment\")",
+                  "{",
+                  "    setTimeout(function(){",
+                  "        console.log(\"Sleeping for 7 seconds before next request.\");",
+                  "    }, 7000);",
+                  "",
+                  "    postman.setNextRequest(\"GET access for particular item after wait\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_fee",
+                  "value": "{{PAYMENTS_feeID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "payment_method",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "number",
+                  "value": "4242424242424242",
+                  "type": "text"
+                },
+                {
+                  "key": "cvv",
+                  "value": "123",
+                  "type": "text"
+                },
+                {
+                  "key": "exp_month",
+                  "value": "11",
+                  "type": "text"
+                },
+                {
+                  "key": "exp_year",
+                  "value": "22",
+                  "type": "text"
+                },
+                {
+                  "key": "card_name",
+                  "value": "api card",
+                  "type": "text"
+                },
+                {
+                  "key": "-d voucher_code=F00B4R!@",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": "https://{{baseUrl}}/payments"
+          },
+          "response": []
+        },
+        {
+          "name": "GET access for particular item after wait",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                "exec": [
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+          },
+          "response": []
+        },
+        {
+          "name": "New Request Copy",
+          "id": "c8170632-7895-4747-be0e-c1f9f1594674",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "customer",
+                  "value": "5f63bb40-0474-4aa7-9e49-51f27b922473",
+                  "type": "text"
+                },
+                {
+                  "key": "merchant",
+                  "value": "f6be7cea-5dd3-4362-927d-f10ba859819c",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "https://{{baseUrl}}/v1/customers"
+          },
+          "response": []
+        },
+        {
+          "name": "req2get all access fees",
+          "id": "8f27850c-8d8e-49a2-ba08-4c4d3828eae4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": null
+          },
+          "response": []
+        },
+        {
+          "name": "req3 get all items on page",
+          "id": "8c05a534-1242-4f3b-95a6-22cf2186d53d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": null
+          },
+          "response": []
         },
         {
           "name": "Get Access Fees for Previous Item",
