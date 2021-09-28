@@ -2282,144 +2282,144 @@
                 "url": "{{baseUrl}}/v2/accounts"
               },
               "response": []
-            },
-            {
-              "name": "Authenticate/Login with Fan",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "96a4fea9-90db-4249-86c3-c679da604653",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"Fan_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "f55987da-5bf6-4b64-a01e-8bd4855cf1b4",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Merchant",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "2e8c7f05-c0a1-44bc-8da4-b0766f940e70",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
-                      "",
-                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      "",
-                      "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
-                      "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "cc01afd9-e1fe-4f77-8274-b4763b7a5eb5",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{MerchantUser}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{SystemInPlayerAcc}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+        },
+        {
+          "name": "Authenticate/Login with Fan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "96a4fea9-90db-4249-86c3-c679da604653",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "f55987da-5bf6-4b64-a01e-8bd4855cf1b4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{CreateAccountEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientID}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "Authenticate/Login with Merchant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2e8c7f05-c0a1-44bc-8da4-b0766f940e70",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                  "",
+                  "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  "",
+                  "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
+                  "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "cc01afd9-e1fe-4f77-8274-b4763b7a5eb5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{MerchantUser}}",
+                  "type": "text",
+                  "description": "oliver.pinev+connected@email.com"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{SystemInPlayerAcc}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
         },
         {
           "name": "GET all items",
