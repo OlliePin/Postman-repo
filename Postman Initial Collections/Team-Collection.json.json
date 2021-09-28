@@ -63,7 +63,7 @@
                           "});",
                           "",
                           "pm.test(\"ttt123\", function(){",
-                          "    pm.expect(responseData.text.to.include(\"access_token\",\"refresh_token1\",\"tenant_uuid\");",
+                          "    pm.expect(responseData.text.to.include(\"access_token\",\"refresh_token1\",\"tenant_uuid\"));",
                           "",
                           "})"
                         ],
