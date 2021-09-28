@@ -1,0 +1,2951 @@
+{
+  "info": {
+    "_postman_id": "3f5ee637-5be1-4e18-b013-b2c91f32260d",
+    "name": "B - SANITY Automation Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ASSET",
+      "item": [
+        {
+          "name": "PAID",
+          "item": [
+            {
+              "name": "PPV Asset",
+              "item": [
+                {
+                  "name": "Authenticate",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "9933baed-4806-4e3c-a555-55f0c2a17bf3",
+                        "exec": [
+                          "let responseData = JSON.parse(responseBody); // parse whole response into responseData variable",
+                          "let username = responseData.account.email;",
+                          "//console.log(username);",
+                          "let validate = pm.variables.get(\"realUser\")",
+                          "let Order;",
+                          "",
+                          "",
+                          "console.log(\"adding auth Token value\")",
+                          "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
+                          "",
+                          "pm.test(\"Validate user is Active\", function () { // account is active",
+                          "    pm.expect(responseData.account.active).to.be.true;",
+                          "});",
+                          "",
+                          "pm.test(\"Validate Correct user is logged in\", function () {",
+                          "    pm.expect(username).to.be.eql(`${validate}`)",
+                          "});",
+                          "",
+                          "pm.test(\"Validate email is equal to username\", function () {",
+                          "    pm.expect(responseData.account.email).to.be.eql(responseData.account.username);",
+                          "});",
+                          "",
+                          "for (let filter of responseData.account.meta){ // iteration for every value under meta array",
+                          "    console.log(filter);",
+                          "    if(filter.key == \"register_source\"){",
+                          "        Order = filter;",
+                          "        console.log(Order);",
+                          "    }",
+                          "}",
+                          "",
+                          "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
+                          "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                          "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                          "});",
+                          "",
+                          "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
+                          "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                          "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "5800de80-b013-480d-979d-0a021dd2dd9a",
+                        "exec": [
+                          "let usernamev1 = \"oliver.pinev@inplayer.com\";",
+                          "",
+                          "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
+                          "pm.environment.set(\"elenaVariabla\", usernamev1);",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "e536043d-64a9-4497-8c36-8d36ab4dded6",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "client_id",
+                          "value": "3b39b5ab-b5fc-4ba3-b770-73155d20e61f",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        },
+                        {
+                          "key": "username",
+                          "value": "{{realUser}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "Password123",
+                          "type": "text"
+                        }
+                      ],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/accounts/authenticate"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create-PaidAsset",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "b1b1cad9-99e6-4298-a42f-1dbfcdb21c5c",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "let evtDtls = responseData.event_details;",
+                          "pm.environment.set(\"itemID\", responseData.id);",
+                          "pm.environment.set(\"merchantUUID\", responseData.merchant_uuid);",
+                          "pm.environment.set(\"eventDetailsID\", responseData.event_details.id);",
+                          "",
+                          "    ",
+                          "    if (responseData.access_control_type.id == 1 && responseData.item_type.id == 2){ //item type for html asset is 2",
+                          "    pm.test(\"Validate asset type is Paid\", function () {",
+                          "        console.log(\"inside if\")",
+                          "        // postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                          "        });",
+                          "    }",
+                          "    else{",
+                          "            pm.test(\"Asset Type in response is different than 1\", function(){",
+                          "        // postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                          "            throw new Error(\"access_control_type and item_type are not equal\");",
+                          "        });  ",
+                          "",
+                          "    }",
+                          "    if (responseData.item_type.content_type == \"html\" && responseData.item_type.name == \"html_asset\"){",
+                          "    pm.test(\"Assertion that HTML asset were created\", function () {",
+                          "        });",
+                          "    }",
+                          "    pm.test(\"Validate default/initial value for event_type equals other\", function () {",
+                          "    pm.expect(responseData.event_type).to.be.eql(\"live\");",
+                          "});",
+                          "",
+                          "    pm.test(\"Verifying initial values for event details object\", function () {",
+                          "    pm.expect(evtDtls.event_name).to.be.eql(\"\"); // validate empty string for event_name",
+                          "    pm.expect(evtDtls.event_name).to.be.a(\"string\"); // validate value type for event_name",
+                          "    console.info(\"event name is empty\");",
+                          "    pm.expect(evtDtls.event_description).to.be.eql(\"\");",
+                          "    pm.expect(evtDtls.event_description).to.be.a(\"string\");",
+                          "    console.log(typeof evtDtls.event_description);",
+                          "    pm.expect(evtDtls.content_category).to.be.eql(\"\");",
+                          "    pm.expect(evtDtls.content_category).to.be.a(\"string\");",
+                          "    pm.expect(evtDtls.web_page).to.be.eql(\"\");",
+                          "    pm.expect(evtDtls.web_page).to.be.a(\"string\");",
+                          "    pm.expect(evtDtls.replay_available).to.be.eql(null);",
+                          "    console.log(typeof evtDtls.replay_available);",
+                          "    pm.expect(evtDtls.replay_available).to.be.null;",
+                          "    pm.expect(evtDtls.expected_viewership).to.be.eql(0);",
+                          "    pm.expect(evtDtls.expected_viewership).to.be.a(\"number\");",
+                          "    pm.expect(evtDtls.is_advertised).to.be.eql(false);",
+                          "    pm.expect(evtDtls.is_advertised).to.be.a(\"boolean\");",
+                          "    pm.expect(evtDtls.industry).to.be.eql(\"\");",
+                          "    pm.expect(evtDtls.industry).to.be.a(\"string\");",
+                          "});",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "a14a1f21-3333-4b12-a789-9bb83ee8d21d",
+                        "exec": [
+                          "//generate random code from 1-3",
+                          "let randomNumber = Math.floor(Math.random() * 10000);",
+                          "pm.environment.set(\"titlePaidAsset\", \"Paid Asset\"+`${randomNumber}`);",
+                          "pm.environment.set(\"paid\", 1);",
+                          "//let rndInt = Math.floor(Math.random() * 3) + 2",
+                          "    //console.log(rndInt)",
+                          "   // pm.environment.set(\"rndControlTypeID\", rndInt);",
+                          "",
+                          "//postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                          "//postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                          "//postman.setNextRequest(\"Authenticate\");"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "f8718398-c277-4106-a1fb-0485a82019a1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "item_type",
+                          "value": "html_asset",
+                          "type": "text"
+                        },
+                        {
+                          "key": "access_control_type_id",
+                          "value": "{{paid}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "title",
+                          "value": "{{titlePaidAsset}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "is_giftable",
+                          "value": "1",
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "gift_description",
+                          "value": "\"est gift desc\"",
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "event_type",
+                          "value": "live",
+                          "type": "text"
+                        }
+                      ],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://staging-v2.inplayer.com/v2/items",
+                    "description": "This POST request create an Asset of type Live and have implemented some Assertion"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get Item (Asset) Details",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "1656e7b0-44c4-4b09-98b1-be34e3051ab3",
+                        "exec": [
+                          "",
+                          "pm.test(\"Response time is less than 500ms\", function () {",
+                          "    pm.expect(pm.response.responseTime).to.be.below(500);",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "26d7dc0d-91f0-4a05-a880-0493ca1c07f0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": "https://{{baseUrl}}/v2/items/{{merchantUUID}}/{{itemID}}"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "POST PPV Access fee",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "0ad089b5-d835-4788-bd11-8d3b4445f7b7",
+                        "exec": [
+                          "const responseData = pm.response.json();",
+                          "pm.environment.set(\"feeID\", responseData.id);",
+                          "pm.environment.set(\"compareAmount1\", responseData.amount);",
+                          "",
+                          "",
+                          "if((responseData.currency == \"USD\" || responseData.currency == \"EUR\" || responseData.currency == \"GBP\") && responseData.amount >= 0.99){",
+                          "    pm.test(\"Verify amount and currency you have added is greater or equal to 0.99USD\", function () {",
+                          "    //console.log(\"in if statement\");",
+                          "    });",
+                          "}",
+                          "else {",
+                          "    pm.test(\"Asset Type in response is different than 1\", function(){",
+                          "            //postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                          "            throw new Error(\"Amount and currency you have inserted is below 0.99 USD \");",
+                          "        });  ",
+                          "}",
+                          "",
+                          "pm.test(\"Verify Created Access Fee is of Type PPV\", function () {",
+                          "    pm.expect(responseData.access_type.name).to.be.eql(\"ppv\");",
+                          "    pm.expect(responseData.access_type.period).to.be.oneOf([\"day\",\"month\", \"year\", \"week\"]);",
+                          "});",
+                          "",
+                          "pm.test(\"Check active environment is Staging\", function () {",
+                          "    pm.expect(pm.environment.name).to.eql(\"Staging Env\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "99924f3a-5db0-437e-870f-70d6f708b4cc",
+                        "exec": [
+                          "pm.environment.set(\"initialAmount\", 5);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "6ff84585-5656-4483-a147-ad6bffe3e69e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "access_type_id",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{initialAmount}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "currency",
+                          "value": "GBP",
+                          "type": "text"
+                        },
+                        {
+                          "key": "description",
+                          "value": "1hour PPV trial",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_quantity",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_period",
+                          "value": "hour",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_description",
+                          "value": "trial one hour",
+                          "type": "text"
+                        }
+                      ],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/access-fees"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET PPV Access fee",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "4fa68e35-e698-4a30-95a4-41cbfd888709",
+                        "exec": [
+                          "const responseData = pm.response.json();",
+                          "let fee_id = pm.environment.get(\"feeID\");",
+                          "let item_id = pm.environment.get(\"itemID\");",
+                          "pm.environment.set(\"amountFromResponse3\", responseData.amount);",
+                          "",
+                          "",
+                          "console.log(responseData.amount);",
+                          "",
+                          "if(responseData.amount == pm.environment.get(\"initialAmount\")){",
+                          "pm.test(\"Initial amount is successfully set up and its value is \"+ pm.environment.get(\"initialAmount\"), function () {",
+                          "    });",
+                          "}",
+                          "else{",
+                          "    pm.test(\"This request is running more than once without creation of Initial Fee\", function () {",
+                          "        throw new Error(\"Error is expected because we increment the value by 1 in the next req, when we come back in this request is expected these two values to not be equal\");",
+                          "        });",
+                          "    }",
+                          "",
+                          "    pm.test(\"Valiadtion of feeID, MerchantID, and itemID\", function () {",
+                          "    pm.expect(responseData.id).to.be.eql(fee_id);",
+                          "    console.log(\"this is assertion for Fee id\");",
+                          "    pm.expect(responseData.item_id).to.be.eql(item_id);",
+                          "});",
+                          "",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "c8554738-2efe-47cf-a827-14b7a4f0a27c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/access-fees/{{feeID}}"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT PPV Access fee",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "e714c0de-d268-4295-aa96-604d223c7e84",
+                        "exec": [
+                          "const responseData = pm.response.json();",
+                          "pm.environment.set(\"feeID\", responseData.id);",
+                          "let compareV1 = pm.environment.get(\"compareAmount1\");",
+                          "let compareV2 = pm.environment.get(\"updatedAmount2\");",
+                          "let compareV3 = pm.environment.get(\"amountFromResponse3\");",
+                          "",
+                          "",
+                          "if((responseData.currency == \"USD\" || responseData.currency == \"EUR\" || responseData.currency == \"GBP\") && responseData.amount >= 0.99){",
+                          "    pm.test(\"Verify amount and currency you have added is greater or equal to 0.99USD\", function () {",
+                          "    //console.log(\"in if statement\");",
+                          "    });",
+                          "}",
+                          "else {",
+                          "    pm.test(\"Asset Type in response is different than 1\", function(){",
+                          "            //postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                          "            throw new Error(\"Amount and currency you have inserted is below 0.99 USD \");",
+                          "        });  ",
+                          "}",
+                          "",
+                          "pm.test(\"Verify Created Access Fee i of Type PPV\", function () {",
+                          "    pm.expect(responseData.access_type.name).to.be.eql(\"ppv\");",
+                          "    pm.expect(responseData.access_type.period).to.be.oneOf([\"day\",\"month\", \"year\", \"week\"]);",
+                          "});",
+                          "",
+                          "pm.test(\"Check active environment is Staging\", function () {",
+                          "    pm.expect(pm.environment.name).to.eql(\"Staging Env\");",
+                          "});",
+                          "",
+                          "if(compareV1 != compareV2 && compareV2 != compareV3){",
+                          "    let compareV4 = compareV2;",
+                          "    console.log(\"this is old value \"+ compareV3);",
+                          "    console.log(\"this is new value\" +compareV4);",
+                          "    pm.test(\"Amount is successsfully updated\", function () {",
+                          "});",
+                          "}",
+                          "else{",
+                          "    pm.test(\"Amount is not successfully updated\", function () {",
+                          "    throw new Error (\"Amouont is not updated\")",
+                          "}",
+                          "    )};",
+                          "/*if(responseData.amount != compareV2 ){",
+                          "    pm.test(\"You have successfully updated amount\", function () {",
+                          "        console.log(responseData.amount);",
+                          "});",
+                          "}",
+                          "else{",
+                          "    pm.test(\"You are trying to update amount with the same value\", function () {",
+                          "        throw new Error (\"test failed because you are updating same value\")",
+                          "});",
+                          "}",
+                          "",
+                          "*/"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "4e0ecc8e-e080-4696-ba93-f4068bd90206",
+                        "exec": [
+                          "let amountFromResponse = pm.environment.get(\"amountFromResponse3\")+1;// this line of code is used in order collection to be executed n iterations",
+                          "let updatedAmount = amountFromResponse;",
+                          "//console.log(updatedAmount2);",
+                          "pm.environment.set(\"updatedAmount2\", updatedAmount);",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "20886397-92f4-40ea-99d3-354945191eb1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "access_type_id",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{updatedAmount2}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "currency",
+                          "value": "GBP",
+                          "type": "text"
+                        },
+                        {
+                          "key": "description",
+                          "value": "access fee test1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_quantity",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_period",
+                          "value": "days",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_description",
+                          "value": "trial one hour",
+                          "type": "text"
+                        }
+                      ],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/access-fees/{{feeID}}"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "getAccessFees",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "cb7c6d35-6cdd-4076-b91f-09a1ba69cb1b",
+                        "exec": [
+                          "const responseData = pm.response.json();",
+                          "",
+                          "let findID;",
+                          "const localFeeId = pm.environment.get(\"feeID\");",
+                          "const localItemID = pm.environment.get(\"itemID\");",
+                          "",
+                          "    const idObject = responseData.find(i => i.id == localFeeId);",
+                          "    const merch = idObject ? idObject.merchant_id : 'not found';",
+                          "    const itemID = idObject ? idObject.item_id : 'not found';",
+                          "    console.log(idObject);",
+                          "    console.log(merch);",
+                          "    console.log(itemID);",
+                          "",
+                          "",
+                          "for (filter of responseData){ // iterate every value in the array",
+                          "    console.log(filter);",
+                          "    if(filter.id == localFeeId){",
+                          "        findID = filter;",
+                          "        console.log(findID);",
+                          "    }",
+                          "}",
+                          "pm.test(\"Verification that access fee exist for this particular MerchantID and iitemID\", function(){",
+                          "    pm.expect(findID.id).to.eql(localFeeId)",
+                          "    pm.expect(findID.merchant_id).to.eql(merch);",
+                          "    pm.expect(findID.item_id).to.eql(localItemID);",
+                          "});",
+                          "/*pm.test(\"Status code is 200\", function () {",
+                          "    pm.expect(responseData[0].id).to.be.eql(24008);",
+                          "})*/"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "0b4142d0-02e6-4aa6-8928-a9450d60182d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/access-fees"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete AccessFee",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "039243b8-35b9-437a-9074-b33e1c9dd3b9",
+                        "exec": [
+                          "const responseData = pm.response.json();",
+                          "",
+                          "",
+                          "pm.test(\"Fee with ID \" + pm.environment.get(\"feeID\") + \" was successfully deleted\", function () {",
+                          "    pm.expect(responseData.message).to.eql(\"Resource deleted successfully.\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "0aa5f210-c063-4c19-b9f6-257efb0bc5fa",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/access-fees/{{feeID}}"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT event_details data",
+                  "_postman_id": "a5ecbbd7-c2c7-418d-97cb-d8db6ae8e6ce",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{authToken}}"
+                      }
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "id",
+                          "value": "{{eventDetailsID}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "event_date",
+                          "value": "2021-10-11T15:04:05.52Z",
+                          "type": "text"
+                        },
+                        {
+                          "key": "industry",
+                          "value": "Business",
+                          "type": "text"
+                        },
+                        {
+                          "key": "content_category",
+                          "value": "live",
+                          "type": "text"
+                        },
+                        {
+                          "key": "is_advertised",
+                          "value": "false",
+                          "type": "text"
+                        },
+                        {
+                          "key": "expected_viewership",
+                          "value": "32",
+                          "type": "text"
+                        },
+                        {
+                          "key": "event_description",
+                          "value": "test description",
+                          "type": "text"
+                        },
+                        {
+                          "key": "replay_available",
+                          "value": "true",
+                          "type": "text"
+                        },
+                        {
+                          "key": "event_name",
+                          "value": "name of the event",
+                          "type": "text"
+                        }
+                      ],
+                      "options": {
+                        "urlencoded": {}
+                      }
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{itemID}}/event_details"
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "295c8aa4-871b-4235-bd5a-5b25f2b0c418",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "SUBS Asset",
+              "item": [],
+              "_postman_id": "ecce8423-7cd3-43a6-8c70-90b0f47b354b",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "SEASON asset",
+              "item": [],
+              "_postman_id": "2fb3403d-97c7-4661-a545-d7a5d6f67b37",
+              "_postman_isSubFolder": true
+            }
+          ],
+          "_postman_id": "09350618-ecfe-4e49-8357-099145210f7d",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "createAssetsStage",
+          "item": [
+            {
+              "name": "Authenticate",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a503642a-2f53-49b5-882a-9eee26c944ab",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let username = responseData.account.email;",
+                      "let validate = pm.variables.get(\"realUser\")",
+                      "let Order;",
+                      "",
+                      "",
+                      "console.log(\"adding auth Token value\")",
+                      "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
+                      "",
+                      "pm.test(\"Validate user is Active\", function () { // account is active",
+                      "    pm.expect(responseData.account.active).to.be.true;",
+                      "});",
+                      "",
+                      "pm.test(\"Validate Correct user is logged in\", function () {",
+                      "    pm.expect(username).to.be.eql(`${validate}`)",
+                      "});",
+                      "",
+                      "pm.test(\"Validate email is equal to username\", function () {",
+                      "    pm.expect(responseData.account.email).to.be.eql(responseData.account.username);",
+                      "});",
+                      "",
+                      "for (let filter of responseData.account.meta){ // iteration for every value under meta array",
+                      "    console.log(filter);",
+                      "    if(filter.key == \"register_source\"){",
+                      "        Order = filter;",
+                      "        console.log(Order);",
+                      "    }",
+                      "}",
+                      "",
+                      "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
+                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                      "});",
+                      "",
+                      "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
+                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "58aacca8-db34-4105-a67e-b1ff5066a295",
+                    "exec": [
+                      "let usernamev1 = \"oliver.pinev@inplayer.com\";",
+                      "",
+                      "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "b9e4ed74-df24-4497-b3b9-a6b0b05dd016",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "client_id",
+                      "value": "3b39b5ab-b5fc-4ba3-b770-73155d20e61f",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "oliver.pinev@inplayer.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Password123",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://{{baseUrl}}/v2/accounts/authenticate"
+              },
+              "response": []
+            },
+            {
+              "name": "Create-PaidAsset",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "592b9e0f-5b7e-468c-ac3a-a1035501b5d5",
+                    "exec": [
+                      "const responseData = JSON.parse(responseBody);",
+                      "let evtDtls = responseData.event_details;",
+                      "pm.environment.set(\"itemID\", responseData.id);",
+                      "pm.environment.set(\"merchantUUID\", responseData.merchant_uuid);",
+                      "pm.environment.set(\"eventDetailsID\", responseData.event_details.id);",
+                      "",
+                      "    ",
+                      "    if (responseData.access_control_type.id == 1 && responseData.item_type.id == 2){ //item type for html asset is 2",
+                      "    pm.test(\"Validate asset type is Paid\", function () {",
+                      "        console.log(\"inside if\")",
+                      "        //postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "        });",
+                      "    }",
+                      "    else{",
+                      "            pm.test(\"Asset Type in response is different than 1\", function(){",
+                      "           // postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                      "            throw new Error(\"access_control_type and item_type are not equal\");",
+                      "        });  ",
+                      "",
+                      "    }",
+                      "    if (responseData.item_type.content_type == \"html\" && responseData.item_type.name == \"html_asset\"){",
+                      "    pm.test(\"Assertion that HTML asset were created\", function () {",
+                      "        });",
+                      "    }",
+                      "    pm.test(\"Validate default/initial value for event_type equals other\", function () {",
+                      "    pm.expect(responseData.event_type).to.be.eql(\"live\");",
+                      "});",
+                      "",
+                      "    pm.test(\"Verifying initial values for event details object\", function () {",
+                      "    pm.expect(evtDtls.event_name).to.be.eql(\"\"); // validate empty string for event_name",
+                      "    pm.expect(evtDtls.event_name).to.be.a(\"string\"); // validate value type for event_name",
+                      "    console.info(\"event name is empty\");",
+                      "    pm.expect(evtDtls.event_description).to.be.eql(\"\");",
+                      "    pm.expect(evtDtls.event_description).to.be.a(\"string\");",
+                      "    console.log(typeof evtDtls.event_description);",
+                      "    pm.expect(evtDtls.content_category).to.be.eql(\"\");",
+                      "    pm.expect(evtDtls.content_category).to.be.a(\"string\");",
+                      "    pm.expect(evtDtls.web_page).to.be.eql(\"\");",
+                      "    pm.expect(evtDtls.web_page).to.be.a(\"string\");",
+                      "    pm.expect(evtDtls.replay_available).to.be.eql(null);",
+                      "    console.log(typeof evtDtls.replay_available);",
+                      "    pm.expect(evtDtls.replay_available).to.be.null;",
+                      "    pm.expect(evtDtls.expected_viewership).to.be.eql(0);",
+                      "    pm.expect(evtDtls.expected_viewership).to.be.a(\"number\");",
+                      "    pm.expect(evtDtls.is_advertised).to.be.eql(false);",
+                      "    pm.expect(evtDtls.is_advertised).to.be.a(\"boolean\");",
+                      "    pm.expect(evtDtls.industry).to.be.eql(\"\");",
+                      "    pm.expect(evtDtls.industry).to.be.a(\"string\");",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "86475879-6d5e-49a6-b64e-db769e05f849",
+                    "exec": [
+                      "//generate random code from 1-3",
+                      "let randomNumber = Math.floor(Math.random() * 10000);",
+                      "pm.environment.set(\"titlePaidAsset\", \"Paid Asset\"+`${randomNumber}`);",
+                      "pm.environment.set(\"paid\", 1);",
+                      "//let rndInt = Math.floor(Math.random() * 3) + 2",
+                      "    //console.log(rndInt)",
+                      "   // pm.environment.set(\"rndControlTypeID\", rndInt);",
+                      "",
+                      "//postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "//postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                      "//postman.setNextRequest(\"Authenticate\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "06211d9d-2082-46d2-91a9-5a7fd5024a3a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_type",
+                      "value": "html_asset",
+                      "type": "text"
+                    },
+                    {
+                      "key": "access_control_type_id",
+                      "value": "{{paid}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title",
+                      "value": "{{titlePaidAsset}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_giftable",
+                      "value": "1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "gift_description",
+                      "value": "\"est gift desc\"",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "event_type",
+                      "value": "live",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/v2/items",
+                "description": "This POST request create an Asset of type Live and have implemented some Assertion"
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "ebdc8287-a3dc-4324-840f-1d96a70d54bf",
+          "description": "This folder consist of basic API calls in order to easily generate Records/Assets for testing purpose. Using this folder we can create assets in timely manner",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Freemium",
+          "item": [
+            {
+              "name": "Authenticate",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "8a76605f-f10f-47ba-b4f1-4930ccca3d93",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let username = responseData.account.email;",
+                      "let validate = pm.variables.get(\"realUser\")",
+                      "let Order;",
+                      "",
+                      "",
+                      "console.log(\"adding auth Token value\")",
+                      "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
+                      "",
+                      "pm.test(\"Validate user is Active\", function () { // account is active",
+                      "    pm.expect(responseData.account.active).to.be.true;",
+                      "});",
+                      "",
+                      "pm.test(\"Validate Correct user is logged in\", function () {",
+                      "    pm.expect(username).to.be.eql(`${validate}`)",
+                      "});",
+                      "",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Validate email is equal to username\", function () {",
+                      "    pm.expect(responseData.account.email).to.be.eql(responseData.account.username);",
+                      "});",
+                      "",
+                      "for (let filter of responseData.account.meta){ // iteration for every value under meta array",
+                      "    console.log(filter);",
+                      "    if(filter.key == \"register_source\"){",
+                      "        Order = filter;",
+                      "        console.log(Order);",
+                      "    }",
+                      "}",
+                      "",
+                      "pm.test(\"verify key-value are correct\", function(){ // validate register source on platform is inplayer",
+                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "5bdf0970-fd19-4abc-b99b-12fe96e7810c",
+                    "exec": [
+                      "let usernamev1 = \"oliver.pinev@inplayer.com\";",
+                      "",
+                      "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "3c0c297f-97af-4447-93ea-63931a18af32",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "client_id",
+                      "value": "3b39b5ab-b5fc-4ba3-b770-73155d20e61f",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "oliver.pinev@inplayer.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Password123",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://{{baseUrl}}/v2/accounts/authenticate"
+              },
+              "response": []
+            },
+            {
+              "name": "Create-FreemiumAsset",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "e2b47556-c9ea-4b5e-a32e-89b61e1e2e8f",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "pm.environment.set(\"itemID\", responseData.id);",
+                      "    ",
+                      "    if (responseData.access_control_type.id == 2 && responseData.item_type.id ==2){",
+                      "    pm.test(\"Validate asset type is Code (Passcode)\", function () {",
+                      "        postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "        });",
+                      "    }",
+                      "    else{",
+                      "            pm.test(\"Generated number is different than 2\", function(){",
+                      "            postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                      "            throw new Error(\"Generate number again\");",
+                      "        });  ",
+                      "",
+                      "    }",
+                      "    if (responseData.item_type.content_type == \"html\" && responseData.item_type.name == \"html_asset\"){",
+                      "    pm.test(\"Assertion that HTML Passcode were created\", function () {",
+                      "        });",
+                      "    }",
+                      "    pm.test(\"Validate default/initial value for event_type equals other\", function () {",
+                      "    pm.expect(responseData.event_type).to.be.eql(\"other\");",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "18644fc9-7265-4897-af8b-5821d352a008",
+                    "exec": [
+                      "//generate random code from 1-3",
+                      "pm.environment.set(\"freemium\", 3);",
+                      "/*  let rndInt = Math.floor(Math.random() * 3) + 2",
+                      "    console.log(rndInt)",
+                      "    pm.environment.set(\"rndControlTypeID\", rndInt);",
+                      "    */",
+                      "",
+                      "postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "postman.setNextRequest(\"ENTRY-ASSET CODE\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "b1e3d57a-e7e1-435b-9bde-e6568faca1ea",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_type",
+                      "value": "html_asset",
+                      "type": "text"
+                    },
+                    {
+                      "key": "access_control_type_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title",
+                      "value": "Passcode Asset",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/v2/items"
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "5240af0d-b74e-485a-abe2-dedfd56d9554",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Access voucher only",
+          "item": [],
+          "_postman_id": "d64237bb-f95f-444b-99f0-138ee5dd85f2",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Passcode",
+          "item": [
+            {
+              "name": "Authenticate",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "f0203ce4-a058-41f4-912a-3738c2cc8b5c",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let username = responseData.account.email;",
+                      "let validate = pm.variables.get(\"realUser\")",
+                      "let Order;",
+                      "",
+                      "",
+                      "console.log(\"adding auth Token value\")",
+                      "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
+                      "",
+                      "pm.test(\"Validate user is Active\", function () { // account is active",
+                      "    pm.expect(responseData.account.active).to.be.true;",
+                      "});",
+                      "",
+                      "pm.test(\"Validate Correct user is logged in\", function () {",
+                      "    pm.expect(username).to.be.eql(`${validate}`)",
+                      "});",
+                      "",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Validate email is equal to username\", function () {",
+                      "    pm.expect(responseData.account.email).to.be.eql(responseData.account.username);",
+                      "});",
+                      "",
+                      "for (let filter of responseData.account.meta){ // iteration for every value under meta array",
+                      "    console.log(filter);",
+                      "    if(filter.key == \"register_source\"){",
+                      "        Order = filter;",
+                      "        console.log(Order);",
+                      "    }",
+                      "}",
+                      "",
+                      "pm.test(\"verify key-value are correct\", function(){ // validate register source on platform is inplayer",
+                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
+                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "f3bff98c-5747-44f4-a884-dbf04f76e267",
+                    "exec": [
+                      "let usernamev1 = \"oliver.pinev@inplayer.com\";",
+                      "",
+                      "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "0cf1306e-8e49-4c76-be3f-98aaf5211b45",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "client_id",
+                      "value": "3b39b5ab-b5fc-4ba3-b770-73155d20e61f",
+                      "type": "text"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "oliver.pinev@inplayer.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Password123",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://{{baseUrl}}/v2/accounts/authenticate"
+              },
+              "response": []
+            },
+            {
+              "name": "Create-Asset",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "8a49a11a-b631-4657-b888-ebeb76df30a6",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "pm.environment.set(\"itemID\", responseData.id);",
+                      "    ",
+                      "    if (responseData.access_control_type.id == 2 && responseData.item_type.id ==2){",
+                      "    pm.test(\"Validate asset type is Code (Passcode)\", function () {",
+                      "        postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "        });",
+                      "    }",
+                      "    else{",
+                      "            pm.test(\"Generated number is different than 2\", function(){",
+                      "            postman.setNextRequest(\"ENTRY-ASSET CODE\");",
+                      "            throw new Error(\"Generate number again\");",
+                      "        });  ",
+                      "",
+                      "    }",
+                      "    if (responseData.item_type.content_type == \"html\" && responseData.item_type.name == \"html_asset\"){",
+                      "    pm.test(\"Assertion that HTML Passcode were created\", function () {",
+                      "        });",
+                      "    }",
+                      "    pm.test(\"Validate default/initial value for event_type equals other\", function () {",
+                      "    pm.expect(responseData.event_type).to.be.eql(\"other\");",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "a22ea48b-46c4-4bf2-bd66-b20eb642b5f6",
+                    "exec": [
+                      "//generate random code from 1-3",
+                      "let rndInt = Math.floor(Math.random() * 3) + 1",
+                      "    console.log(rndInt)",
+                      "    pm.environment.set(\"rndControlTypeID\", rndInt);",
+                      "",
+                      "postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
+                      "postman.setNextRequest(\"ENTRY-ASSET CODE\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "d55ef42a-6e5e-4413-b312-6a16c455fe4e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_type",
+                      "value": "html_asset",
+                      "type": "text"
+                    },
+                    {
+                      "key": "access_control_type_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title",
+                      "value": "Passcode Asset",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_giftable",
+                      "value": "true",
+                      "type": "text"
+                    },
+                    {
+                      "key": "gift_description",
+                      "value": "\"GD test\"",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/v2/items"
+              },
+              "response": []
+            },
+            {
+              "name": "CREATE-Positive_PRIVATE_ASSET CODE",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "524f0bba-5e59-43c8-b8e1-d3240b571bd9",
+                    "exec": [
+                      "let moment = require(`moment`);",
+                      "let codeGenerator = Math.floor(Math.random() * 10000);",
+                      "let negRandom = Math.floor(Math.random() *10 *(-1));",
+                      "",
+                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"startDate\", \"currentDate\");",
+                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
+                      "pm.environment.set(\"privateCode\", \"private\");",
+                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
+                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "9ed8161d-d60a-41cf-97f9-2e6355801b04",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let initialCode = pm.variables.get(\"code\");",
+                      "let codeUUID = responseData.id;",
+                      "",
+                      "",
+                      "pm.environment.set(\"codeUUID\", codeUUID);",
+                      "",
+                      "console.log(pm.variables.get(\"positiveRandom\"))",
+                      "console.log(pm.variables.get(\"negativeRandom\"));",
+                      "",
+                      "pm.test(\"Validate UUID format using regex\", function () {",
+                      "    pm.expect(responseData.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);",
+                      "});",
+                      "",
+                      "pm.test(\"Assertion for creation of code\", function () {",
+                      "    console.log(`${initialCode}`);",
+                      "    pm.expect(responseData.code).to.eql(`${initialCode}`);",
+                      "});",
+                      "",
+                      "    if(responseData.concurrent_sessions>=0){",
+                      "        pm.test(\"Only Non-negative value for concurrent_sessions are present\", function (){",
+                      "        })",
+                      "    }",
+                      "        else{",
+                      "            pm.test(\"There is negative number for concurrent session\", function(){",
+                      "            throw new Error(\"negative number inserted!\");",
+                      "        });         ",
+                      "}",
+                      "        ",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "1b5ebbc6-8adb-499d-b81d-c9a19ed36572",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "{{itemID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "code",
+                      "value": "{{code}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "{{currentDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "{{endDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "type",
+                      "value": "{{privateCode}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "{{positiveRandom}}",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/create"
+              },
+              "response": []
+            },
+            {
+              "name": "GET-ASSET CODE DETAILS",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "deca60c8-c56a-48fd-b89e-99a7fb1c1973",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let test = pm.environment.get(`code`);",
+                      "const sessions = pm.variables.get(\"positiveRandom\");",
+                      "let Order;",
+                      "",
+                      "console.log(sessions);",
+                      "console.log(test);",
+                      "console.log(responseData.total);",
+                      "",
+                      "console.log(responseData.collection.code);",
+                      "",
+                      "pm.test(\"Verify Collection of parameters were present\", function () {",
+                      "    pm.expect(responseData.collection).not.eq(undefined);",
+                      "});",
+                      "",
+                      "pm.test(\"codeUUID on Request is matched with codeUUID on response\", function () {",
+                      "    pm.expect(responseData.active_sessions.length).to.eql(0);",
+                      "});",
+                      "",
+                      "for (let filter of responseData.collection){ // iteration for every value under collection array",
+                      "    console.log(filter);",
+                      "    if(filter.code == test){",
+                      "        Order = filter;",
+                      "        console.log(Order);",
+                      "    }",
+                      "}",
+                      "",
+                      "pm.test(\"verify code_UUID is displayed in this response\", function(){ // validate multiple values for particular code",
+                      "    pm.expect(Order.id).not.eq(undefined);",
+                      "});",
+                      "",
+                      "pm.test(\"verify key-values are correct\", function(){ // validate multiple values for particular code",
+                      "    pm.expect(Order.code).to.be.eql(test),",
+                      "    console.log(\"code is correct\");",
+                      "    pm.expect(Order.merchant_id).to.be.eql(51486),",
+                      "    console.log(\"merchantID is correct\");",
+                      "    pm.expect(Order.type).to.be.eql(\"private\"),",
+                      "    console.log(\"type is correct\");",
+                      "    pm.expect(Order.concurrent_sessions == sessions);",
+                      "    console.log(\"sessions are correct\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "90dbb700-1531-4c46-b88f-2e226a55c0b5",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "255f8520-8966-4df8-8d47-8a0ac912a199",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "88684",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "code",
+                      "value": "FROMBE1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2021-08-07 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2021-08-18 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "private",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "-3",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/item/{{itemID}}"
+              },
+              "response": []
+            },
+            {
+              "name": "ENTRY-ASSET CODE",
+              "_postman_id": "49713416-b8fb-4bb9-badb-383a83203fbf",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjU3MjY0ODEsIm5iZiI6MTYyNTcyNjQ4MSwiZXhwIjoxNjI4MzIyMDgxLCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.qUk1E6vLXw3KrM0pPY2BdhrCkhD-t1DKYBGpz7rHAFk"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "83349",
+                      "type": "text"
+                    },
+                    {
+                      "key": "code",
+                      "value": "CODE123789%",
+                      "type": "text"
+                    },
+                    {
+                      "key": "browser_fingerprint",
+                      "value": "8ccbfb5271cb62777545d6e22bb9ce7c",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2021-07-18 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "private",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "3",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/entry"
+              },
+              "response": []
+            },
+            {
+              "name": "GET-ACCESS CODE DETAILS",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "48f3b929-26e9-4616-a88a-04d61e0e5640",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "pm.test(\"Initial active_sessions to be empty\", function () {",
+                      "    pm.expect(responseData.active_sessions.length).to.eql(0);",
+                      "});",
+                      "",
+                      "pm.test(\"codeUUID on Request is matched with codeUUID on response\", function () {",
+                      "    pm.expect(responseData.active_sessions.length).to.eql(0);",
+                      "});",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "da46dbf1-3eda-4b28-bdcc-6b64c7e7bcc6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{authToken}}"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "88684",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "code",
+                      "value": "FROMBE1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2021-08-07 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2021-08-18 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "private",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "-3",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes"
+              },
+              "response": []
+            },
+            {
+              "name": "CREATE-Negative_PRIVATE_ASSET CODE Copy",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "cc9126cc-01be-4c19-b8ce-9536db31250b",
+                    "exec": [
+                      "let moment = require(`moment`);",
+                      "let codeGenerator = Math.floor(Math.random() * 10000);",
+                      "let negRandom = Math.floor(Math.random() *10 *(-1));",
+                      "",
+                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"startDate\", \"currentDate\");",
+                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
+                      "pm.environment.set(\"privateCode\", \"private\");",
+                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
+                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "40d6d434-e8ba-49d8-bfbe-1d41f3f70656",
+                    "exec": [
+                      "let responseData = JSON.parse(responseBody);",
+                      "let initialCode = pm.variables.get(\"code\");",
+                      "",
+                      "console.log(pm.variables.get(\"positiveRandom\"))",
+                      "console.log(pm.variables.get(\"negativeRandom\"));",
+                      "",
+                      "pm.test(\"Validate UUID format using regex\", function () {",
+                      "    pm.expect(responseData.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);",
+                      "});",
+                      "",
+                      "pm.test(\"Assertion for creation of code\", function () {",
+                      "    console.log(`${initialCode}`);",
+                      "    pm.expect(responseData.code).to.eql(`${initialCode}`);",
+                      "});",
+                      "",
+                      "    if(responseData.concurrent_sessions>=0){",
+                      "        pm.test(\"Only Non-negative value for concurrent_sessions are present\", function (){",
+                      "        })",
+                      "    }",
+                      "        else{",
+                      "            pm.test(\"There is negative number for concurrent session\", function(){",
+                      "            throw new Error(\"negative number inserted!\");",
+                      "        });         ",
+                      "}",
+                      "        ",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "0b774a89-d658-46d7-a241-8f3496c53746",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjkzNzc2NjYsIm5iZiI6MTYyOTM3NzY2NiwiZXhwIjoxNjMxOTczMjY2LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.uc8xofa40O9MZBSwSJAFG-5dG76KOle1683XMwMOT_Q"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "{{itemID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "code",
+                      "value": "{{code}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "{{currentDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "{{endDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "type",
+                      "value": "{{privateCode}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "{{negativeRandom}}",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/create"
+              },
+              "response": []
+            },
+            {
+              "name": "CREATE-PUBLIC_ASSET CODE",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "45dee899-e664-4195-998a-ea1b81b36282",
+                    "exec": [
+                      "let moment = require(`moment`);",
+                      "",
+                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"startDate\", \"currentDate\");",
+                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "bccbb673-fefe-443e-b0fa-8724ba63bcaa",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "82a0e4d7-ae9e-4779-975f-7ba8836fcce8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjkzNzc2NjYsIm5iZiI6MTYyOTM3NzY2NiwiZXhwIjoxNjMxOTczMjY2LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.uc8xofa40O9MZBSwSJAFG-5dG76KOle1683XMwMOT_Q"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "{{itemID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "code",
+                      "value": "{{code}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "{{currentDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "{{endDate}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "type",
+                      "value": "public",
+                      "type": "text"
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "-3",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/create"
+              },
+              "response": []
+            },
+            {
+              "name": "Bulk ACCESS CODES Upload",
+              "_postman_id": "d6177473-2134-4d90-839d-eb9d6d5d3a39",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2Mjg0OTkwNDcsIm5iZiI6MTYyODQ5OTA0NywiZXhwIjoxNjMxMDk0NjQ3LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.QnlPKUnHZ0AtFWXXWEl2ALUH7fYa0_7_IwFmxQWlf6I"
+                  }
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file_name",
+                      "type": "file",
+                      "src": "/Users/oliver.pinev/Downloads/access_codes_2021-08-09_12-46-53.csv"
+                    },
+                    {
+                      "key": "merchant_uuid",
+                      "value": "0ebcef6e-99b5-49c3-83ef-dd178338bd9b",
+                      "type": "text"
+                    },
+                    {
+                      "key": "merchant_id",
+                      "value": "51486",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "formdata": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/item/83922/upload"
+              },
+              "response": []
+            },
+            {
+              "name": "Bulk ACCESS CODES get",
+              "_postman_id": "0b16ee27-436b-47b4-8636-3b3aa5d75df5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2Mjg1MTQ3NjEsIm5iZiI6MTYyODUxNDc2MSwiZXhwIjoxNjMxMTEwMzYxLCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.7fy06oGEcksLeeJZUDR3nNhNTG1KIYpgnCmPtSlT4uE"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/item/83922/signed-url"
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE-ASSET CODE",
+              "_postman_id": "02990038-ee7b-42c3-ab3a-b82248c302e2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjkxODU1NzgsIm5iZiI6MTYyOTE4NTU3OCwiZXhwIjoxNjMxNzgxMTc4LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.CHl9uhJ7axrcU9357uleyC-63aKb_V9Sww3EgC8SPcE"
+                  }
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "item_id",
+                      "value": "88684",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "code",
+                      "value": "FROMBE1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2021-08-07 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2021-08-18 12:00:00",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "private",
+                      "type": "text"
+                    },
+                    {
+                      "key": "concurrent_sessions",
+                      "value": "3",
+                      "type": "text"
+                    }
+                  ],
+                  "options": {
+                    "urlencoded": {}
+                  }
+                },
+                "url": "https://staging-v2.inplayer.com/items/access/codes/322b57ff-7046-41f7-9e4b-d6d3914c3ce9"
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE SESSION",
+              "_postman_id": "7e530cd3-8e79-43ad-9287-5e4ddbcc35b4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjkzNzkxNjcsIm5iZiI6MTYyOTM3OTE2NywiZXhwIjoxNjMxOTc0NzY3LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9._nWQgot715lUPYMVSAKEE8hP2xTaRFzgLPQ4svOPNvs"
+                  }
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": "https://staging-v2.inplayer.com/items/access/codes/a3381328-25c3-433a-9e53-e79f320483cb/bbfee6623fc3d0513291070003292c36"
+              },
+              "response": []
+            },
+            {
+              "name": "GET ACCESS CODES SESSIONS",
+              "_postman_id": "fb446ac8-7350-42f2-8ead-3be67db3aad8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": ""
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "url": "https://services.inplayer.com/items/access/codes/0936f84b9ba31eddce2b180dbae74213/sessions"
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "e8bdc7b3-2efb-494d-b8bc-0599a8347f4e",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "24ce1ca1-e3da-413c-b1db-98f51526cb76",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "377d28a7-aefa-4236-a683-3157098826fa",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "d27daf06-eeaa-4542-80fc-fa3ed3860cda",
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Successfull POST Request\", function (){",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PAYMENTS",
+      "item": [
+        {
+          "name": "Register Account",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "a734ad18-b720-4727-9d58-78163158fa36",
+                "exec": [
+                  "console.log(\"This is a pre request script for Creating Account\");",
+                  "pm.environment.set(\"password\", \"Password123\");",
+                  "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
+                  "let randomNumber = Math.floor(Math.random() * 10000);",
+                  "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
+                  "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "da01ab3a-f674-4847-9d3c-6a06c485e0af",
+                "exec": [
+                  "console.log(\"-----Executing Finished-----\");",
+                  "var responseData = JSON.parse(responseBody);",
+                  "console.log(\"adding auth Token value\")",
+                  "pm.environment.set(\"authToken\", responseData.access_token);",
+                  "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
+                  "pm.environment.set(\"consumerID\", responseData.account.id);",
+                  "pm.test(\"Successfull POST Request\", function (){",
+                  "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "2e9c7b52-4cbf-44ac-a961-d1e2429a0bbd",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "full_name",
+                  "value": "{{CreateAccFullName}}",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "{{CreateAccountEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "consumer",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientID}}",
+                  "type": "text",
+                  "description": "oliver.pinev+connected@email.com"
+                },
+                {
+                  "key": "metadata[phone]",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[datePicker]",
+                  "value": "2021-09-17",
+                  "type": "text"
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "{{baseUrl}}/v2/accounts"
+          },
+          "response": []
+        },
+        {
+          "name": "Authenticate/Login with Fan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "96a4fea9-90db-4249-86c3-c679da604653",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "f55987da-5bf6-4b64-a01e-8bd4855cf1b4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{CreateAccountEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientID}}",
+                  "type": "text"
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "Authenticate/Login with Merchant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2e8c7f05-c0a1-44bc-8da4-b0766f940e70",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var responseData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                  "",
+                  "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
+                "exec": [
+                  "console.log(\"-----Executing Authenticate POST Request-----\");",
+                  "",
+                  "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
+                  "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "cc01afd9-e1fe-4f77-8274-b4763b7a5eb5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{MerchantUser}}",
+                  "type": "text",
+                  "description": "oliver.pinev+connected@email.com"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{SystemInPlayerAcc}}",
+                  "type": "text"
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "GET all items",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7129396a-779c-4828-8486-d994852b0aa1",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "let counter = responseData.collection.length;",
+                  "console.log(counter)",
+                  "let var1 = responseData.collection[0].id;",
+                  "console.log(var1)",
+                  "",
+                  "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "e95ad25b-aab8-4ef3-acae-a5410ed777d2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Merchant_Token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": {
+              "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
+              "protocol": "https",
+              "host": [
+                "staging-v2",
+                "inplayer",
+                "com"
+              ],
+              "path": [
+                "items",
+                "collection"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                },
+                {
+                  "key": "is_active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST PPV Access Fee for PAYMENT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1be7dbe5-58e0-43e5-9447-86f9cb407638",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "6fd21746-5974-4475-b478-359c1f280fc4",
+                "exec": [
+                  "let rndInt = Math.floor(Math.random() * 8) + 2",
+                  "",
+                  "",
+                  "pm.environment.set(\"priceForPayment\", rndInt);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "a5357418-a8ea-4135-adcb-af03fe8b3710",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Merchant_Token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "{{priceForPayment}}",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": "EUR",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "test fee for payments",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_description",
+                  "value": "",
+                  "type": "text"
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
+          },
+          "response": []
+        },
+        {
+          "name": "GET access for particular item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a1c80264-6f0c-4107-bea4-fe6f89e46cad",
+                "exec": [
+                  "let responseData = pm.response.json()",
+                  "",
+                  "console.log(\"this is just a validation that the given user doesnt have an access before he purchase the asset\")",
+                  "",
+                  "pm.test(`Status code is ${responseData.code} but its ok, since we need to ensure the Fan doesn't ahve access for this asset`, function () {",
+                  "    pm.response.to.have.status(402);",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "973fba67-686f-4850-95a1-e8da7dfb48e6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+          },
+          "response": []
+        },
+        {
+          "name": "Purchase PPV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0c191a40-ae11-4dde-8ada-ffccf8d55797",
+                "exec": [
+                  "let responseData = pm.response.json();",
+                  "",
+                  "if(responseData.message == \"Submitted for payment\")",
+                  "{",
+                  "    setTimeout(function(){",
+                  "        console.log(\"Sleeping for 7 seconds before next request.\");",
+                  "    }, 7000);",
+                  "",
+                  "    postman.setNextRequest(\"GET access for particular item after wait\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_fee",
+                  "value": "{{PAYMENTS_feeID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "payment_method",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "number",
+                  "value": "4242424242424242",
+                  "type": "text"
+                },
+                {
+                  "key": "cvv",
+                  "value": "123",
+                  "type": "text"
+                },
+                {
+                  "key": "exp_month",
+                  "value": "11",
+                  "type": "text"
+                },
+                {
+                  "key": "exp_year",
+                  "value": "22",
+                  "type": "text"
+                },
+                {
+                  "key": "card_name",
+                  "value": "api card",
+                  "type": "text"
+                },
+                {
+                  "key": "-d voucher_code=F00B4R!@",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "https://{{baseUrl}}/payments"
+          },
+          "response": []
+        },
+        {
+          "name": "GET access for particular item after wait",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                "exec": [
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+          },
+          "response": []
+        },
+        {
+          "name": "New Request Copy",
+          "_postman_id": "c8170632-7895-4747-be0e-c1f9f1594674",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "customer",
+                  "value": "5f63bb40-0474-4aa7-9e49-51f27b922473",
+                  "type": "text"
+                },
+                {
+                  "key": "merchant",
+                  "value": "f6be7cea-5dd3-4362-927d-f10ba859819c",
+                  "type": "text"
+                }
+              ],
+              "options": {
+                "urlencoded": {}
+              }
+            },
+            "url": "https://{{baseUrl}}/v1/customers"
+          },
+          "response": []
+        },
+        {
+          "name": "req2get all access fees",
+          "_postman_id": "8f27850c-8d8e-49a2-ba08-4c4d3828eae4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": null
+          },
+          "response": []
+        },
+        {
+          "name": "req3 get all items on page",
+          "_postman_id": "8c05a534-1242-4f3b-95a6-22cf2186d53d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": null
+          },
+          "response": []
+        },
+        {
+          "name": "Get Access Fees for Previous Item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
+                "exec": [
+                  "let responseData = pm.response.json()",
+                  "let responseData1 = pm.response.json()",
+                  "",
+                  "if(responseData.length){",
+                  "    pm.test(\"array is empty next Request will be Requested\", function () {",
+                  "",
+                  "    });",
+                  "",
+                  "}else{",
+                  "    //let var1 = responseData1.collection[0].id;",
+                  "   // console.log(var1)",
+                  "    pm.test(\"else statement\", function () {",
+                  "        throw new Error(\"this item doesn't have Fee\")",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "12d02ba0-32c0-486a-b6c2-c06f625f9ef3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "a0ef51e6-1ece-4042-a9cb-b3f0cdc20903",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "796bdd82-2af4-4674-bee9-4c5abaf51ac7",
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.get(\"latestItem\")"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "908fc030-47aa-44e6-9468-2c3babd0a739",
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.info.requestName != \"GET access for particular item\"){",
+              "pm.test(\"Successfull POST Request\", function (){",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
