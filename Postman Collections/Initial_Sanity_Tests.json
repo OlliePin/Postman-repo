@@ -2699,71 +2699,43 @@
                 "url": "https://{{baseUrl}}/payments"
               },
               "response": []
+            },
+            {
+              "name": "GET access for particular item after wait",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                    "exec": [
+                      "",
+                      "",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": {
+                    "token": "{{Fan_Token}}"
+                  }
+                },
+                "method": "GET",
+                "header": [],
+                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+              },
+              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
-        },
-        {
-          "name": "GET access for particular item after wait",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
-                "exec": [
-                  "",
-                  "",
-                  "",
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{Fan_Token}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-          },
-          "response": []
-        },
-        {
-          "name": "New Request Copy",
-          "id": "c8170632-7895-4747-be0e-c1f9f1594674",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [
-                {
-                  "key": "customer",
-                  "value": "5f63bb40-0474-4aa7-9e49-51f27b922473",
-                  "type": "text"
-                },
-                {
-                  "key": "merchant",
-                  "value": "f6be7cea-5dd3-4362-927d-f10ba859819c",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": "https://{{baseUrl}}/v1/customers"
-          },
-          "response": []
         },
         {
           "name": "req2get all access fees",
