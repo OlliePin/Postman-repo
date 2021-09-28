@@ -2733,48 +2733,48 @@
                 "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
               },
               "response": []
-            },
-            {
-              "name": "Get Access Fees for Previous Item",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
-                    "exec": [
-                      "let responseData = pm.response.json()",
-                      "let responseData1 = pm.response.json()",
-                      "",
-                      "if(responseData.length){",
-                      "    pm.test(\"array is empty next Request will be Requested\", function () {",
-                      "",
-                      "    });",
-                      "",
-                      "}else{",
-                      "    //let var1 = responseData1.collection[0].id;",
-                      "   // console.log(var1)",
-                      "    pm.test(\"else statement\", function () {",
-                      "        throw new Error(\"this item doesn't have Fee\")",
-                      "    });",
-                      "}"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "12d02ba0-32c0-486a-b6c2-c06f625f9ef3",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
-              },
-              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+        },
+        {
+          "name": "Get Access Fees for Previous Item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
+                "exec": [
+                  "let responseData = pm.response.json()",
+                  "let responseData1 = pm.response.json()",
+                  "",
+                  "if(responseData.length){",
+                  "    pm.test(\"array is empty next Request will be Requested\", function () {",
+                  "",
+                  "    });",
+                  "",
+                  "}else{",
+                  "    //let var1 = responseData1.collection[0].id;",
+                  "   // console.log(var1)",
+                  "    pm.test(\"else statement\", function () {",
+                  "        throw new Error(\"this item doesn't have Fee\")",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "12d02ba0-32c0-486a-b6c2-c06f625f9ef3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+          },
+          "response": []
         }
       ],
       "id": "a0ef51e6-1ece-4042-a9cb-b3f0cdc20903",
