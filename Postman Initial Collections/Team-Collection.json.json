@@ -3175,14 +3175,84 @@
             },
             {
               "name": "New Request",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "e35864ea-10d8-450e-9b90-f023729bb721",
+                    "exec": [
+                      "let moment = require(`moment`); // momentJS library",
+                      "let jquery = require('jQuery');",
+                      "let randomNumber = Math.floor(Math.random() * 100);",
+                      "pm.environment.set(\"discountVoucher\", `${randomNumber}`);",
+                      "",
+                      "let moment = require(`moment`);",
+                      "let codeGenerator = Math.floor(Math.random() * 10000);",
+                      "let negRandom = Math.floor(Math.random() *10 *(-1));",
+                      "",
+                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"startDate\", \"currentDate\");",
+                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
+                      "pm.environment.set(\"privateCode\", \"private\");",
+                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
+                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
               "id": "66af89c0-542c-4ac5-99ef-3eff99a7a76d",
               "protocolProfileBehavior": {
                 "disableBodyPruning": true
               },
               "request": {
-                "method": "GET",
+                "method": "POST",
                 "header": [],
-                "url": null
+                "url": {
+                  "raw": "https://{{baseUrl}}/vouchers?-d name%3D'Voucher title' \\=&-d length%3D7 \\=&-d perfix%3DAB17 \\=&-d perfix%3DBA17 \\=&-d discount%3D30 \\=&-d start_date%3D2017-01-10 \\=&-d end_date%3D2017-03-12 \\=&-d usage_limit%3D50=",
+                  "protocol": "https",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vouchers"
+                  ],
+                  "query": [
+                    {
+                      "key": "-d name%3D'Voucher title' \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d length%3D7 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d perfix%3DAB17 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d perfix%3DBA17 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d discount%3D30 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d start_date%3D2017-01-10 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d end_date%3D2017-03-12 \\",
+                      "value": ""
+                    },
+                    {
+                      "key": "-d usage_limit%3D50",
+                      "value": ""
+                    }
+                  ]
+                }
               },
               "response": []
             }
