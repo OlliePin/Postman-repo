@@ -2363,7 +2363,8 @@
                       "var responseData = JSON.parse(responseBody);",
                       "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
                       "",
-                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)",
+                      ""
                     ],
                     "type": "text/javascript"
                   }
