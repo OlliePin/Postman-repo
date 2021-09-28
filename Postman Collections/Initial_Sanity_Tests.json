@@ -2738,19 +2738,6 @@
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
         },
         {
-          "name": "req2get all access fees",
-          "id": "8f27850c-8d8e-49a2-ba08-4c4d3828eae4",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": null
-          },
-          "response": []
-        },
-        {
           "name": "req3 get all items on page",
           "id": "8c05a534-1242-4f3b-95a6-22cf2186d53d",
           "protocolProfileBehavior": {
