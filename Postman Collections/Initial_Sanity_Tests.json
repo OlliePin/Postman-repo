@@ -61,11 +61,7 @@
                           "    pm.expect(Order.key).to.eql(\"register_source\"),",
                           "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
                           "});",
-                          "",
-                          "pm.test(\"ttt123\", function(){",
-                          "    pm.expect(responseData.text.to.include(\"access_token\",\"refresh_token1\",\"tenant_uuid\"));",
-                          "",
-                          "})"
+                          ""
                         ],
                         "type": "text/javascript"
                       }
