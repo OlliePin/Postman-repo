@@ -2185,7 +2185,7 @@
           "name": "Credit Card Payment",
           "item": [
             {
-              "name": "Register Account",
+              "name": "Register Fan Account",
               "event": [
                 {
                   "listen": "prerequest",
