@@ -2699,43 +2699,43 @@
                 "url": "https://{{baseUrl}}/payments"
               },
               "response": []
-            },
-            {
-              "name": "GET access for particular item after wait",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
-                    "exec": [
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Fan_Token}}"
-                  }
-                },
-                "method": "GET",
-                "header": [],
-                "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
-              },
-              "response": []
             }
           ],
           "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+        },
+        {
+          "name": "GET access for particular item after wait",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4bce27e5-6923-43b2-ae15-5c73dbf6eb4c",
+                "exec": [
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "1e9ea330-3f8c-4ae5-9df3-659f3389c0e3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{Fan_Token}}"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": "https://staging-v2.inplayer.com/items/{{latestItem}}/access"
+          },
+          "response": []
         },
         {
           "name": "New Request Copy",
