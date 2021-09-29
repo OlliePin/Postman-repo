@@ -3289,7 +3289,7 @@
       ]
     },
     {
-      "name": "New Request",
+      "name": "Get all workspacec",
       "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
