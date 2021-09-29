@@ -3297,7 +3297,24 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": null
+        "url": {
+          "raw": "https://api.getpostman.com/workspaces?apikey={{postman_api_key}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "getpostman",
+            "com"
+          ],
+          "path": [
+            "workspaces"
+          ],
+          "query": [
+            {
+              "key": "apikey",
+              "value": "{{postman_api_key}}"
+            }
+          ]
+        }
       },
       "response": []
     }
