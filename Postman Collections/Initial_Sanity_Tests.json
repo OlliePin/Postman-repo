@@ -3179,7 +3179,7 @@
                 {
                   "listen": "prerequest",
                   "script": {
-                    "id": "e35864ea-10d8-450e-9b90-f023729bb721",
+                    "id": "342ed33c-f18d-40cd-9a22-5c221d154aee",
                     "exec": [
                       "let moment = require(`moment`); // momentJS library",
                       "let jquery = require('jQuery');",
@@ -3209,6 +3209,10 @@
               "request": {
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": []
+                },
                 "url": {
                   "raw": "https://{{baseUrl}}/vouchers?-d name%3D'Voucher title' \\=&-d length%3D7 \\=&-d perfix%3DAB17 \\=&-d perfix%3DBA17 \\=&-d discount%3D30 \\=&-d start_date%3D2017-01-10 \\=&-d end_date%3D2017-03-12 \\=&-d usage_limit%3D50=",
                   "protocol": "https",
