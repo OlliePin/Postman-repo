@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "3f5ee637-5be1-4e18-b013-b2c91f32260d",
-    "name": "B - SANITY Automation Tests123123",
+    "name": "B - SANITY Automation Tests",
     "description": "# Introduction\nThis Collection cover all the parts devided separately in order to be tested under isolation\n\n# Overview\nAll the tests written in this collection can be used from Developers in order to Verify everything works as expected when varios endpoints were affected with the new functionality\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nThere are no limitation of the number of Requests",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
