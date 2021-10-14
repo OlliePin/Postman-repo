@@ -27,7 +27,7 @@
                           "let username = responseData.account.email;",
                           "//console.log(username);",
                           "//small changes ttt123",
-                          "//CI commit12",
+                          "//CI commit123",
                           "let validate = pm.variables.get(\"realUser\")",
                           "let Order;",
                           "",
