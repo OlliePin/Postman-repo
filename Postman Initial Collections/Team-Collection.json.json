@@ -28,7 +28,7 @@
                           "//console.log(username);",
                           "//small changes",
                           "//small changes again",
-                          "//github Fork test, abc",
+                          "//github Fork test, abcdef",
                           "let validate = pm.variables.get(\"realUser\")",
                           "let Order;",
                           "",
