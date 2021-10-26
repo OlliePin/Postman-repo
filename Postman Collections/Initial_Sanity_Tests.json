@@ -3299,6 +3299,375 @@
       ]
     },
     {
+      "name": "Season subscription",
+      "item": [
+        {
+          "name": "Authenticate MP",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "ba2cbb1a-178e-414a-b621-d4103efabb21",
+                "exec": [
+                  "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                  "console.log(checkEnv)\r",
+                  "\r",
+                  "if(checkEnv = 'https://staging-v2.inplayer.com')\r",
+                  "{\r",
+                  "    let usernameMP_El = \"elena_gj_automation@mail.com\";\r",
+                  "    pm.collectionVariables.set(\"usernameMP_El\", usernameMP_El);//username for loging to MP\r",
+                  "    let clientId01_El = \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\";\r",
+                  "    pm.collectionVariables.set(\"clientId01_El\", clientId01_El);//client id for loging to MP\r",
+                  "    console.log(clientId01_El)\r",
+                  "    console.log(usernameMP_El)\r",
+                  "}else{\r",
+                  "    if(checkEnv = 'https://services.inplayer.com')\r",
+                  "    {\r",
+                  "    let usernameMP_El = \"elena.gjeorgievska@inplayer.com\";\r",
+                  "    pm.collectionVariables.set(\"usernameMP_El\", usernameMP_El);//username for loging to MP\r",
+                  "    let clientId01_El = \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\";\r",
+                  "    pm.collectionVariables.set(\"clientId01_El\", clientId01_El);//client id for loging to MP\r",
+                  "    }\r",
+                  "else{\r",
+                  "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                  "    }\r",
+                  "}\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "f69b56e1-69ea-4ac4-889e-a927cc2414d8",
+                "exec": [
+                  "let responseData = JSON.parse(responseBody);\r",
+                  "let responseusernameMP_El = responseData.account.email;\r",
+                  "let validate = pm.collectionVariables.get(\"usernameMP_El\")\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"mp.access_token_El\", responseData.access_token)\r",
+                  "pm.collectionVariables.set(\"merchantId_El\", responseData.account.id)\r",
+                  "\r",
+                  "pm.test(\"Validate Correct user is logged in\", function () {\r",
+                  "    pm.expect(responseusernameMP_El).to.be.eql(`${validate}`)\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response parameters access_token true and string\", function(){\r",
+                  "   pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+                  "   pm.expect(responseData.access_token).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response parameters tenant_uuid true and undefined\", function(){\r",
+                  "  const responseJson = pm.response.json();\r",
+                  "   pm.expect(pm.response.text()).to.include(\"tenant_uuid\");\r",
+                  "   pm.expect(responseJson.tenant_uuid).to.be.undefined;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response parameters merchant true\", function(){\r",
+                  "  const responseJson = pm.response.json();\r",
+                  "   pm.expect(pm.response.text()).to.include(\"merchant\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.collectionVariables.get(\"variable_key\");\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "c34e36be-e775-4018-956a-dc82802d0954",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{usernameMP_El}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "test1234",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{clientId01_El}}",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/accounts/authenticate"
+          },
+          "response": []
+        },
+        {
+          "name": "Create asset",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "a3bf53ce-e5eb-40f7-b339-dda30468eb42",
+                "exec": [
+                  "pm.collectionVariables.get(\"mp.access_token_El\");\r",
+                  "\r",
+                  "let randomNumber = Math.floor(Math.random() * 10000);\r",
+                  "pm.collectionVariables.set(\"itemTitle_El\", \"autom. asset \" +`${randomNumber}`+ \" el gj\");"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "0801abe3-4830-4c99-962d-90cebfe563f8",
+                "exec": [
+                  "const responseData = JSON.parse(responseBody);\r",
+                  "//let evtDtls = responseData.event_details;\r",
+                  "pm.collectionVariables.set(\"itemId_El\", responseData.id);\r",
+                  "\r",
+                  "pm.test(\"Response ID to be Number\", function(){\r",
+                  "   pm.expect(responseData.id).to.be.a(\"Number\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response type to be paid\", function(){\r",
+                  "   pm.expect(responseData.access_control_type.name).to.eql(\"Paid\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response item to be active\", function(){\r",
+                  "   pm.expect(responseData.is_active).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response item type to be ovp\", function(){\r",
+                  "   pm.expect(responseData.item_type.content_type).to.include(\"ovp\");\r",
+                  "});\r",
+                  "   \r",
+                  "pm.test(\"Response merchant_id to be 25702\", function(){\r",
+                  "   pm.expect(responseData.merchant_id).to.be.a(\"Number\");\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "71093456-d88f-4a9e-a029-f864e1d7f019",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{mp.access_token_El}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "item_type",
+                  "value": "qbrick_asset",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "{{itemTitle_El}}",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[preview_description]",
+                  "value": "{{itemTitle_El}}",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[preview_title]",
+                  "value": "{{itemTitle_El}}",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[paywall_cover_photo]",
+                  "value": "https://inplayer-paywall-v2.s3.amazonaws.com/images/ip-preview-premium.jpg",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[preview_button_label]",
+                  "value": "Buy",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[preview_image_name]",
+                  "value": "preview image",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[thumbnail_image]",
+                  "value": "https://inplayer-paywall-v2.s3.amazonaws.com/images/ip-preview-premium.jpg",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata[thumbnail_image_name]",
+                  "value": "thumbnail image",
+                  "type": "text"
+                },
+                {
+                  "key": "access_control_type_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "event_type",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "template_id",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "https://{{baseUrl}}/v2/items"
+          },
+          "response": []
+        },
+        {
+          "name": "Create access fee",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "ef3cc90d-216e-427f-aa04-ab778a9ffc40",
+                "exec": [
+                  "pm.collectionVariables.get(\"itemId_El\");"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "cf54091f-01ee-4838-958e-dcf30a244391",
+                "exec": [
+                  "const responseData = JSON.parse(responseBody);\r",
+                  "pm.collectionVariables.set(\"accessFee_El\", responseData.id)\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "8513186e-cc1b-4560-83b8-a861e79eb788",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{mp.access_token_El}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": " 118",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": " season 1",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": " 1.3",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": " GBP",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": " ",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": " ",
+                  "type": "text"
+                },
+                {
+                  "key": "setup_fee_amount",
+                  "value": " ",
+                  "type": "text"
+                },
+                {
+                  "key": "setup_fee_description",
+                  "value": " ",
+                  "type": "text"
+                },
+                {
+                  "key": "starts_at",
+                  "value": " 2021-10-22T10:00:00.000Z",
+                  "type": "text"
+                },
+                {
+                  "key": "expires_at",
+                  "value": " 2021-10-30T10:00:00.000Z",
+                  "type": "text"
+                },
+                {
+                  "key": "season_anchor_date",
+                  "value": " 2021-10-31T11:00:00.000Z",
+                  "type": "text"
+                },
+                {
+                  "key": "season_price_amount",
+                  "value": " 1.5",
+                  "type": "text"
+                },
+                {
+                  "key": "season_off_season_access",
+                  "value": " true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "https://{{baseUrl}}/v2/items/{{itemId_El}}/access-fees"
+          },
+          "response": []
+        }
+      ],
+      "id": "de38e4d3-2315-4044-854d-576138ff8d9b"
+    },
+    {
       "name": "Get all Workspaces",
       "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
       "protocolProfileBehavior": {
@@ -3327,6 +3696,38 @@
         }
       },
       "response": []
+    }
+  ],
+  "variable": [
+    {
+      "id": "6f271c51-a7ab-49e8-850a-3923298c959d",
+      "key": "usernameMP_El",
+      "value": ""
+    },
+    {
+      "id": "aae1e039-537d-4f82-b467-1561788260ad",
+      "key": "clientId01_El",
+      "value": ""
+    },
+    {
+      "id": "e122fb2f-8627-4ff8-89d3-d78dcd6e02d6",
+      "key": "existingUserPw_El",
+      "value": ""
+    },
+    {
+      "id": "80b38953-4784-4d92-aac5-03d421fcf9ed",
+      "key": "clientId_El",
+      "value": ""
+    },
+    {
+      "id": "3b53e0cc-d471-491f-aaaa-91a8a9389036",
+      "key": "mp.access_token_El",
+      "value": ""
+    },
+    {
+      "id": "25b7b732-61e4-4891-b510-5f5216421c1e",
+      "key": "merchantId_El",
+      "value": ""
     }
   ]
 }
