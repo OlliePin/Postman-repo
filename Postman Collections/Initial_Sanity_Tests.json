@@ -3310,23 +3310,16 @@
                 "id": "ba2cbb1a-178e-414a-b621-d4103efabb21",
                 "exec": [
                   "checkEnv = pm.environment.get(\"baseUrl\")\r",
-                  "console.log(checkEnv)\r",
                   "\r",
                   "if(checkEnv = 'https://staging-v2.inplayer.com')\r",
                   "{\r",
-                  "    let usernameMP_El = \"elena_gj_automation@mail.com\";\r",
-                  "    pm.collectionVariables.set(\"usernameMP_El\", usernameMP_El);//username for loging to MP\r",
-                  "    let clientId01_El = \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\";\r",
-                  "    pm.collectionVariables.set(\"clientId01_El\", clientId01_El);//client id for loging to MP\r",
-                  "    console.log(clientId01_El)\r",
-                  "    console.log(usernameMP_El)\r",
+                  "    pm.collectionVariables.set(\"mp_UserName_SanitySeason\", \"elena_gj_automation@mail.com\");//username for loging to MP\r",
+                  "    pm.collectionVariables.set(\"clientId01_SanitySeason\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\");//client id for loging to MP\r",
                   "}else{\r",
                   "    if(checkEnv = 'https://services.inplayer.com')\r",
                   "    {\r",
-                  "    let usernameMP_El = \"elena.gjeorgievska@inplayer.com\";\r",
-                  "    pm.collectionVariables.set(\"usernameMP_El\", usernameMP_El);//username for loging to MP\r",
-                  "    let clientId01_El = \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\";\r",
-                  "    pm.collectionVariables.set(\"clientId01_El\", clientId01_El);//client id for loging to MP\r",
+                  "    pm.collectionVariables.set(\"mp_UserName_SanitySeason\",  \"elena.gjeorgievska@inplayer.com\");//username for loging to MP\r",
+                  "    pm.collectionVariables.set(\"clientId01_SanitySeason\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\");//client id for loging to MP\r",
                   "    }\r",
                   "else{\r",
                   "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
@@ -3344,37 +3337,13 @@
                 "id": "f69b56e1-69ea-4ac4-889e-a927cc2414d8",
                 "exec": [
                   "let responseData = JSON.parse(responseBody);\r",
-                  "let responseusernameMP_El = responseData.account.email;\r",
-                  "let validate = pm.collectionVariables.get(\"usernameMP_El\")\r",
                   "\r",
-                  "pm.collectionVariables.set(\"mp.access_token_El\", responseData.access_token)\r",
-                  "pm.collectionVariables.set(\"merchantId_El\", responseData.account.id)\r",
+                  "pm.collectionVariables.set(\"mp_AccessToken_SanitySeason\", responseData.access_token)\r",
+                  "pm.collectionVariables.set(\"merchantId_SanitySeason\", responseData.account.id)\r",
                   "\r",
-                  "pm.test(\"Validate Correct user is logged in\", function () {\r",
-                  "    pm.expect(responseusernameMP_El).to.be.eql(`${validate}`)\r",
+                  "pm.test(\"Request's code to be OK, one of 200, 201, 202\", function (){\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
                   "});\r",
-                  "\r",
-                  "pm.test(\"Status code is 200\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response parameters access_token true and string\", function(){\r",
-                  "   pm.expect(pm.response.text()).to.include(\"access_token\");\r",
-                  "   pm.expect(responseData.access_token).to.be.a(\"string\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response parameters tenant_uuid true and undefined\", function(){\r",
-                  "  const responseJson = pm.response.json();\r",
-                  "   pm.expect(pm.response.text()).to.include(\"tenant_uuid\");\r",
-                  "   pm.expect(responseJson.tenant_uuid).to.be.undefined;\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response parameters merchant true\", function(){\r",
-                  "  const responseJson = pm.response.json();\r",
-                  "   pm.expect(pm.response.text()).to.include(\"merchant\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.collectionVariables.get(\"variable_key\");\r",
                   ""
                 ],
                 "type": "text/javascript"
@@ -3396,7 +3365,7 @@
               "urlencoded": [
                 {
                   "key": "username",
-                  "value": "{{usernameMP_El}}",
+                  "value": "{{mp_UserName_SanitySeason}}",
                   "type": "text"
                 },
                 {
@@ -3406,7 +3375,7 @@
                 },
                 {
                   "key": "client_id",
-                  "value": "{{clientId01_El}}",
+                  "value": "{{clientId01_SanitySeason}}",
                   "type": "text"
                 },
                 {
@@ -3421,17 +3390,17 @@
           "response": []
         },
         {
-          "name": "Create asset",
+          "name": "Create season asset",
           "event": [
             {
               "listen": "prerequest",
               "script": {
                 "id": "a3bf53ce-e5eb-40f7-b339-dda30468eb42",
                 "exec": [
-                  "pm.collectionVariables.get(\"mp.access_token_El\");\r",
+                  "pm.collectionVariables.get(\"mp_AccessToken_SanitySeason\");\r",
                   "\r",
                   "let randomNumber = Math.floor(Math.random() * 10000);\r",
-                  "pm.collectionVariables.set(\"itemTitle_El\", \"autom. asset \" +`${randomNumber}`+ \" el gj\");"
+                  "pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"autom. season asset \" +`${randomNumber}`+\" el gj\");"
                 ],
                 "type": "text/javascript"
               }
@@ -3442,27 +3411,10 @@
                 "id": "0801abe3-4830-4c99-962d-90cebfe563f8",
                 "exec": [
                   "const responseData = JSON.parse(responseBody);\r",
-                  "//let evtDtls = responseData.event_details;\r",
-                  "pm.collectionVariables.set(\"itemId_El\", responseData.id);\r",
+                  "pm.collectionVariables.set(\"itemId_SanitySeason\", responseData.id);\r",
                   "\r",
-                  "pm.test(\"Response ID to be Number\", function(){\r",
-                  "   pm.expect(responseData.id).to.be.a(\"Number\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response type to be paid\", function(){\r",
-                  "   pm.expect(responseData.access_control_type.name).to.eql(\"Paid\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response item to be active\", function(){\r",
-                  "   pm.expect(responseData.is_active).to.be.true;\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response item type to be ovp\", function(){\r",
-                  "   pm.expect(responseData.item_type.content_type).to.include(\"ovp\");\r",
-                  "});\r",
-                  "   \r",
-                  "pm.test(\"Response merchant_id to be 25702\", function(){\r",
-                  "   pm.expect(responseData.merchant_id).to.be.a(\"Number\");\r",
+                  "pm.test(\"Request's code to be OK, one of 200, 201, 202\", function (){\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -3477,7 +3429,7 @@
             "auth": {
               "type": "bearer",
               "bearer": {
-                "token": "{{mp.access_token_El}}"
+                "token": "{{mp_AccessToken_SanitySeason}}"
               }
             },
             "method": "POST",
@@ -3492,17 +3444,17 @@
                 },
                 {
                   "key": "title",
-                  "value": "{{itemTitle_El}}",
+                  "value": "{{itemTitle_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "metadata[preview_description]",
-                  "value": "{{itemTitle_El}}",
+                  "value": "{{itemTitle_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "metadata[preview_title]",
-                  "value": "{{itemTitle_El}}",
+                  "value": "{{itemTitle_SanitySeason}}",
                   "type": "text"
                 },
                 {
@@ -3547,31 +3499,563 @@
                 }
               ]
             },
-            "url": "https://{{baseUrl}}/v2/items"
+            "url": "{{baseUrl}}/v2/items"
           },
           "response": []
         },
         {
-          "name": "Create access fee",
+          "name": "Validation for `season_price_amount`",
           "event": [
             {
-              "listen": "prerequest",
+              "listen": "test",
               "script": {
-                "id": "ef3cc90d-216e-427f-aa04-ab778a9ffc40",
+                "id": "9e48a923-284d-4b5d-b911-a8b7e8e8d1fe",
                 "exec": [
-                  "pm.collectionVariables.get(\"itemId_El\");"
+                  "const responseData = JSON.parse(responseBody);\r",
+                  "\r",
+                  "pm.test(\"Check error message, expect 400 and validation for `season_price_amount`\", function (){\r",
+                  "    pm.expect(responseData.code).to.be.eql(400);\r",
+                  "    pm.expect(responseData.message).to.be.eql(\"If access fee type is set as Season, the field `season_price_amount` is required.\")\r",
+                  "});"
                 ],
                 "type": "text/javascript"
               }
             },
             {
+              "listen": "prerequest",
+              "script": {
+                "id": "ec9c8a08-aab5-4bc1-8d6e-eaf18392a955",
+                "exec": [
+                  "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                  "\r",
+                  "if(checkEnv == 'https://staging-v2.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"118\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);  \r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "        if(checkEnv == 'https://services.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"3877\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);\r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "            //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                  "        }\r",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "626c4174-fa0b-40dd-af48-ecb11147bad6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{mp_AccessToken_SanitySeason}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": "{{accessType_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "{{itemTitle_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "{{accessFeeAmount_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_amount",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_description",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "starts_at",
+                  "value": "{{seasonStartsAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-22T10:00:00.000Z/as \\\"2006-01-02T15:04:05Z07:00\\"
+                },
+                {
+                  "key": "expires_at",
+                  "value": "{{seasonExpiresAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-30T10:00:00.000Z"
+                },
+                {
+                  "key": "season_anchor_date",
+                  "value": "{{seasonAnchorDate_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-31T11:00:00.000Z"
+                },
+                {
+                  "key": "season_price_amount",
+                  "value": "{{seasonFeeAmount_SanitySeason}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "season_off_season_access",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/items/{{itemId_SanitySeason}}/access-fees"
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for `season_anchor_date`",
+          "event": [
+            {
               "listen": "test",
               "script": {
-                "id": "cf54091f-01ee-4838-958e-dcf30a244391",
+                "id": "659b8531-4398-4303-8eba-a86bd6fc0c93",
                 "exec": [
                   "const responseData = JSON.parse(responseBody);\r",
-                  "pm.collectionVariables.set(\"accessFee_El\", responseData.id)\r",
-                  ""
+                  "\r",
+                  "pm.test(\"Check error message, expect 400 and validation for `season_anchor_date`\", function (){\r",
+                  "    pm.expect(responseData.code).to.be.eql(400);\r",
+                  "    pm.expect(responseData.message).to.be.eql(\"If access fee type is set as Season, the field `season_anchor_date` is required.\")\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "4db3da47-53f0-4f10-9795-a893703e1486",
+                "exec": [
+                  "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                  "\r",
+                  "if(checkEnv == 'https://staging-v2.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"118\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);  \r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "        if(checkEnv == 'https://services.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"3877\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);\r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "            //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                  "        }\r",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "ba5eb268-6414-4958-b098-beca8c746030",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{mp_AccessToken_SanitySeason}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": "{{accessType_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "{{itemTitle_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "{{accessFeeAmount_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_amount",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_description",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "starts_at",
+                  "value": "{{seasonStartsAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-22T10:00:00.000Z/as \\\"2006-01-02T15:04:05Z07:00\\"
+                },
+                {
+                  "key": "expires_at",
+                  "value": "{{seasonExpiresAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-30T10:00:00.000Z"
+                },
+                {
+                  "key": "season_anchor_date",
+                  "value": "{{seasonAnchorDate_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-31T11:00:00.000Z",
+                  "disabled": true
+                },
+                {
+                  "key": "season_price_amount",
+                  "value": "{{seasonFeeAmount_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "season_off_season_access",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/items/{{itemId_SanitySeason}}/access-fees"
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for `season_off_season_access`",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "23583574-78c1-4422-bac5-f5f14f05f109",
+                "exec": [
+                  "const responseData = JSON.parse(responseBody);\r",
+                  "\r",
+                  "pm.test(\"Check error message, expect 400 and validation for `season_off_season_access`\", function (){\r",
+                  "    pm.expect(responseData.code).to.be.eql(400);\r",
+                  "    pm.expect(responseData.message).to.be.eql(\"If access fee type is set as Season, the field `season_off_season_access` is required.\")\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "8c319f06-b437-4d8a-a502-55338e19f564",
+                "exec": [
+                  "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                  "\r",
+                  "if(checkEnv == 'https://staging-v2.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"118\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);  \r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "        if(checkEnv == 'https://services.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"3877\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);\r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "            //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                  "        }\r",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "1f27b53d-7685-4303-b4b7-52ff5648915d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{mp_AccessToken_SanitySeason}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "access_type_id",
+                  "value": "{{accessType_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "{{itemTitle_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "amount",
+                  "value": "{{accessFeeAmount_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "type": "text"
+                },
+                {
+                  "key": "trial_period_quantity",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "trial_period_period",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_amount",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "setup_fee_description",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "starts_at",
+                  "value": "{{seasonStartsAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-22T10:00:00.000Z/as \\\"2006-01-02T15:04:05Z07:00\\"
+                },
+                {
+                  "key": "expires_at",
+                  "value": "{{seasonExpiresAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-30T10:00:00.000Z"
+                },
+                {
+                  "key": "season_anchor_date",
+                  "value": "{{seasonAnchorDate_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-31T11:00:00.000Z"
+                },
+                {
+                  "key": "season_price_amount",
+                  "value": "{{seasonFeeAmount_SanitySeason}}",
+                  "type": "text"
+                },
+                {
+                  "key": "season_off_season_access",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/v2/items/{{itemId_SanitySeason}}/access-fees"
+          },
+          "response": []
+        },
+        {
+          "name": "Create season access fee success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5dd9f878-fa02-4604-ac97-370b184fcd62",
+                "exec": [
+                  "const responseData = JSON.parse(responseBody);\r",
+                  "\r",
+                  "pm.test(\"Request's code to be OK, one of 200, 201, 202\", function (){\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+                  "});\r",
+                  "\r",
+                  "if(pm.response.to.have.status(200))\r",
+                  "{\r",
+                  "pm.collectionVariables.set(\"accessFeeId_SanitySeason\", responseData.id)\r",
+                  "\r",
+                  "let varAmount = pm.collectionVariables.get(\"accessFeeAmount_SanitySeason\",)\r",
+                  "let varAmount2 = utils.formatFunction(varAmount, 2)\r",
+                  "pm.collectionVariables.set(\"refundAmount_SanitySeason\", `${varAmount2}`)\r",
+                  "\r",
+                  "let varSeasonAmount = pm.collectionVariables.get(\"seasonFeeAmount_SanitySeason\")\r",
+                  "let varSeasonAmount2 = utils.formatFunction(varSeasonAmount, 2)\r",
+                  "pm.collectionVariables.set(\"refundSeasonAmount_SanitySeason\", `${varSeasonAmount2}`)\r",
+                  "\r",
+                  "pm.test(\"access fee id is true and number\", function(){\r",
+                  "   pm.expect(responseData.id).to.be.a(\"Number\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"access fee is 1 year season\", function(){\r",
+                  "   pm.expect(responseData.access_type.name).to.be.eql(\"season\");\r",
+                  "   pm.expect(responseData.access_type.quantity).to.be.eql(1);\r",
+                  "   pm.expect(responseData.access_type.period).to.be.eql(\"year\");\r",
+                  "});\r",
+                  "\r",
+                  "let varAmountB = pm.collectionVariables.get(\"accessFeeAmount_SanitySeason\",)\r",
+                  "let varAmountB2 = utils.formatFunction(varAmountB, 4)\r",
+                  "\r",
+                  "let varSeasonAmountB = pm.collectionVariables.get(\"seasonFeeAmount_SanitySeason\")\r",
+                  "let varSeasonAmountB2 = utils.formatFunction(varSeasonAmountB, 4)\r",
+                  "\r",
+                  "pm.test(\"seasonal_fee is set\", function(){\r",
+                  "   pm.expect(responseData.seasonal_fee.id).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.seasonal_fee.current_price_amount).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.seasonal_fee.current_price_amount).to.be.eql(varSeasonAmountB2);\r",
+                  "   pm.expect(responseData.seasonal_fee.anchor_date).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.seasonal_fee.created_at).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.seasonal_fee.updated_at).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.seasonal_fee.off_season_access).to.be.eql(true);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"current_phase is set\", function(){\r",
+                  "   pm.expect(responseData.current_phase.id).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.current_phase.status).to.be.eql(\"locked-in\");\r",
+                  "   pm.expect(responseData.current_phase.current_price).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.current_phase.current_price).to.be.eql(varAmountB2);\r",
+                  "   pm.expect(responseData.current_phase.season_price).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.current_phase.season_price).to.be.eql(varSeasonAmountB2);\r",
+                  "   pm.expect(responseData.current_phase.anchor_date).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.current_phase.created_at).to.be.a(\"Number\");\r",
+                  "   pm.expect(responseData.current_phase.updated_at).to.be.a(\"Number\");\r",
+                  "});\r",
+                  "};\r",
+                  "   "
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "839d9a11-16e1-40df-bdf2-612bf7601326",
+                "exec": [
+                  "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                  "\r",
+                  "if(checkEnv == 'https://staging-v2.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"118\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);  \r",
+                  "        pm.collectionVariables.set(\"seasonFeeAmount_SanitySeason\", getRandomArbitrary+getRandomArbitrary); \r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "        if(checkEnv == 'https://services.inplayer.com')\r",
+                  "        {\r",
+                  "        let getRandomArbitrary  = (Math.random() * (3 - 1) + 1);\r",
+                  "        pm.collectionVariables.set(\"itemTitle_SanitySeason\", \"auto. season\"+`${getRandomArbitrary}`+\" el gj\");\r",
+                  "        pm.collectionVariables.set(\"accessType_SanitySeason\", \"3877\");\r",
+                  "        pm.collectionVariables.set(\"accessFeeAmount_SanitySeason\", getRandomArbitrary);\r",
+                  "        pm.collectionVariables.set(\"seasonFeeAmount_SanitySeason\", getRandomArbitrary+getRandomArbitrary); \r",
+                  "        pm.collectionVariables.set(\"seasonStartsAt_SanitySeason\",\"2030-10-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonExpiresAt_SanitySeason\",\"2031-03-22T10:00:00.000Z\");\r",
+                  "        pm.collectionVariables.set(\"seasonAnchorDate_SanitySeason\",\"2031-10-22T10:00:00.000Z\");\r",
+                  "        }\r",
+                  "    else{\r",
+                  "            //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                  "        }\r",
+                  "}"
                 ],
                 "type": "text/javascript"
               }
@@ -3585,7 +4069,7 @@
             "auth": {
               "type": "bearer",
               "bearer": {
-                "token": "{{mp.access_token_El}}"
+                "token": "{{mp_AccessToken_SanitySeason}}"
               }
             },
             "method": "POST",
@@ -3595,77 +4079,89 @@
               "urlencoded": [
                 {
                   "key": "access_type_id",
-                  "value": " 118",
+                  "value": "{{accessType_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "description",
-                  "value": " season 1",
+                  "value": "{{itemTitle_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "amount",
-                  "value": " 1.3",
+                  "value": "{{accessFeeAmount_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "currency",
-                  "value": " GBP",
+                  "value": "USD",
                   "type": "text"
                 },
                 {
                   "key": "trial_period_quantity",
-                  "value": " ",
-                  "type": "text"
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "trial_period_period",
-                  "value": " ",
-                  "type": "text"
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "setup_fee_amount",
-                  "value": " ",
-                  "type": "text"
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "setup_fee_description",
-                  "value": " ",
-                  "type": "text"
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "starts_at",
-                  "value": " 2021-10-22T10:00:00.000Z",
-                  "type": "text"
+                  "value": "{{seasonStartsAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-22T10:00:00.000Z/as \\\"2006-01-02T15:04:05Z07:00\\"
                 },
                 {
                   "key": "expires_at",
-                  "value": " 2021-10-30T10:00:00.000Z",
-                  "type": "text"
+                  "value": "{{seasonExpiresAt_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-30T10:00:00.000Z"
                 },
                 {
                   "key": "season_anchor_date",
-                  "value": " 2021-10-31T11:00:00.000Z",
-                  "type": "text"
+                  "value": "{{seasonAnchorDate_SanitySeason}}",
+                  "type": "text",
+                  "description": "2021-10-31T11:00:00.000Z"
                 },
                 {
                   "key": "season_price_amount",
-                  "value": " 1.5",
+                  "value": "{{seasonFeeAmount_SanitySeason}}",
                   "type": "text"
                 },
                 {
                   "key": "season_off_season_access",
-                  "value": " true",
+                  "value": "true",
                   "type": "text"
                 }
               ]
             },
-            "url": "https://{{baseUrl}}/v2/items/{{itemId_El}}/access-fees"
+            "url": "{{baseUrl}}/v2/items/{{itemId_SanitySeason}}/access-fees"
           },
           "response": []
         }
       ],
       "id": "de38e4d3-2315-4044-854d-576138ff8d9b"
+    },
+    {
+      "name": "Subscription",
+      "item": [],
+      "id": "5cc23545-ceea-4f0b-8db1-8f7bb3601293"
     },
     {
       "name": "Get all Workspaces",
@@ -3698,35 +4194,121 @@
       "response": []
     }
   ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "7eabd88c-ec8d-41c5-8227-33aee39ae0ea",
+        "type": "text/javascript",
+        "exec": [
+          "utils = {",
+          "    formatFunction: function round(value, exp){",
+          "        if (typeof exp === 'undefined' || +exp === 0)",
+          "    return Math.round(value);",
+          "",
+          "  value = +value;",
+          "  exp = +exp;",
+          "",
+          "  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))",
+          "    return NaN;",
+          "",
+          "  // Shift",
+          "  value = value.toString().split('e');",
+          "  value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));",
+          "",
+          "  // Shift back",
+          "  value = value.toString().split('e');",
+          "  return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));",
+          "    }",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "fc497946-ee3e-4861-8a94-2e5e3128ebbe",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
   "variable": [
     {
-      "id": "6f271c51-a7ab-49e8-850a-3923298c959d",
-      "key": "usernameMP_El",
+      "id": "12cfcc62-3c52-457f-8666-5f7524cef50d",
+      "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "aae1e039-537d-4f82-b467-1561788260ad",
-      "key": "clientId01_El",
+      "id": "a7d5179d-6880-4e98-816b-a7efa18c4da3",
+      "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "e122fb2f-8627-4ff8-89d3-d78dcd6e02d6",
-      "key": "existingUserPw_El",
+      "id": "4567a160-8bd2-4a69-81c5-a675e6b83b26",
+      "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "80b38953-4784-4d92-aac5-03d421fcf9ed",
-      "key": "clientId_El",
+      "id": "df25aada-2615-44fe-826a-6dfd25d78fec",
+      "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "3b53e0cc-d471-491f-aaaa-91a8a9389036",
-      "key": "mp.access_token_El",
+      "id": "83083986-f1bf-40a4-bb29-dafa9e1655e6",
+      "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "25b7b732-61e4-4891-b510-5f5216421c1e",
-      "key": "merchantId_El",
+      "id": "23de2cce-4e8b-40b1-8625-2bd9b94884a5",
+      "key": "itemId_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "64a0a8b5-49d6-4136-b87d-f325a3038cc4",
+      "key": "accessType_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "2881bc0e-61b4-4665-ab55-beaad91654a6",
+      "key": "accessFeeAmount_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "37701658-34d5-403e-934c-f2e77cd70481",
+      "key": "seasonFeeAmount_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "5789dd55-d190-417b-998a-9ee2186f8f81",
+      "key": "seasonStartsAt_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "a38f20de-c198-47ea-851b-b73f901aa0ec",
+      "key": "seasonExpiresAt_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "65ec318f-733f-4a04-8a35-7750c3b0b42b",
+      "key": "seasonAnchorDate_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "80297ddc-af94-406b-83bf-5039fec39206",
+      "key": "accessFeeId_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "55e59c6c-2ee3-422b-b1bb-790c110fbd6f",
+      "key": "refundAmount_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "cb6897e3-4288-494a-ae69-69903cb2f89d",
+      "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
   ]
