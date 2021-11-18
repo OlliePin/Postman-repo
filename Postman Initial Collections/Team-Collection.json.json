@@ -8,38 +8,7 @@
   "item": [
     {
       "name": "Postman API",
-      "item": [
-        {
-          "name": "Get all Workspaces",
-          "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "https://api.getpostman.com/workspaces?apikey={{postman_api_key}}",
-              "protocol": "https",
-              "host": [
-                "api",
-                "getpostman",
-                "com"
-              ],
-              "path": [
-                "workspaces"
-              ],
-              "query": [
-                {
-                  "key": "apikey",
-                  "value": "{{postman_api_key}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
+      "item": [],
       "id": "88ef51b5-d245-4fc2-802b-22ebd7622b7e"
     },
     {
@@ -4183,6 +4152,36 @@
           }
         }
       ]
+    },
+    {
+      "name": "Get all Workspaces",
+      "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.getpostman.com/workspaces?apikey={{postman_api_key}}",
+          "protocol": "https",
+          "host": [
+            "api",
+            "getpostman",
+            "com"
+          ],
+          "path": [
+            "workspaces"
+          ],
+          "query": [
+            {
+              "key": "apikey",
+              "value": "{{postman_api_key}}"
+            }
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "event": [
@@ -4228,77 +4227,77 @@
   ],
   "variable": [
     {
-      "id": "328bda19-a910-4c15-94f6-85f6e0bd648e",
+      "id": "063ba837-8a96-4d12-bc40-db804744a815",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "1727b291-08a4-43a1-acda-8e040feaa1d2",
+      "id": "a6eda366-03c5-4c4f-ab95-4ba112c4ebef",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "11143da7-dd7e-4600-878e-fd296c3d7b00",
+      "id": "dc78ee89-166e-4e92-9c30-5adbf9ce5bbc",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "501f191f-73a9-435f-8444-4817fe5860c4",
+      "id": "151cf0ce-cadf-4620-b7f6-8a4b358bea79",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "b4f72987-cd4f-48c6-8b2e-9080c0bd0449",
+      "id": "ae4e49e6-d787-471a-8099-3b4f9513c42f",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "55809b7c-5ee2-441a-a3e0-ec9190e8829d",
+      "id": "399dd51f-bea7-4db8-8880-b4f590bd8430",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "71dc47ff-a4e5-4d02-bfaa-4e0000d26a5d",
+      "id": "bde50c38-f588-412c-8086-5fd793d1bd78",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "ba4a4c8a-3357-4330-bdf4-39a6f4a59001",
+      "id": "e89a0093-f2cc-4347-ba38-760a12d571d4",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "d7c735d9-f9cc-4ca7-a2b4-d5ecd8e4d0ec",
+      "id": "f87d60ef-e9f1-4f61-8544-fc131fd225fb",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "1c1ca816-6d28-4625-85cb-03e4282e90c6",
+      "id": "1bea6d7e-edac-421d-987a-c52c742a02e2",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "d062821a-92c4-42ae-b20d-9435016858ef",
+      "id": "7b5c25d0-9987-40a7-bb6f-6ed1b1166234",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "8226cf17-0933-4849-abc2-b20dcc69bed7",
+      "id": "f0435c47-6a30-48b9-b624-b37315a1dc99",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "0b18e256-37b6-40c7-9882-c8b9caf7970d",
+      "id": "777e7d4f-10e5-422e-8618-7b4eda84edfc",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "f77c4e2d-8537-4793-942d-fe0c695f16c6",
+      "id": "4377a953-a43f-4ef7-9d05-c7c9eee6688c",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "3ec9ceb4-6927-4540-ae26-1c7469ab511a",
+      "id": "80d90fbd-607d-47bd-a416-426e03b1003a",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
