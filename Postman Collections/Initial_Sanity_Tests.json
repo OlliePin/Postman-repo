@@ -13562,7 +13562,7 @@
           "id": "d64237bb-f95f-444b-99f0-138ee5dd85f2"
         },
         {
-          "name": "Passcode",
+          "name": "No registration/ Passcode",
           "item": [
             {
               "name": "Authenticate",
@@ -15682,77 +15682,77 @@
   ],
   "variable": [
     {
-      "id": "124d581d-816d-4c8f-92e6-37f41d1138cb",
+      "id": "9ffad217-7757-4356-83f3-f96e10006907",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "5bb38aaf-bcc0-485b-ae8b-e68c830cbea1",
+      "id": "10d1d195-f54e-4415-9dd3-2279d33de22c",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "0fb88399-00dc-4ece-9e2d-ba901aeb55bf",
+      "id": "9b12879b-1c46-4070-b89d-08376e3dece9",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "c6c484c7-3545-4442-87d6-66e64539f774",
+      "id": "0beb5826-d48d-4848-9830-ed9f2a5f2fde",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "0bcef6a0-54b0-45ed-b15a-056bf5080cbf",
+      "id": "97d25235-3a20-4981-8a1b-27e498526bec",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "14ff5a77-dfc5-4ed6-939a-2eac1ee6764e",
+      "id": "90ed19d9-e2ac-4273-9ed5-09a680b25c12",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "ee1e7506-d398-4f65-b67e-394bf37ad712",
+      "id": "f84bd8d7-167b-4618-85c9-df7818769b1b",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "ce1c8acc-e73a-484a-b6c3-66079da3ae49",
+      "id": "e0c96238-eb9e-4b90-ad37-39947d79c1df",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "2ba6ba2c-f182-45f0-9b90-7d5810f80ea9",
+      "id": "a71a34d3-29ca-4266-9217-f72f8ddbe572",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "a7254972-694f-4acd-8bc0-98644ce98bcf",
+      "id": "705bf1c8-2c91-44c9-b60b-daead6d04da6",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "90590fa9-0eb0-4eba-afb4-a5a9633b6115",
+      "id": "984dd225-ed26-4ff3-ad36-eecba53b0740",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "69b3f45b-0aad-4151-ac40-23a546d38b94",
+      "id": "a9940cce-e216-4663-8f36-5db13cd69ff4",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "f7ab0549-7341-4060-89b9-5e8f6d30c8cc",
+      "id": "bc38801f-db7a-44ab-a467-e96b235b157b",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "b9ef1a4a-d8d9-41a2-a839-faf26708e613",
+      "id": "5e8109a6-3fd6-4963-bb4c-d1fcd11ba0a3",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "4325f02b-c757-4848-9b4a-3c7128558359",
+      "id": "9858b37f-8bb0-4a1e-a14f-75266a0e67f2",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
