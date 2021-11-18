@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "3f5ee637-5be1-4e18-b013-b2c91f32260d",
-    "name": "B - SANITY Automation Tests",
+    "name": "2. SANITY Automation Tests",
     "description": "# Introduction\nThis Collection cover all the parts devided separately in order to be tested under isolation\n\n# Overview\nAll the tests written in this collection can be used from Developers in order to Verify everything works as expected when varios endpoints were affected with the new functionality\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nThere are no limitation of the number of Requests",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
@@ -15433,77 +15433,77 @@
   ],
   "variable": [
     {
-      "id": "45994333-61b3-44d1-99bf-6687e7834725",
+      "id": "9a2b30ad-3572-42ae-8b1a-f521e7915ebe",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "57f2a98a-8f5e-4ae4-b3de-f89e96e2c13e",
+      "id": "690b5458-c5e5-4a38-8944-5958e2628555",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "bb215015-f138-4651-bc1e-bc4f3f5eccab",
+      "id": "e1437a47-49bc-4168-b865-c34b6f23576a",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "32c88a98-1348-4c75-af9a-ce88150e78e8",
+      "id": "ef3c95d9-986f-4895-8cca-b0822c6c854a",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "d148a1db-309e-40f4-a870-a18a29f660d1",
+      "id": "e82cf135-e591-4706-a585-05cc6106e1d1",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "68065803-b7fd-4d2f-a6d7-e129cf07d4a9",
+      "id": "dd518eca-ba75-4052-b328-6ffb0830d024",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "0def7dcc-2c4a-4589-be54-d3dcb6cd7d5f",
+      "id": "25727777-8b16-4797-8d88-372826f311ef",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "ec133fc7-0622-4b4f-8b3b-b8846866d439",
+      "id": "4ddaedbe-2d2a-45ce-8ef1-82a24b4f35e8",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "34254a21-3898-4796-9601-843ca2abbf54",
+      "id": "ca40b34c-2293-4531-ad04-4b5669c2efba",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "3e7894e6-179c-45d8-8ec6-1d18da5d0fbf",
+      "id": "a4c9abc8-6369-4d6a-bfd6-a28aa2cb70a0",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "8c5efe77-075a-49e3-a7ee-0fc2d93adaa8",
+      "id": "710e4d24-0194-43d3-a2df-3bc8fd8e3756",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "087d7b06-7ca1-46ff-b8cd-2ed4fc769ebd",
+      "id": "62fc0d5b-963f-43f5-b18f-03975dd43436",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "f2347d2e-c28a-4836-be62-d2c92a3cfd46",
+      "id": "493bf3e4-fa4e-4bd3-96d5-be346a844c30",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "828adbad-826b-45a1-9388-c9192405c090",
+      "id": "f0da16b1-7abe-4211-bb66-0e9f75e10899",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "c1cc6343-9a67-4794-a1cd-6df12596fa3c",
+      "id": "932184a2-1333-42e2-855d-670fc685ddba",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
