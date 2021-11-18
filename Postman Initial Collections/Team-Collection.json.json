@@ -10569,6 +10569,236 @@
           "description": "Postman Echo is service you can use to test your REST clients and make sample API calls. It provides endpoints for `GET`, `POST`, `PUT`, various auth mechanisms and other utility endpoints.\n\nThe most basic request in this entire collection is the very first `GET` request under the `Request Methods` folder, called [\"Get Request\"](https://devrel.postman.co/workspace/10-Postman-Features~41f602ab-1a0b-423e-8d6f-1ba20bb27b31/request/14272639-1d215a7f-8403-457d-812b-804e1ee6c808).\n\nThe documentation for the endpoints as well as example responses can be found at [https://postman-echo.com](https://postman-echo.com/?source=echo-collection-app-onboarding)"
         },
         {
+          "name": "3. Postman Visualizer",
+          "item": [
+            {
+              "name": "1. Basic visualizer demo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "b56d4656-8864-4fd8-b587-8c65837f6dc6",
+                    "exec": [
+                      "const template = `",
+                      "<ul>",
+                      "",
+                      "{{#each response.data.data}}",
+                      "",
+                      "<li>{{this.message}}</li>",
+                      "",
+                      "{{/each}}",
+                      "",
+                      "</ul>",
+                      "",
+                      "`",
+                      "",
+                      "pm.visualizer.set(template, {response: pm.response.json()})",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "082ad98d-f0d3-4692-bc70-e3c8e4b5bb8d",
+                    "exec": [
+                      "console.log('hello');"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "66273a09-5806-46b7-ba72-cfa65a6270bb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"data\": [\n        {\n            \"owner\": {\n                \"id\": \"jpxJ6CnDgBUcqmMTczMh\",\n                \"email\": \"edina.barbosa@example.com\",\n                \"firstName\": \"Édina\",\n                \"title\": \"ms\",\n                \"lastName\": \"Barbosa\",\n                \"picture\": \"https://randomuser.me/api/portraits/women/28.jpg\"\n            },\n            \"id\": \"yPyeyGhXNcn8dZP6e87o\",\n            \"message\": \"😉😉😍😍 Pretty photo\",\n            \"publishDate\": \"2020-05-19T17:11:14.284Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"IrNhFLyOw2a6R10BntKW\",\n                \"picture\": \"https://randomuser.me/api/portraits/women/66.jpg\",\n                \"lastName\": \"Çetiner\",\n                \"title\": \"miss\",\n                \"email\": \"oya.cetiner@example.com\",\n                \"firstName\": \"Oya\"\n            },\n            \"id\": \"04aA0p5xh5Gj6SqXB8tB\",\n            \"message\": \"😊👍👍 Awesome shot\",\n            \"publishDate\": \"2020-04-12T20:01:41.212Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"URaBcSCMpXr96fpmjCjk\",\n                \"lastName\": \"Vega\",\n                \"email\": \"roberto.vega@example.com\",\n                \"firstName\": \"Roberto\",\n                \"picture\": \"https://randomuser.me/api/portraits/men/25.jpg\",\n                \"title\": \"mr\"\n            },\n            \"id\": \"ZQX9bfvymVusi36Go9D9\",\n            \"message\": \"😁😁😌😌 Impressive image\",\n            \"publishDate\": \"2020-03-20T02:34:25.132Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"yLyiEdhLwMn5tOPA447y\",\n                \"email\": \"andre.robert@example.com\",\n                \"title\": \"mr\",\n                \"firstName\": \"André\",\n                \"lastName\": \"Robert\",\n                \"picture\": \"https://randomuser.me/api/portraits/men/9.jpg\"\n            },\n            \"id\": \"OQVzaZEOJkqwP26KMET0\",\n            \"message\": \"Cool pic\",\n            \"publishDate\": \"2020-01-17T03:42:22.157Z\"\n        }\n    ],\n    \"total\": 4,\n    \"page\": 0,\n    \"limit\": 10,\n    \"offset\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "postman-echo.com/post",
+                "description": "Send the data you want to visualize in the **Body** as **raw** `JSON` then pass it into the visualizer template via the `data` object in the response.\n\n* Open the request **Tests** to see how Postman builds the response JSON into the visualizer template.\n\nTry tweaking it by changing to a 'line' or 'pie' chart, then send different types of data and visualize them your own way!"
+              },
+              "response": []
+            },
+            {
+              "name": "2. Basic visualizer chart demo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "ef1a0c5e-21cd-4e27-972e-d376ec5af567",
+                    "exec": [
+                      "var template = `",
+                      "<h1>Visualizer chart example</h1>",
+                      "<!--use handlebars to reference the response data passed via pm.visualizer.set at the bottom of this script-->",
+                      "<div>{{response.url}}</div>",
+                      "",
+                      "<!--example uses chart.js-->",
+                      "<canvas id=\"myChart\"></canvas>",
+                      "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js\"></script> ",
+                      "<script>",
+                      "var ctx = document.getElementById('myChart');",
+                      "//the getData function provides access to the response data via the value object",
+                      "pm.getData(function (err, value) {",
+                      "    //tip: try changing 'bar' to 'line' or 'pie'",
+                      "    var myChart = new Chart(ctx, {",
+                      "\t    type: 'line',",
+                      "    \tdata: {",
+                      "    \t    labels: value.response.data.names,",
+                      "    \t\tdatasets: [{ ",
+                      "\t    \t\tlabel: 'Data',",
+                      "\t    \t\tbackgroundColor: '#ff000066',",
+                      "\t    \t\tborderWidth: 1,",
+                      "\t    \t\tdata: value.response.data.nums",
+                      "\t    \t}]",
+                      "    \t},",
+                      "         options: {",
+                      "            scales: {",
+                      "                yAxes: [{",
+                      "                    ticks: {",
+                      "                        beginAtZero: true",
+                      "                    }",
+                      "                }]",
+                      "            }",
+                      "        }",
+                      "    });",
+                      "});",
+                      "</script>`;",
+                      "",
+                      "//pass the response data into the template",
+                      "pm.visualizer.set(template, {",
+                      "    response: pm.response.json()",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "67073235-be41-4b55-9478-41ff2d0b0ecf",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"names\": [\n        \"Dorothea\", \"Rose\", \"Blanche\", \"Sophia\"\n    ],\n    \"nums\": [\n        1, 3, 2, 4\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "postman-echo.com/post",
+                "description": "Send the data you want to visualize in the **Body** as **raw** `JSON` then pass it into the visualizer template via the `data` object in the response.\n\n* Open the request **Tests** to see how Postman builds the response JSON into the visualizer template.\n\nTry tweaking it by changing to a 'line' or 'pie' chart, then send different types of data and visualize them your own way!"
+              },
+              "response": []
+            }
+          ],
+          "id": "b6556ddf-80bc-477a-ae99-1df7161cb27c",
+          "description": "Two simple requests showing how you can learn to use the [Postman Visualizer](https://learning.postman.com/docs/sending-requests/visualizer/) - by sending the data you want to visualize to the Postman Echo API.\n\n* The [Postman Echo API](https://docs.postman-echo.com/) helps you learn Postman by echoing back whatever you send it.\n* This template uses a `POST` request with **raw** `JSON` in the **Body** to send the data you want to visualize.\n* Check out the **Body** of the request to access and change the visualization data.\n* Open the request **Tests** to see how Postman builds the response data into a visualization. Change it to tweak your chart display!"
+        },
+        {
+          "name": "4. Built-in Libraries",
+          "item": [
+            {
+              "name": "Fake data to postman-echo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "3f4c3939-6d9b-417c-ae69-477c6f86329b",
+                    "exec": [
+                      "var moment = require('moment');",
+                      "var lodash = require('lodash');",
+                      "var CryptoJS = require(\"crypto-js\");",
+                      "",
+                      "var jsonResponse = pm.response.json();",
+                      "console.log(\"jsonResponse\", jsonResponse);",
+                      "",
+                      "// **** Moment.js example ****//",
+                      "// console.log(\"formatted date =\", moment(jsonResponse.args.randomDate).format(\"MMM Do YYYY\"));",
+                      "",
+                      "",
+                      "// **** lodash example ****//",
+                      "// lodash.each(jsonResponse, value => {",
+                      "//     console.log(\"value=\", value);",
+                      "// })",
+                      " ",
+                      "",
+                      "",
+                      "//**** CryptoJS example ****//",
+                      "// var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123').toString();",
+                      "// console.log(\"ciphertext=\", ciphertext);",
+                      "",
+                      "",
+                      "",
+                      "//**** chai.js example ****//",
+                      "// pm.test(\"Status code is 200 and args > 1\", function () {",
+                      "//     pm.response.to.have.status(200);",
+                      "//     pm.expect(parseInt(jsonResponse.args.randomNumber)).to.be.greaterThan(1);",
+                      "//     pm.expect(pm.response.responseTime).to.be.below(200);",
+                      "// });"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "8dcd01a8-f66c-43c6-af49-5d914e5c6026",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?randomName={{$randomFirstName}} {{$randomLastName}}&randomAddress={{$randomStreetAddress}}&randomDate={{$randomDateRecent}}&randomNumber={{$randomInt}}",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "randomName",
+                      "value": "{{$randomFirstName}} {{$randomLastName}}"
+                    },
+                    {
+                      "key": "randomAddress",
+                      "value": "{{$randomStreetAddress}}"
+                    },
+                    {
+                      "key": "randomDate",
+                      "value": "{{$randomDateRecent}}"
+                    },
+                    {
+                      "key": "randomNumber",
+                      "value": "{{$randomInt}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "7abaeb69-35e3-413a-8c72-377a8790cae3",
+          "description": "This collection shows some very basic examples of using some of the external libraries available within the Postman testing sandbox. \n\nThe libraries shown in this collection include:\n- [Faker.js](https://github.com/marak/Faker.js/) in the params tab of the request, used to generate fake data.\n- [Lodash](https://lodash.com/) in the Tests tab of the request, which is a JavaScript library providing utility functions for common programming tasks.\n- [Moment.js](https://momentjs.com/) in the Tests tab of the request, which helps format and display dates in JavaScript.\n- [chai.js](https://www.chaijs.com/) in the Tests tab of the request, which is a BDD/TDD assertion library.\n- [crypto-js](https://www.npmjs.com/package/crypto-js) in the Tests tab of the request, which is a growing collection of standard and secure cryptographic algorithms.\n\nFor libraries demonstrated in the Tests tab, uncomment the code below the library name, run the request, and then open the console to see the results.\n\nFor more information on using external libraries, check out [the documentation](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#using-external-libraries) on external libraries."
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -14787,77 +15017,77 @@
   ],
   "variable": [
     {
-      "id": "7f80dd40-2535-4c2f-a7a7-c85d36293ef5",
+      "id": "92de43c0-bbe4-4a07-b60b-91ca18927ae8",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "eeeb2671-b913-492f-abd4-a670735505cd",
+      "id": "c6251de1-d14d-45ee-8e0d-74ce778c45e8",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "874c0ae0-f0d3-4655-88b8-0db45561cd9f",
+      "id": "2bc27af4-95b4-4a35-9481-e6dd9bf6f115",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "38ad4eb9-607b-4289-b556-d5efc011401b",
+      "id": "38aa0026-0192-41ae-bc40-9487858c65ed",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "d5562503-e316-49ff-97e0-ab1740e37960",
+      "id": "4ae3c624-1fd5-49e1-8160-ed26b597ff12",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "dcc00234-2825-43ac-9492-0e0253ada78d",
+      "id": "fd38d549-82e3-4a7f-846a-e79fead88fce",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "300e7ace-bf80-4f92-a2d9-09cb239bec3f",
+      "id": "be57b3ee-beed-4024-95f3-1d70783114b3",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "1ae30bb1-05e7-4c55-98dd-42f22de7ab21",
+      "id": "01cd621c-11b0-48a6-b9b0-444092204d2b",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "5cd4ad2d-0209-4296-a7c1-451267b54b6f",
+      "id": "45801d6d-275e-46b6-adda-530a8c20209a",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "bc9ec49b-b227-4cc6-84c0-edf9c04c2ca1",
+      "id": "ca9c8dd5-a24e-4e70-9dfe-20e8fd9cbb17",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "22c32645-f3cb-4236-9b76-2de33b3fa179",
+      "id": "4976fe21-e449-4f81-bfa5-bd0c2f43bf05",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "1a3a1e47-e54b-4107-90b9-bf77517c8505",
+      "id": "4aaf644a-c1a1-4d7d-a911-6ef444b8db9a",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "2444b1cd-de32-4d17-84a9-a806371b83e8",
+      "id": "a9dd4d45-ff34-4d19-9e67-d21ba3d7250d",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "e43f9396-ea86-4112-bf6e-478da241922d",
+      "id": "7cc719da-43e0-4f3f-a470-18b5505d1813",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "b5639377-b29a-4873-864f-6b0434b8d454",
+      "id": "ecd0c974-f235-4f5a-9d12-8e8e8153bf00",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
