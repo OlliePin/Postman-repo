@@ -10710,6 +10710,95 @@
           "description": "Two simple requests showing how you can learn to use the [Postman Visualizer](https://learning.postman.com/docs/sending-requests/visualizer/) - by sending the data you want to visualize to the Postman Echo API.\n\n* The [Postman Echo API](https://docs.postman-echo.com/) helps you learn Postman by echoing back whatever you send it.\n* This template uses a `POST` request with **raw** `JSON` in the **Body** to send the data you want to visualize.\n* Check out the **Body** of the request to access and change the visualization data.\n* Open the request **Tests** to see how Postman builds the response data into a visualization. Change it to tweak your chart display!"
         },
         {
+          "name": "4. Built-in Libraries",
+          "item": [
+            {
+              "name": "Fake data to postman-echo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "3f4c3939-6d9b-417c-ae69-477c6f86329b",
+                    "exec": [
+                      "var moment = require('moment');",
+                      "var lodash = require('lodash');",
+                      "var CryptoJS = require(\"crypto-js\");",
+                      "",
+                      "var jsonResponse = pm.response.json();",
+                      "console.log(\"jsonResponse\", jsonResponse);",
+                      "",
+                      "// **** Moment.js example ****//",
+                      "// console.log(\"formatted date =\", moment(jsonResponse.args.randomDate).format(\"MMM Do YYYY\"));",
+                      "",
+                      "",
+                      "// **** lodash example ****//",
+                      "// lodash.each(jsonResponse, value => {",
+                      "//     console.log(\"value=\", value);",
+                      "// })",
+                      " ",
+                      "",
+                      "",
+                      "//**** CryptoJS example ****//",
+                      "// var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123').toString();",
+                      "// console.log(\"ciphertext=\", ciphertext);",
+                      "",
+                      "",
+                      "",
+                      "//**** chai.js example ****//",
+                      "// pm.test(\"Status code is 200 and args > 1\", function () {",
+                      "//     pm.response.to.have.status(200);",
+                      "//     pm.expect(parseInt(jsonResponse.args.randomNumber)).to.be.greaterThan(1);",
+                      "//     pm.expect(pm.response.responseTime).to.be.below(200);",
+                      "// });"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "8dcd01a8-f66c-43c6-af49-5d914e5c6026",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?randomName={{$randomFirstName}} {{$randomLastName}}&randomAddress={{$randomStreetAddress}}&randomDate={{$randomDateRecent}}&randomNumber={{$randomInt}}",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "randomName",
+                      "value": "{{$randomFirstName}} {{$randomLastName}}"
+                    },
+                    {
+                      "key": "randomAddress",
+                      "value": "{{$randomStreetAddress}}"
+                    },
+                    {
+                      "key": "randomDate",
+                      "value": "{{$randomDateRecent}}"
+                    },
+                    {
+                      "key": "randomNumber",
+                      "value": "{{$randomInt}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "7abaeb69-35e3-413a-8c72-377a8790cae3",
+          "description": "This collection shows some very basic examples of using some of the external libraries available within the Postman testing sandbox. \n\nThe libraries shown in this collection include:\n- [Faker.js](https://github.com/marak/Faker.js/) in the params tab of the request, used to generate fake data.\n- [Lodash](https://lodash.com/) in the Tests tab of the request, which is a JavaScript library providing utility functions for common programming tasks.\n- [Moment.js](https://momentjs.com/) in the Tests tab of the request, which helps format and display dates in JavaScript.\n- [chai.js](https://www.chaijs.com/) in the Tests tab of the request, which is a BDD/TDD assertion library.\n- [crypto-js](https://www.npmjs.com/package/crypto-js) in the Tests tab of the request, which is a growing collection of standard and secure cryptographic algorithms.\n\nFor libraries demonstrated in the Tests tab, uncomment the code below the library name, run the request, and then open the console to see the results.\n\nFor more information on using external libraries, check out [the documentation](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#using-external-libraries) on external libraries."
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -14928,77 +15017,77 @@
   ],
   "variable": [
     {
-      "id": "bb839747-5d65-4dc2-956d-2b012a9436fb",
+      "id": "6dbb34e4-4904-4672-8126-940b922960ce",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "90322b65-eba9-45d8-aee2-33a5845d4140",
+      "id": "93e581f6-e3cd-481f-9976-c6e6e33d35c9",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "c90d8ab3-c49d-4416-a410-d768a49bd900",
+      "id": "a29a723f-7948-4a80-9109-b961ff220109",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "a3f2ff02-a71c-4cf9-a73b-89535e7a2a47",
+      "id": "e77ab2ae-ebc9-4928-b00f-cb86f2ae0d39",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "5acfd94b-7c65-49b0-87cb-8481abe993e9",
+      "id": "2b375adb-0a35-4202-8552-a714a8990f43",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "b9b2ed73-433f-4338-af1d-3e7d5113cf1b",
+      "id": "8f99ed5b-9b83-4e6f-856d-ababbd74d6ff",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "9316db69-9043-40f8-baca-f536ef0a74f1",
+      "id": "85c1cc2b-35f4-487f-8a12-692c2eb2af36",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "b3c9014f-ee14-48f1-bed0-2a1c8931d3a5",
+      "id": "6c202b16-2e32-4232-a586-00f75549bca3",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "24a40a8a-2f7a-4529-b6e9-df20d6d32418",
+      "id": "5bb48d2f-1826-4e56-b053-ec8e36e434bf",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "2dd1440d-9b49-4bf6-8e23-2e54ab103904",
+      "id": "bb88e672-b990-4ff0-b9bf-6dadd34321ee",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "ace5bc09-2d8a-4c2d-8756-b2d917f67652",
+      "id": "83c97ebf-16c7-4590-a389-1acbd814ed21",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "97c1964b-14c4-47e6-843b-dd3492ec3849",
+      "id": "9b7a3dad-450c-4d71-a568-08f4d9a5667e",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "3b32fb16-36dc-4370-9cd8-7075493d7682",
+      "id": "e2008ab5-b5c5-4856-a629-a1ade1464d3f",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "0a75160b-58af-4736-894c-d571a9df4621",
+      "id": "c8cfaea6-7ec2-4481-a3d5-de7c8775bc93",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "c9c13ce9-93af-4e47-b6fe-c19b4599c3ed",
+      "id": "409e3bd7-e6e8-4bea-b664-aea59960fce2",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
