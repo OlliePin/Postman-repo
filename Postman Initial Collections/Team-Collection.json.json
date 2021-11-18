@@ -10935,61 +10935,6 @@
           "description": "Postman provides some JavaScript APIs that you can use in request scripts to customize your [workflow control](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#sending-requests-from-scripts). The `postman` object provides functionality for testing your request and response data and workflow control. If you have conditional logic, you can highly customize the workflow. Just be careful not to end up in an endless loop!\n\nThe second request has the following code under the Tests tab: `postman.setNextRequest(\"Fourth request\");`. If you run the \"5. Set Next Request Flow\" folder in the Runner, that code will execute after the response is received in the second request, and the next request in the collection run will be \"Fourth request\", completely skipping over \"Third request\".\n\nSee the run order below where all requests are selected:\n\n![Image of run order](https://i.imgur.com/VBwzGih.png)\n\nBut because of the code in the Tests tab of the second request, the runner ran \"Fourth request\" immediately after \"Second request\", completely skipping \"Third request\":\n![Image of result order](https://i.imgur.com/YjHwpZP.png)"
         },
         {
-          "name": "6. Collaboration Features",
-          "item": [
-            {
-              "name": "Add comment",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "34d29944-2583-4ad0-b5ca-3df18df09e54",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "",
-                      "pm.test(\"Response time is less than 200ms\", function () {",
-                      "    pm.expect(pm.response.responseTime).to.be.below(200);",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "39d23f41-fb1e-410a-82d4-b8ed7e0e935b",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "https://postman-echo.com/get?foo=bar",
-                  "protocol": "https",
-                  "host": [
-                    "postman-echo",
-                    "com"
-                  ],
-                  "path": [
-                    "get"
-                  ],
-                  "query": [
-                    {
-                      "key": "foo",
-                      "value": "bar",
-                      "type": "text"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ],
-          "id": "0aab3fbc-042e-4845-abd7-84b62711903b",
-          "description": "Let's do some work together! How fun!\n\nPostman used to be a platform that people worked on in isolation and tested APIs on their own. With commenting, branching, pull requests, and more, you shoudn’t work alone anymore! Let’s add a comment. Fork, change, PR, tag person, comment, approve, merge. Magic!\n\nTo learn more about comments, check out [the docs](https://learning.postman.com/docs/collaborating-in-postman/commenting-on-collections/#:~:text=In%20Postman%2C%20open%20the%20request,%2C%20Resolved%20Comments%2C%20or%20both). To see the comments on this folder, you can click the \"comments\" icon right below the documentation icon, or you can go directly to the [link here](https://devrel.postman.co/workspace/10-Postman-Features~41f602ab-1a0b-423e-8d6f-1ba20bb27b31/folder/14272639-0d9b9d24-df12-43c9-9611-de9c6f230b5f?ctx=comments). \n\nAnd to see the comments on the actual request, switch from `build mode` to `comment mode`. If you're in build mode, you won't see the comments on a request.\n![Image of run order](https://i.imgur.com/vkbfpVl.gif)"
-        },
-        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -15208,77 +15153,77 @@
   ],
   "variable": [
     {
-      "id": "8eed0a69-e748-478b-8d8a-0d3fc6f075e6",
+      "id": "83cc1471-7888-4e0d-8cf2-9cadb41f833d",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "fd64adb2-182c-42fc-a5f0-811b1acb8274",
+      "id": "1a474550-cd95-4fb5-adf8-f30a88b2acd9",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "be9a6c5e-0f3c-4713-a15c-5a61c8a18028",
+      "id": "1c00b571-f984-45aa-96f2-4c1f5e82cb2b",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "59956fd7-5d82-40b8-b2df-4edfbd0e2e7b",
+      "id": "a1322fd9-83cb-4133-ad60-5828cbece829",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "0ddd78ac-8a2c-4526-9df7-5da2a1672c27",
+      "id": "fb2696ee-fcc3-47c9-ae6f-9405252ee4fb",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "76d5e02d-d810-42b0-bbe0-54269542cdc4",
+      "id": "f2bfcfbc-f94a-4eee-a348-d314b03b78e7",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "dad0e8cf-ab8a-4af8-9705-16828dacad79",
+      "id": "e858e212-791b-4e4c-960c-73329e9b0f52",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "55f458ce-aff8-4535-90bd-76585fc93fd0",
+      "id": "f70e0db4-ef5a-4271-a7ba-2f785196f298",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "ef58fe8c-313d-411e-8374-f47c66eba38d",
+      "id": "36277e11-3682-48ec-9fac-ddfaf10303c2",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "ca965594-4c16-4942-9a67-e7719b153fc7",
+      "id": "ed39f458-c64b-44a9-ad79-c34574ab8728",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "361bc0f1-791a-4a6f-9c08-922fc729d611",
+      "id": "8a1b45bc-d37a-4fb1-b255-b175c5362fd2",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "179ed02b-3168-4b78-897c-e0a37c28322b",
+      "id": "950d8457-6c99-4b56-835e-4bc793ec239e",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "a94d92b2-d63e-414e-bed1-d36e125a0156",
+      "id": "f89f70f2-18e9-4cc5-a58c-95727013737a",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "8a3a3eae-feff-41fe-bdc1-8f4c38a66e30",
+      "id": "f41395f7-542e-41f5-ba9d-32c4ba80430d",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "6637965b-f3a7-4344-ae14-9377fa7833ca",
+      "id": "8d8b5b09-f45f-4792-8f39-53fab9a1a581",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
