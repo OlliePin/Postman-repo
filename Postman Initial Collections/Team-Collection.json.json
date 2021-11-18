@@ -11428,6 +11428,42 @@
           ]
         },
         {
+          "name": "10. Documentation Pizazz",
+          "item": [
+            {
+              "name": "Add params",
+              "id": "ddad9fdd-053a-47ec-a5b1-e29022b4e264",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?=",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": ""
+                    }
+                  ]
+                },
+                "description": "## How to add params to a GET request\n\nI don't really know?\n\n![How to add params](https://media.giphy.com/media/SMw4MKJsIlCDOYQS41/giphy.gif)"
+              },
+              "response": []
+            }
+          ],
+          "id": "f8a03d8e-17ae-4398-911e-aa1966cf30ea",
+          "description": "# Documentation can be fun!\n\nIsn't documentation way better when there's **randomly** bolded words?!\n\nThe whole purpose of this collection is just to show you that you can have images and/or gifs in your documentation with Postman. They can be fun, useful, or both. \n\nPostman documentation uses [Daring Fireball Markdown](https://daringfireball.net/projects/markdown/syntax). You can find all the formatting answers there. \n\nCheck out the \"Add params\" request for a useful GIF on how to add params.\n\n##### Now, let's party!\n\n![Party text](https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif)\n\nNote - to add that gif, here's the exact text:\n\n`![Party text](https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif)`"
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -15646,77 +15682,77 @@
   ],
   "variable": [
     {
-      "id": "8559bf9a-7380-40a1-b4af-7ad8f16ece89",
+      "id": "fcb6d51a-d26a-4e17-a2ed-09f2cd6d82ab",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "d0f7fe69-0041-4d0e-aa1b-373ae5783da8",
+      "id": "e5a21eee-caee-4ae3-9a6f-b5cbe7e31e18",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "55365a62-0f5c-49cb-93b7-ccb260c4ed67",
+      "id": "19a1c874-2397-48e6-946c-99f484ab716d",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "03847ab8-68ca-4b9b-858a-a44204e4b93c",
+      "id": "8775fb12-1b64-4b67-a6b9-06bec254406d",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "7c052453-6aae-4351-9750-e3cd0a83db2c",
+      "id": "5f98eff4-ad04-4517-b1e0-262e9512718e",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "2e21bc15-ae51-4339-9ba7-893c1f3f7dc3",
+      "id": "d7177f41-fad6-48c3-be5e-533efb0269c4",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "d2467d99-b5c5-4bd2-8f3c-6b3dc763e5ad",
+      "id": "f1747700-443d-4093-b22f-e3b7ccf8357c",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "0c90502a-8eca-41f4-a988-470f3f490124",
+      "id": "13e4aebb-38da-4917-8f9a-532fd8df0a25",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "08bc4e16-d6f7-428b-8881-6ee5b97ceee1",
+      "id": "63e8a750-2e1d-4fb1-98a1-265e1f1673a3",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "e3eac60e-87c1-4d2e-9fd8-5dc0e6017219",
+      "id": "3feaab0e-7d6c-40ab-879f-d624ac54b321",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "731daae4-b00f-49f6-bbe5-4e85aa403367",
+      "id": "8d8a88e7-1d42-4b3a-81b2-760abd635787",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "e6ad7925-6c0d-4a55-9a3e-304c00ee5d42",
+      "id": "2e981d1d-21f5-4b30-bcf4-647bfef83c35",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "91e35ba1-34dd-48cf-85ca-3484dd934500",
+      "id": "92018a1d-cfd4-4d92-b75f-2a968de4782f",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "8335a54b-5ca1-4e96-b544-14a7ef12a3b2",
+      "id": "229b4b17-99b8-4019-b39c-723d99baef71",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "4b1d133c-5c19-4e61-bb39-e6c4640aed2c",
+      "id": "a5e378aa-133e-4753-a864-521bbfe733d7",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
