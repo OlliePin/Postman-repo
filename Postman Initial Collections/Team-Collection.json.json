@@ -11152,318 +11152,6 @@
           ]
         },
         {
-          "name": "8. Monitors for Regression Testing",
-          "item": [
-            {
-              "name": "Get random number",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "845de616-8f9b-4a5a-881d-54c3bcdd009e",
-                    "exec": [
-                      "let randomNumber = parseInt(pm.response.json().args.number);",
-                      "let numberLimit = parseInt(pm.environment.get(\"testInteger\"));",
-                      "",
-                      "pm.test(`Random number is larger than ${numberLimit}`, function () {",
-                      "    pm.expect(randomNumber).to.be.greaterThan(numberLimit);",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "24f6e825-33a4-4210-8902-16859b802449",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "postman-echo.com/get?number={{$randomInt}}",
-                  "host": [
-                    "postman-echo",
-                    "com"
-                  ],
-                  "path": [
-                    "get"
-                  ],
-                  "query": [
-                    {
-                      "key": "number",
-                      "value": "{{$randomInt}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ],
-          "id": "687f04a6-6435-452d-bf4e-6161d7bef3ff",
-          "description": "You may know [monitors](https://learning.postman.com/docs/designing-and-developing-your-api/monitoring-your-api/intro-monitors/) exist or even use them. Monitors are a great way to stay up to date on the health and performance of your APIs. They run through your collections and give you the status of your tests. They’re really only as good as your tests.\n\nThey can essentially be used as automated regression testing. You can improve this pretty easily to do continuous regression testing using monitors by having it automatically run in different environments throughout the day to flag issues early.\n\nThis collection attempts to highlight a very basic use case. It is a simple request that generates a random number and sends it to Postman Echo. We can test if the number was above a certain threshold. And if we want to check if the number is above multiple thresholds, one way to do this automatically is with multiple monitors. \n\nClick the \"Monitors\" section in the left pane. There are two monitors running the exactly same collection (this one called \"9. Fun with Monitors\"), but they just run off of different environments. The key here is that the environments have different values set for `testInteger`. This means the same collection can be run and tested throughout the day against different values. If any of these tests fail, monitors can notify immediately.\n\nThe code in the Tests tab gets the environment variable called `testInteger` and compares the random integer from the request params to the `testInteger` value. There are two environments that have a different value for `testInteger`.\n- `High Value Environment` sets the `testInteger` value to 500.\n- `Low Value Environment` sets the `testInteger` value to 200.\n\nRunning this collection in multiple monitors in the two different environments listed above allows us test against multiple scenarios throughout the day.\n\n<p>\n  <img height=\"300\" src=\"https://i.imgur.com/KMZ9Tix.png\">\n</p>",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "59c89bc8-cbf9-4234-ab23-d6e0b79a8839",
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "id": "0c32fa14-9533-42d6-b1ab-8d509b6e2c94",
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "9. Built-in GraphQL Support",
-          "item": [
-            {
-              "name": "Get Artist Info",
-              "id": "de3fc8d0-c925-4af9-89ff-56e2d0edc2a5",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "graphql",
-                  "graphql": {
-                    "query": "# ** Sample query using graphQL variables ** #\n\nquery getByArtist ($name: String!){\n    queryArtists (byName: $name){\n        name\n        image\n        albums {\n            name\n        }\n    }\n}\n\n\n# ** Query using hardcoded value ** #\n\n# query getArtistInfo{\n#     queryArtists(byName: \"DMX\"){\n#         name\n#         image\n#     }\n# }",
-                    "variables": "{\n    \"name\" : \"{{artist}}\"\n}"
-                  }
-                },
-                "url": "https://spotify-graphql-server.herokuapp.com/graphql"
-              },
-              "response": [
-                {
-                  "id": "6527db05-3fa6-4cdc-861c-75f67dba53ba",
-                  "name": "Successful response",
-                  "originalRequest": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "graphql"
-                    },
-                    "url": "https://spotify-graphql-server.herokuapp.com/graphql"
-                  },
-                  "status": "OK",
-                  "code": 200,
-                  "_postman_previewlanguage": "json",
-                  "header": [
-                    {
-                      "key": "Server",
-                      "value": "Cowboy"
-                    },
-                    {
-                      "key": "Connection",
-                      "value": "keep-alive"
-                    },
-                    {
-                      "key": "X-Powered-By",
-                      "value": "Express"
-                    },
-                    {
-                      "key": "Access-Control-Allow-Origin",
-                      "value": "*"
-                    },
-                    {
-                      "key": "Content-Type",
-                      "value": "application/json; charset=utf-8"
-                    },
-                    {
-                      "key": "Content-Length",
-                      "value": "12206"
-                    },
-                    {
-                      "key": "Etag",
-                      "value": "W/\"2fae-tqyBDeryOq684aFpfPsOPOBIQIs\""
-                    },
-                    {
-                      "key": "Date",
-                      "value": "Wed, 12 May 2021 00:59:03 GMT"
-                    },
-                    {
-                      "key": "Via",
-                      "value": "1.1 vegur"
-                    }
-                  ],
-                  "cookie": [],
-                  "responseTime": null,
-                  "body": "{\n    \"data\": {\n        \"queryArtists\": [\n            {\n                \"name\": \"Artist Vs Poet\",\n                \"image\": \"https://i.scdn.co/image/0078316432cdfb6733c3bde0dc61754d45442d0f\",\n                \"albums\": [\n                    {\n                        \"name\": \"Medicine\"\n                    },\n                    {\n                        \"name\": \"Remember This (Anniversary Edition)\"\n                    },\n                    {\n                        \"name\": \"Remember This\"\n                    },\n                    {\n                        \"name\": \"Favorite Fix\"\n                    },\n                    {\n                        \"name\": \"Sleep EP\"\n                    },\n                    {\n                        \"name\": \"Damn Rough Night\"\n                    },\n                    {\n                        \"name\": \"Artist Vs. Poet\"\n                    },\n                    {\n                        \"name\": \"Pop Punk Xmas\"\n                    },\n                    {\n                        \"name\": \"Rockin Romance II\"\n                    },\n                    {\n                        \"name\": \"Tis The Season To Be Fearless\"\n                    },\n                    {\n                        \"name\": \"Punk Goes Pop, Vol. 3\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Van Morrison\",\n                \"image\": \"https://i.scdn.co/image/f849f47dd12c6ad44c69cdad9dda089d54b70664\",\n                \"albums\": [\n                    {\n                        \"name\": \"Latest Record Project Volume I\"\n                    },\n                    {\n                        \"name\": \"Latest Record Project Volume I\"\n                    },\n                    {\n                        \"name\": \"Solid Gold Van Morrison\"\n                    },\n                    {\n                        \"name\": \"ライヴ・イン・ニューヨーク1978 (Live)\"\n                    },\n                    {\n                        \"name\": \"Three Chords And The Truth (Expanded Edition) [Deluxe]\"\n                    },\n                    {\n                        \"name\": \"Three Chords And The Truth\"\n                    },\n                    {\n                        \"name\": \"The Prophet Speaks\"\n                    },\n                    {\n                        \"name\": \"You're Driving Me Crazy\"\n                    },\n                    {\n                        \"name\": \"Versatile\"\n                    },\n                    {\n                        \"name\": \"Versatile\"\n                    },\n                    {\n                        \"name\": \"Roll With The Punches\"\n                    },\n                    {\n                        \"name\": \"The Authorized Bang Collection\"\n                    },\n                    {\n                        \"name\": \"Keep Me Singing\"\n                    },\n                    {\n                        \"name\": \"..It's Too Late to Stop Now...Volumes II, III & IV (Live)\"\n                    },\n                    {\n                        \"name\": \"Duets: Re-Working The Catalogue\"\n                    },\n                    {\n                        \"name\": \"Born to Sing: No Plan B\"\n                    },\n                    {\n                        \"name\": \"Astral Weeks: Live at the Hollywood Bowl\"\n                    },\n                    {\n                        \"name\": \"Keep It Simple\"\n                    },\n                    {\n                        \"name\": \"Pay the Devil\"\n                    },\n                    {\n                        \"name\": \"Pay The Devil (Eastern Europe)\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artists Of Then, Now & Forever\",\n                \"image\": \"https://i.scdn.co/image/1e3551ef0cd1bdc0b0efdef33a6e69f96f034ac3\",\n                \"albums\": [\n                    {\n                        \"name\": \"Forever Country\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Bee Gees\",\n                \"image\": \"https://i.scdn.co/image/1d5a05673975ba0c378cd280344e000b0b865620\",\n                \"albums\": [\n                    {\n                        \"name\": \"How Can You Mend A Broken Heart\"\n                    },\n                    {\n                        \"name\": \"Spick And Span\"\n                    },\n                    {\n                        \"name\": \"This Is Where I Came In\"\n                    },\n                    {\n                        \"name\": \"One Night Only\"\n                    },\n                    {\n                        \"name\": \"Still Waters\"\n                    },\n                    {\n                        \"name\": \"Size Isn't Everything\"\n                    },\n                    {\n                        \"name\": \"High Civilization\"\n                    },\n                    {\n                        \"name\": \"One\"\n                    },\n                    {\n                        \"name\": \"E.S.P.\"\n                    },\n                    {\n                        \"name\": \"Living Eyes\"\n                    },\n                    {\n                        \"name\": \"Spirits Having Flown\"\n                    },\n                    {\n                        \"name\": \"Here At Last… Bee Gees …Live\"\n                    },\n                    {\n                        \"name\": \"Children Of The World\"\n                    },\n                    {\n                        \"name\": \"Main Course\"\n                    },\n                    {\n                        \"name\": \"Mr. Natural\"\n                    },\n                    {\n                        \"name\": \"Life In A Tin Can\"\n                    },\n                    {\n                        \"name\": \"To Whom It May Concern\"\n                    },\n                    {\n                        \"name\": \"Trafalgar\"\n                    },\n                    {\n                        \"name\": \"Melbourne 1971\"\n                    },\n                    {\n                        \"name\": \"2 Years On\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artist17\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b273914b8c93d2837b831d458f4d\",\n                \"albums\": [\n                    {\n                        \"name\": \"Love Song Demos\"\n                    },\n                    {\n                        \"name\": \"S N Love Unofficial mix\"\n                    },\n                    {\n                        \"name\": \"Extascy Interlude\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"RAC\",\n                \"image\": \"https://i.scdn.co/image/95b1918ab0298d5f842a1c13b07e82f6b73135c4\",\n                \"albums\": [\n                    {\n                        \"name\": \"BOY\"\n                    },\n                    {\n                        \"name\": \"EGO\"\n                    },\n                    {\n                        \"name\": \"EGO\"\n                    },\n                    {\n                        \"name\": \"EGO\"\n                    },\n                    {\n                        \"name\": \"Master Spy (Original Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Master Spy (Original Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Strangers\"\n                    },\n                    {\n                        \"name\": \"Strangers\"\n                    },\n                    {\n                        \"name\": \"Strangers Part I\"\n                    },\n                    {\n                        \"name\": \"Strangers Part I\"\n                    },\n                    {\n                        \"name\": \"Strangers Part II\"\n                    },\n                    {\n                        \"name\": \"Strangers Part II\"\n                    },\n                    {\n                        \"name\": \"Holding On (RAC Mix)\"\n                    },\n                    {\n                        \"name\": \"Holding On (RAC Remix)\"\n                    },\n                    {\n                        \"name\": \"YOU\"\n                    },\n                    {\n                        \"name\": \"BOY Remixes\"\n                    },\n                    {\n                        \"name\": \"MIA (Robotaki Remix)\"\n                    },\n                    {\n                        \"name\": \"I Hate Falling in Love (RAC Mix)\"\n                    },\n                    {\n                        \"name\": \"Better (RAC Mix)\"\n                    },\n                    {\n                        \"name\": \"Olivia (RAC Mix)\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artists for Haiti\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b273224e3de975885230a45ca8d4\",\n                \"albums\": [\n                    {\n                        \"name\": \"We Are the World 25 for Haiti - Single\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Chronixx\",\n                \"image\": \"https://i.scdn.co/image/6ee2dea9b2064d84ee6980c2119e9c0e0d1232ca\",\n                \"albums\": [\n                    {\n                        \"name\": \"Dread & Terrible Project - 5th Anniversary (Deluxe Edition)\"\n                    },\n                    {\n                        \"name\": \"Chronology\"\n                    },\n                    {\n                        \"name\": \"CHRONOLOGY\"\n                    },\n                    {\n                        \"name\": \"Dread & Terrible\"\n                    },\n                    {\n                        \"name\": \"Safe N Sound\"\n                    },\n                    {\n                        \"name\": \"Safe N Sound\"\n                    },\n                    {\n                        \"name\": \"So Brutal\"\n                    },\n                    {\n                        \"name\": \"Black Carbon\"\n                    },\n                    {\n                        \"name\": \"Sell My Gun\"\n                    },\n                    {\n                        \"name\": \"Cool As The Breeze / Friday\"\n                    },\n                    {\n                        \"name\": \"COOL AS THE BREEZE/FRIDAY\"\n                    },\n                    {\n                        \"name\": \"Same Prayer\"\n                    },\n                    {\n                        \"name\": \"Bye Bye Bye (feat. Chronixx) [S.P.Y Remix]\"\n                    },\n                    {\n                        \"name\": \"Same Prayer\"\n                    },\n                    {\n                        \"name\": \"Dela Move\"\n                    },\n                    {\n                        \"name\": \"Dela Move\"\n                    },\n                    {\n                        \"name\": \"Black Is Beautiful (feat. Sampa The Great) [Remix]\"\n                    },\n                    {\n                        \"name\": \"Eternal Light\"\n                    },\n                    {\n                        \"name\": \"Unity We Need\"\n                    },\n                    {\n                        \"name\": \"I Can (J.L.L Remix)\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Carly Simon\",\n                \"image\": \"https://i.scdn.co/image/2408d4187db84c9f53fd5789be1f674dd3b5cfbf\",\n                \"albums\": [\n                    {\n                        \"name\": \"Songs From the Trees (A Musical Memoir Collection)\"\n                    },\n                    {\n                        \"name\": \"Never Been Gone\"\n                    },\n                    {\n                        \"name\": \"This Kind of Love\"\n                    },\n                    {\n                        \"name\": \"Into White\"\n                    },\n                    {\n                        \"name\": \"Moonlight Serenade\"\n                    },\n                    {\n                        \"name\": \"Piglet's Big Movie\"\n                    },\n                    {\n                        \"name\": \"Christmas Is Almost Here\"\n                    },\n                    {\n                        \"name\": \"The Bedroom Tapes (Special Edition)\"\n                    },\n                    {\n                        \"name\": \"Film Noir\"\n                    },\n                    {\n                        \"name\": \"Letters Never Sent\"\n                    },\n                    {\n                        \"name\": \"Carly Simon / Music From The Motion Picture\"\n                    },\n                    {\n                        \"name\": \"Have You Seen Me Lately\"\n                    },\n                    {\n                        \"name\": \"My Romance\"\n                    },\n                    {\n                        \"name\": \"Coming Around Again\"\n                    },\n                    {\n                        \"name\": \"Coming Around Again\"\n                    },\n                    {\n                        \"name\": \"Spoiled Girl\"\n                    },\n                    {\n                        \"name\": \"Hello Big Man\"\n                    },\n                    {\n                        \"name\": \"Torch\"\n                    },\n                    {\n                        \"name\": \"Come Upstairs\"\n                    },\n                    {\n                        \"name\": \"Spy\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Alexandre Desplat\",\n                \"image\": \"https://i.scdn.co/image/55e59036a536f4c8992e600f50369c39337bbf50\",\n                \"albums\": [\n                    {\n                        \"name\": \"The Midnight Sky (Music From The Netflix Film)\"\n                    },\n                    {\n                        \"name\": \"Airlines\"\n                    },\n                    {\n                        \"name\": \"Little Women (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Les Filles du Docteur March (Bande Originale du Film)\"\n                    },\n                    {\n                        \"name\": \"J'accuse (Bande originale du film)\"\n                    },\n                    {\n                        \"name\": \"Adults in the Room (Bande originale du film)\"\n                    },\n                    {\n                        \"name\": \"The Secret Life Of Pets 2 (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Sisters Brothers (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Sisters Brothers (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Les frères Sisters (Bande originale du film)\"\n                    },\n                    {\n                        \"name\": \"Operation Finale (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Isle Of Dogs (Original Score)\"\n                    },\n                    {\n                        \"name\": \"Toni (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"Suburbicon (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"American Pastoral (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"American Pastoral (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Light Between Oceans (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Light Between Oceans (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Secret Life of Pets (Original Motion Picture Soundtrack)\"\n                    },\n                    {\n                        \"name\": \"The Secret Life of Pets (Original Motion Picture Soundtrack)\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artists for Peace and Justice\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b273d97de94216de0d30a7568573\",\n                \"albums\": [\n                    {\n                        \"name\": \"Let the Rhythm Lead: Haiti Song Summit, Vol. 1\"\n                    },\n                    {\n                        \"name\": \"Love Is Love\"\n                    },\n                    {\n                        \"name\": \"Under the Supermoon\"\n                    },\n                    {\n                        \"name\": \"Lapé, Lanmou\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"BIBI\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b2735ab0f207b5e583a951915b2d\",\n                \"albums\": [\n                    {\n                        \"name\": \"Oh! Master (Original Television Soundtrack), Pt. 5\"\n                    },\n                    {\n                        \"name\": \"Life is a Bi…\"\n                    },\n                    {\n                        \"name\": \"괴물 (Original Television Soundtrack) Pt. 2\"\n                    },\n                    {\n                        \"name\": \"Eat My Love\"\n                    },\n                    {\n                        \"name\": \"NAAN (Live On)\"\n                    },\n                    {\n                        \"name\": \"Dingo X BIBI - she got it\"\n                    },\n                    {\n                        \"name\": \"I'm good at goodbyes\"\n                    },\n                    {\n                        \"name\": \"KAZINO\"\n                    },\n                    {\n                        \"name\": \"BIG PICTURE HOUSE (Original TV Soundtrack, Pt. 3)\"\n                    },\n                    {\n                        \"name\": \"BIG PICTURE HOUSE (Original TV Soundtrack, Pt. 2)\"\n                    },\n                    {\n                        \"name\": \"LISTEN 035 Restless\"\n                    },\n                    {\n                        \"name\": \"Step?\"\n                    },\n                    {\n                        \"name\": \"The Manual for people who want to love\"\n                    },\n                    {\n                        \"name\": \"BINU\"\n                    },\n                    {\n                        \"name\": \"THE FAN TOP2\"\n                    },\n                    {\n                        \"name\": \"THE FAN TOP3\"\n                    },\n                    {\n                        \"name\": \"THE FAN TOP3\"\n                    },\n                    {\n                        \"name\": \"THE FAN 4ROUND Part.2\"\n                    },\n                    {\n                        \"name\": \"THE FAN 3ROUND Part.2\"\n                    },\n                    {\n                        \"name\": \"THE FAN 1ROUND Part.1\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artistic Raw\",\n                \"image\": \"https://i.scdn.co/image/c4e8cdcd214cc09a7ec56beb6c4d176c2012bd77\",\n                \"albums\": [\n                    {\n                        \"name\": \"Space\"\n                    },\n                    {\n                        \"name\": \"Shawty\"\n                    },\n                    {\n                        \"name\": \"Ik Wacht Op Jou\"\n                    },\n                    {\n                        \"name\": \"Dinero\"\n                    },\n                    {\n                        \"name\": \"Zet Je Body\"\n                    },\n                    {\n                        \"name\": \"Sacude\"\n                    },\n                    {\n                        \"name\": \"No Ley\"\n                    },\n                    {\n                        \"name\": \"Komen & Gaan\"\n                    },\n                    {\n                        \"name\": \"Señorita\"\n                    },\n                    {\n                        \"name\": \"Si Por Hay\"\n                    },\n                    {\n                        \"name\": \"Intentalo Tu\"\n                    },\n                    {\n                        \"name\": \"Suelta\"\n                    },\n                    {\n                        \"name\": \"Maak Je Klaar\"\n                    },\n                    {\n                        \"name\": \"Mi Mera\"\n                    },\n                    {\n                        \"name\": \"Mi Mera\"\n                    },\n                    {\n                        \"name\": \"In de Stu\"\n                    },\n                    {\n                        \"name\": \"Criminal\"\n                    },\n                    {\n                        \"name\": \"Ferrari\"\n                    },\n                    {\n                        \"name\": \"Geschiedenis\"\n                    },\n                    {\n                        \"name\": \"Luna\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Nat King Cole\",\n                \"image\": \"https://i.scdn.co/image/eb031f3737e50b8e5681a9302792b752fb41e13e\",\n                \"albums\": [\n                    {\n                        \"name\": \"ベスト・アーティスト・コレクション・ナット・キング・コール\"\n                    },\n                    {\n                        \"name\": \"ナット・キング・コール\"\n                    },\n                    {\n                        \"name\": \"Hittin' The Ramp: The Early Years (1936 - 1943)\"\n                    },\n                    {\n                        \"name\": \"Incomparable !\"\n                    },\n                    {\n                        \"name\": \"International Nat King Cole\"\n                    },\n                    {\n                        \"name\": \"For Sentimental Reasons\"\n                    },\n                    {\n                        \"name\": \"Ultimate Nat King Cole\"\n                    },\n                    {\n                        \"name\": \"Stardust: The Rare Television Performances\"\n                    },\n                    {\n                        \"name\": \"Unforgettable\"\n                    },\n                    {\n                        \"name\": \"The Extraordinary\"\n                    },\n                    {\n                        \"name\": \"The Extraordinary (Deluxe Edition)\"\n                    },\n                    {\n                        \"name\": \"Eternal Nat King Cole -Fly Me To The Moon-\"\n                    },\n                    {\n                        \"name\": \"Por Siempre... Nat King Cole\"\n                    },\n                    {\n                        \"name\": \"Cole, Nat King: Unforgettable (1950-1958)\"\n                    },\n                    {\n                        \"name\": \"Re:Generations\"\n                    },\n                    {\n                        \"name\": \"Re:Generations\"\n                    },\n                    {\n                        \"name\": \"Re:Generations\"\n                    },\n                    {\n                        \"name\": \"The Christmas Song\"\n                    },\n                    {\n                        \"name\": \"Top Pops\"\n                    },\n                    {\n                        \"name\": \"Welcome To The Club\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artists Stand Up To Cancer\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b2738c68d64737076eeea8487536\",\n                \"albums\": [\n                    {\n                        \"name\": \"JUST STAND UP!\"\n                    },\n                    {\n                        \"name\": \"JUST STAND UP!\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"CHIC\",\n                \"image\": \"https://i.scdn.co/image/8e9c76e2392d995543a59d718d322f8bc1e530c0\",\n                \"albums\": [\n                    {\n                        \"name\": \"It’s About Time\"\n                    },\n                    {\n                        \"name\": \"Dimitri From Paris Presents Le CHIC Remix\"\n                    },\n                    {\n                        \"name\": \"The Very Best of Nile Rodgers & Chic (Live)\"\n                    },\n                    {\n                        \"name\": \"Chic-ism\"\n                    },\n                    {\n                        \"name\": \"Believer\"\n                    },\n                    {\n                        \"name\": \"Tongue in Chic\"\n                    },\n                    {\n                        \"name\": \"Take It Off\"\n                    },\n                    {\n                        \"name\": \"Real People\"\n                    },\n                    {\n                        \"name\": \"Risqué (2018 Remaster)\"\n                    },\n                    {\n                        \"name\": \"Risqué\"\n                    },\n                    {\n                        \"name\": \"C'est Chic (2018 Remaster)\"\n                    },\n                    {\n                        \"name\": \"Chic (2018 Remaster)\"\n                    },\n                    {\n                        \"name\": \"Till The World Falls (Remixes)\"\n                    },\n                    {\n                        \"name\": \"Le Freak (Oliver Heldens Remix)\"\n                    },\n                    {\n                        \"name\": \"Le Freak (Oliver Heldens Remix)\"\n                    },\n                    {\n                        \"name\": \"Sober\"\n                    },\n                    {\n                        \"name\": \"Till The World Falls (7” Version)\"\n                    },\n                    {\n                        \"name\": \"I'll Be There (feat. Nile Rodgers)\"\n                    },\n                    {\n                        \"name\": \"I'll Be There (feat. Nile Rodgers)\"\n                    },\n                    {\n                        \"name\": \"Chic & Aristofreeks Le Freak Remixes\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"ARTISTAJAE\",\n                \"image\": \"https://i.scdn.co/image/ef073d8186600dc12411d77b9db3b97b1f26b2b9\",\n                \"albums\": [\n                    {\n                        \"name\": \"Sunset Desert\"\n                    },\n                    {\n                        \"name\": \"Weep\"\n                    },\n                    {\n                        \"name\": \"RISING\"\n                    },\n                    {\n                        \"name\": \"Stronger With You\"\n                    },\n                    {\n                        \"name\": \"Swervin\"\n                    },\n                    {\n                        \"name\": \"Higher Limits\"\n                    },\n                    {\n                        \"name\": \"Stick Up\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artist Unknown\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b273dea2d7ef77ad8e3ec3739d23\",\n                \"albums\": [\n                    {\n                        \"name\": \"Ruby\"\n                    },\n                    {\n                        \"name\": \"Il mito dell'opera: Mario del Monaco (Live)\"\n                    },\n                    {\n                        \"name\": \"Il mito dell'opera: Pedro Lavirgen (Live)\"\n                    },\n                    {\n                        \"name\": \"Il mitto dell'opera: Gianni Raimondi (Live)\"\n                    },\n                    {\n                        \"name\": \"Artist Series Vol.03 - Artist Unknown\"\n                    },\n                    {\n                        \"name\": \"Orchestra Giovanile Russia, Vol. 2\"\n                    },\n                    {\n                        \"name\": \"Future\"\n                    },\n                    {\n                        \"name\": \"Badings & Raaijmakers: Electronic Music (Collection trésors, stéréo version)\"\n                    },\n                    {\n                        \"name\": \"Comme une rose (Mono Version)\"\n                    },\n                    {\n                        \"name\": \"Move Me (Artist Unknown Remix)\"\n                    },\n                    {\n                        \"name\": \"Artist Unknown\"\n                    },\n                    {\n                        \"name\": \"w0rmh0l3.dat\"\n                    },\n                    {\n                        \"name\": \"Undead / Control\"\n                    },\n                    {\n                        \"name\": \"Oh Sh#t\"\n                    },\n                    {\n                        \"name\": \"Unknown Pt. 03 EP\"\n                    },\n                    {\n                        \"name\": \"Unknown Pt. 02 EP\"\n                    },\n                    {\n                        \"name\": \"Errorist\"\n                    },\n                    {\n                        \"name\": \"Matinée de dimanche en Bretagne: Grand-messe à l'église de Pouldreuzic (Mono Version)\"\n                    },\n                    {\n                        \"name\": \"Duos d'opéras célèbres (Mono Version)\"\n                    },\n                    {\n                        \"name\": \"Popular Music from Russia\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"London Philharmonic Orchestra\",\n                \"image\": \"https://i.scdn.co/image/bf87148d622227640d5c20ab5d7c13693d53f604\",\n                \"albums\": [\n                    {\n                        \"name\": \"Beecham's L.P.O. Years, Vol. 1: French Music\"\n                    },\n                    {\n                        \"name\": \"Passione\"\n                    },\n                    {\n                        \"name\": \"Beethoven - Wagner - Verdi\"\n                    },\n                    {\n                        \"name\": \"Arnold: English Dances OP.27 & 33 - Bax:tintagel, Gp 213 - Elgar: Chansons De Nuit & Matin, OP. 15 - Holst: The Perfect Fool, OP. 39 - Butterworth: A Shropshire Lad, the Banks of Green Willow - Walton: Siesta (Live)\"\n                    },\n                    {\n                        \"name\": \"Beethoven: Piano Concertos Nos. 1 & 4\"\n                    },\n                    {\n                        \"name\": \"J.S. Bach: Concerto for 2 Harpsichords in C Major, BWV 1061 - Beethoven: Piano Concerto No. 5 in E-Flat Major, Op. 73\"\n                    },\n                    {\n                        \"name\": \"Rodrigo, Coll & Harden: Guitar Works\"\n                    },\n                    {\n                        \"name\": \"Sir Adrian Boult: A Musical Legacy, Vol. 5\"\n                    },\n                    {\n                        \"name\": \"Vladimir Martynov: Utopia\"\n                    },\n                    {\n                        \"name\": \"Shostakovich: Symphony No. 10 in E Minor, Op. 93 – Holst: The Planets, Op. 32, H. 125 (Live)\"\n                    },\n                    {\n                        \"name\": \"Noël !\"\n                    },\n                    {\n                        \"name\": \"The Art of Édouard Lalo\"\n                    },\n                    {\n                        \"name\": \"Sir Adrian Boult: A Musical Legacy, Vol. 1\"\n                    },\n                    {\n                        \"name\": \"Music for Stage and Screen\"\n                    },\n                    {\n                        \"name\": \"Symphony No. 11 in G Minor \\\"The Year 1905\\\"\"\n                    },\n                    {\n                        \"name\": \"Rosner: Requiem, Op. 59\"\n                    },\n                    {\n                        \"name\": \"Mozart, Tchaikovsky & Glazunov: Violin Concertos\"\n                    },\n                    {\n                        \"name\": \"Music From The Great Movie Thrillers\"\n                    },\n                    {\n                        \"name\": \"Anna Clyne: DANCE - Edward Elgar: Cello Concerto\"\n                    },\n                    {\n                        \"name\": \"Elgar\"\n                    }\n                ]\n            },\n            {\n                \"name\": \"Artist Reaching Christ\",\n                \"image\": \"https://i.scdn.co/image/ab67616d0000b273e5bf77ba8acaf1d7c0f35598\",\n                \"albums\": [\n                    {\n                        \"name\": \"Much More\"\n                    },\n                    {\n                        \"name\": \"No Emotions\"\n                    },\n                    {\n                        \"name\": \"God Got It\"\n                    },\n                    {\n                        \"name\": \"Learn Yo Lesson\"\n                    },\n                    {\n                        \"name\": \"Young C X Aldre-Much More\"\n                    },\n                    {\n                        \"name\": \"Love\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
-                }
-              ]
-            },
-            {
-              "name": "Using GraphQL query",
-              "id": "7c11a938-38e1-43a8-9d51-bf4c5dd4de93",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/graphql",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "query{\n  allFilms\n  {\n   films {\n      id\n      title\n      episodeID\n    }\n  }\n}"
-                },
-                "url": "https://swapi.apis.guru",
-                "description": "Similar to the previous example from [this community tutorial](https://www.codetraveler.io/2019/01/12/how-to-use-postman-with-a-graphql-api/), we learn that if the GraphQL endpoint accepts the header `application/graphql`, then we don't need to use JSON in the request body.\n\nAdd the header `Content-type: application/graphql`, and then you can use a standard graphQL query in the request body.\n\n![[standard graphQL query](https://i.imgur.com/GMP3Eiz.png)](https://i.imgur.com/GMP3Eiz.png)"
-              },
-              "response": [
-                {
-                  "id": "3d1a3542-4d68-48b7-a3b0-50f3ba298162",
-                  "name": "Successful response",
-                  "originalRequest": {
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/graphql",
-                        "type": "text"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "query{\n  allFilms\n  {\n   films {\n      id\n      title\n      episodeID\n    }\n  }\n}"
-                    },
-                    "url": "https://swapi.apis.guru"
-                  },
-                  "status": "OK",
-                  "code": 200,
-                  "_postman_previewlanguage": "json",
-                  "header": [
-                    {
-                      "key": "Server",
-                      "value": "Cowboy"
-                    },
-                    {
-                      "key": "Connection",
-                      "value": "keep-alive"
-                    },
-                    {
-                      "key": "X-Powered-By",
-                      "value": "Express"
-                    },
-                    {
-                      "key": "Access-Control-Allow-Origin",
-                      "value": "*"
-                    },
-                    {
-                      "key": "Access-Control-Allow-Methods",
-                      "value": "GET,PUT,POST,DELETE,OPTIONS"
-                    },
-                    {
-                      "key": "Access-Control-Allow-Headers",
-                      "value": "Content-Type, Authorization, Content-Length, X-Requested-With"
-                    },
-                    {
-                      "key": "Content-Type",
-                      "value": "application/json; charset=utf-8"
-                    },
-                    {
-                      "key": "Content-Length",
-                      "value": "423"
-                    },
-                    {
-                      "key": "Etag",
-                      "value": "W/\"1a7-Q2yB9EcgmVSORKM35UT6aw\""
-                    },
-                    {
-                      "key": "Date",
-                      "value": "Tue, 07 May 2019 00:17:55 GMT"
-                    },
-                    {
-                      "key": "Via",
-                      "value": "1.1 vegur"
-                    }
-                  ],
-                  "cookie": [],
-                  "responseTime": null,
-                  "body": "{\n    \"data\": {\n        \"allFilms\": {\n            \"films\": [\n                {\n                    \"id\": \"ZmlsbXM6MQ==\",\n                    \"title\": \"A New Hope\",\n                    \"episodeID\": 4\n                },\n                {\n                    \"id\": \"ZmlsbXM6Mg==\",\n                    \"title\": \"The Empire Strikes Back\",\n                    \"episodeID\": 5\n                },\n                {\n                    \"id\": \"ZmlsbXM6Mw==\",\n                    \"title\": \"Return of the Jedi\",\n                    \"episodeID\": 6\n                },\n                {\n                    \"id\": \"ZmlsbXM6NA==\",\n                    \"title\": \"The Phantom Menace\",\n                    \"episodeID\": 1\n                },\n                {\n                    \"id\": \"ZmlsbXM6NQ==\",\n                    \"title\": \"Attack of the Clones\",\n                    \"episodeID\": 2\n                },\n                {\n                    \"id\": \"ZmlsbXM6Ng==\",\n                    \"title\": \"Revenge of the Sith\",\n                    \"episodeID\": 3\n                }\n            ]\n        }\n    }\n}"
-                }
-              ]
-            }
-          ],
-          "id": "480385d3-3528-47cc-9695-7ce88b09b2fd",
-          "description": "Frequently called an advanced REST client, Postman is actually a tool that handles any calls sent over HTTP. This means that you can use Postman to send [SOAP requests](https://blog.getpostman.com/2017/11/18/postman-makes-soap-requests-too/) or GraphQL queries. There are other templates that explain [how to work with SOAP](https://documenter.getpostman.com/view/1559645/RWgtScW1). This template here contains examples of how you can use Postman to work with GraphQL.\n\nCheck out [the collection documentation](https://documenter.getpostman.com/view/1559645/S1Lu2puC) for screenshots and step-by-step instructions.\n\n\n> Postman launched [built-in support for GraphQL](https://github.com/postmanlabs/postman-app-support/issues/1669#issuecomment-487569592) in version 7.2. \n\nOther helpful resources:\n* [REST, SOAP, GraphQL — Gesundheit!](https://medium.com/better-practices/rest-soap-graphql-gesundheit-6544053f65cf)\n* [GraphQL vs REST: Overview](https://philsturgeon.uk/api/2017/01/24/graphql-vs-rest-overview/)\n* [Public GraphQL APIs](https://github.com/APIs-guru/graphql-apis)",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "b784d6fb-ece4-4005-beba-0590ccbda199",
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "id": "7a04194a-0e40-420e-99f4-fbfdecc11f2e",
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "10. Documentation Pizazz",
-          "item": [
-            {
-              "name": "Add params",
-              "id": "ddad9fdd-053a-47ec-a5b1-e29022b4e264",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "postman-echo.com/get?=",
-                  "host": [
-                    "postman-echo",
-                    "com"
-                  ],
-                  "path": [
-                    "get"
-                  ],
-                  "query": [
-                    {
-                      "key": "",
-                      "value": ""
-                    }
-                  ]
-                },
-                "description": "## How to add params to a GET request\n\nI don't really know?\n\n![How to add params](https://media.giphy.com/media/SMw4MKJsIlCDOYQS41/giphy.gif)"
-              },
-              "response": []
-            }
-          ],
-          "id": "f8a03d8e-17ae-4398-911e-aa1966cf30ea",
-          "description": "# Documentation can be fun!\n\nIsn't documentation way better when there's **randomly** bolded words?!\n\nThe whole purpose of this collection is just to show you that you can have images and/or gifs in your documentation with Postman. They can be fun, useful, or both. \n\nPostman documentation uses [Daring Fireball Markdown](https://daringfireball.net/projects/markdown/syntax). You can find all the formatting answers there. \n\nCheck out the \"Add params\" request for a useful GIF on how to add params.\n\n##### Now, let's party!\n\n![Party text](https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif)\n\nNote - to add that gif, here's the exact text:\n\n`![Party text](https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif)`"
-        },
-        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -11500,7 +11188,7 @@
       "name": "ASSET",
       "item": [
         {
-          "name": "Registration/ Paid",
+          "name": "PAID",
           "item": [
             {
               "name": "PPV Asset",
@@ -13358,7 +13046,7 @@
           "description": "This folder consist of basic API calls in order to easily generate Records/Assets for testing purpose. Using this folder we can create assets in timely manner"
         },
         {
-          "name": "Registration/ Freemium",
+          "name": "Freemium",
           "item": [
             {
               "name": "Authenticate",
@@ -15682,77 +15370,77 @@
   ],
   "variable": [
     {
-      "id": "97054ad5-9758-4b42-9d98-9b3c480353ae",
+      "id": "7a633e62-161b-48a3-8de8-496cad8cde77",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "fd348dea-b760-43ec-9160-98480c53502e",
+      "id": "bd2e92fc-1193-4921-badc-ff59708773d6",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "02f6a507-27fb-47ea-a3b4-51f999df815b",
+      "id": "7d51ff05-7c6c-4b9a-898e-c335f5f117fc",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "ebe186da-3dd9-41b6-af00-a24387e79a5a",
+      "id": "0e5fbe65-6ed7-4416-9361-c0fc03e67c0d",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "5bca2941-2fae-486e-a2dd-e705f859b708",
+      "id": "288ad339-58f3-4df7-a99a-3b6b90626330",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "4f3c80b6-2ade-4e8e-a036-1a1d8961d25e",
+      "id": "46824592-3bb5-4b69-aef4-324b6b1d4d01",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "f7650bce-8fd4-4398-82f2-576c38eb449d",
+      "id": "a943b5c9-6a6a-49c5-8979-f41ee2d1bfab",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "0b68c411-04be-4a29-969c-296ae9746e93",
+      "id": "767ed6e5-508e-4cb8-a65d-7c61358bd0af",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "f16a7f89-97c1-4a7c-b775-ade72d654dd8",
+      "id": "0a4e02a2-4b78-4b6b-ab39-8175a0f2433c",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "b92cb402-f313-44b3-bfa1-12e217d7cb83",
+      "id": "aaecf57c-2035-4595-8893-4c1922135363",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "9064d3b5-287b-4e02-839a-e07d0dab4c28",
+      "id": "1e67f825-56ab-4a87-84cc-0ccf74656ce1",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "26927c38-e82b-4411-a945-5dbc81a06529",
+      "id": "bf035e19-e75d-407b-9510-de5afe1a6fc7",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "36ab8f6f-e36d-4dee-98bf-f5514adc3c0b",
+      "id": "46d2d3b6-8aa4-4bd2-955d-c5accf87f059",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "ddda2b8f-2518-42bd-8ec7-bcaa285f834a",
+      "id": "4dd2d09c-a84f-410f-b5db-234aa52dce30",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "af695c7b-ed49-4798-afd8-5b107053cc59",
+      "id": "9a8cd0cb-0be6-4e1d-b318-bddd23a10a00",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
