@@ -10799,6 +10799,142 @@
           "description": "This collection shows some very basic examples of using some of the external libraries available within the Postman testing sandbox. \n\nThe libraries shown in this collection include:\n- [Faker.js](https://github.com/marak/Faker.js/) in the params tab of the request, used to generate fake data.\n- [Lodash](https://lodash.com/) in the Tests tab of the request, which is a JavaScript library providing utility functions for common programming tasks.\n- [Moment.js](https://momentjs.com/) in the Tests tab of the request, which helps format and display dates in JavaScript.\n- [chai.js](https://www.chaijs.com/) in the Tests tab of the request, which is a BDD/TDD assertion library.\n- [crypto-js](https://www.npmjs.com/package/crypto-js) in the Tests tab of the request, which is a growing collection of standard and secure cryptographic algorithms.\n\nFor libraries demonstrated in the Tests tab, uncomment the code below the library name, run the request, and then open the console to see the results.\n\nFor more information on using external libraries, check out [the documentation](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#using-external-libraries) on external libraries."
         },
         {
+          "name": "5. Workflow Control",
+          "item": [
+            {
+              "name": "First request",
+              "id": "220d8ad2-44ee-4e51-b48a-19eaa15d500d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=1",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Second request",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "35822d32-be58-4a41-a43f-6a8a2b2028d6",
+                    "exec": [
+                      "postman.setNextRequest(\"Fourth request\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "aaafba77-b33c-46a8-b57e-8102ecd1005a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=2",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Third request",
+              "id": "3bfd4ef6-5270-4bae-8f43-428565aded3d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=3",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "3",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fourth request",
+              "id": "8fb0559e-659f-454d-a81d-a057b70ab59d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=4",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "4"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "0307205b-890a-4d16-bbac-e3a622cfa3d3",
+          "description": "Postman provides some JavaScript APIs that you can use in request scripts to customize your [workflow control](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#sending-requests-from-scripts). The `postman` object provides functionality for testing your request and response data and workflow control. If you have conditional logic, you can highly customize the workflow. Just be careful not to end up in an endless loop!\n\nThe second request has the following code under the Tests tab: `postman.setNextRequest(\"Fourth request\");`. If you run the \"5. Set Next Request Flow\" folder in the Runner, that code will execute after the response is received in the second request, and the next request in the collection run will be \"Fourth request\", completely skipping over \"Third request\".\n\nSee the run order below where all requests are selected:\n\n![Image of run order](https://i.imgur.com/VBwzGih.png)\n\nBut because of the code in the Tests tab of the second request, the runner ran \"Fourth request\" immediately after \"Second request\", completely skipping \"Third request\":\n![Image of result order](https://i.imgur.com/YjHwpZP.png)"
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -15017,77 +15153,77 @@
   ],
   "variable": [
     {
-      "id": "6dbb34e4-4904-4672-8126-940b922960ce",
+      "id": "9570e859-bbd0-44ce-884b-b3ca5ad2fc65",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "93e581f6-e3cd-481f-9976-c6e6e33d35c9",
+      "id": "a4ed796d-da94-4421-bce0-aec8185a61f6",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "a29a723f-7948-4a80-9109-b961ff220109",
+      "id": "45ee0a0b-a4c9-4a01-9ab4-482c31d99bce",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "e77ab2ae-ebc9-4928-b00f-cb86f2ae0d39",
+      "id": "b82f0505-aeaa-4b73-8b37-c6c79d49df82",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "2b375adb-0a35-4202-8552-a714a8990f43",
+      "id": "1f3db1de-cf5c-4e0b-b75a-b10b371b293e",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "8f99ed5b-9b83-4e6f-856d-ababbd74d6ff",
+      "id": "4dba1ccd-4ca8-4dfd-ad38-6a2f4df0a670",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "85c1cc2b-35f4-487f-8a12-692c2eb2af36",
+      "id": "88a25ee1-2f83-4af8-8e18-16a12a6af55f",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "6c202b16-2e32-4232-a586-00f75549bca3",
+      "id": "522cd6ef-a2c7-49c1-b84f-5b731fa3e5dd",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "5bb48d2f-1826-4e56-b053-ec8e36e434bf",
+      "id": "e5e562b9-6919-4a6c-9a10-a2e0d5d90347",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "bb88e672-b990-4ff0-b9bf-6dadd34321ee",
+      "id": "250b8007-cd77-4d42-bba6-83b39e6c36a7",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "83c97ebf-16c7-4590-a389-1acbd814ed21",
+      "id": "c4eacb7c-c2ff-4a00-928b-5e602c9d2f20",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "9b7a3dad-450c-4d71-a568-08f4d9a5667e",
+      "id": "a1e4d5c7-7af9-4117-bdc8-06b51e4a7dc6",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "e2008ab5-b5c5-4856-a629-a1ade1464d3f",
+      "id": "1ca27372-bf98-4d93-818d-55d811486309",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "c8cfaea6-7ec2-4481-a3d5-de7c8775bc93",
+      "id": "6dfe8b03-8a07-460d-a5a8-3e50c5a4a862",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "409e3bd7-e6e8-4bea-b664-aea59960fce2",
+      "id": "92d7cc4c-ffa2-4d3e-8198-5251372c223e",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
