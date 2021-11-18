@@ -14284,491 +14284,6 @@
       "name": "PAYMENTS",
       "item": [
         {
-          "name": "Credit Card Payment + Discount code",
-          "item": [
-            {
-              "name": "Register Fan Account Copy",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "1584bc9f-74bd-4e8d-8ae9-a69ff8d12de6",
-                    "exec": [
-                      "console.log(\"This is a pre request script for Creating Account\");",
-                      "pm.environment.set(\"password\", \"Password123\");",
-                      "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
-                      "let randomNumber = Math.floor(Math.random() * 10000);",
-                      "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
-                      "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "d48e48a1-85a2-4f08-a44a-46430e4485db",
-                    "exec": [
-                      "console.log(\"-----Executing Finished-----\");",
-                      "var responseData = JSON.parse(responseBody);",
-                      "console.log(\"adding auth Token value\")",
-                      "pm.environment.set(\"authToken\", responseData.access_token);",
-                      "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
-                      "pm.environment.set(\"consumerID\", responseData.account.id);",
-                      "pm.test(\"Successfull POST Request\", function (){",
-                      "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
-                      "});",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "e2e9c804-a9ca-457f-8060-f9b90104711a",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "full_name",
-                      "value": "{{CreateAccFullName}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password_confirmation",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "type",
-                      "value": "consumer",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "metadata[phone]",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "metadata[datePicker]",
-                      "value": "2021-09-17",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Fan Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "1257b306-21a5-43c8-bc89-fa5d1dfb1686",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"Fan_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "c6c3979a-21cb-4871-a4ff-30fcc17607ad",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "f33795ab-68fb-42dc-bc85-d27d7e95647d",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{CreateAccountEmail}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{clientID}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "Authenticate/Login with Merchant Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "c55f6e32-a3cb-4b72-a6ca-67fef28713ed",
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {",
-                      "    pm.response.to.have.status(200);",
-                      "});",
-                      "var responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
-                      "",
-                      "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "c71fc924-0901-4cf4-82e7-db9a6bfd129c",
-                    "exec": [
-                      "console.log(\"-----Executing Authenticate POST Request-----\");",
-                      "",
-                      "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
-                      "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "a096d286-40bc-4995-af6e-b6b26a0d359a",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "username",
-                      "value": "{{MerchantUser}}",
-                      "type": "text",
-                      "description": "oliver.pinev+connected@email.com"
-                    },
-                    {
-                      "key": "password",
-                      "value": "{{password}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "client_id",
-                      "value": "{{SystemInPlayerAcc}}",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "GET all items Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "9c4fefc4-a7ed-41ae-9543-8969f64d8391",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "let counter = responseData.collection.length;",
-                      "console.log(counter)",
-                      "let var1 = responseData.collection[0].id;",
-                      "console.log(var1)",
-                      "",
-                      "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "31ba82b6-bed5-4886-9784-50927e995b57",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "{{Merchant_Token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": []
-                },
-                "url": {
-                  "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
-                  "protocol": "https",
-                  "host": [
-                    "staging-v2",
-                    "inplayer",
-                    "com"
-                  ],
-                  "path": [
-                    "items",
-                    "collection"
-                  ],
-                  "query": [
-                    {
-                      "key": "page",
-                      "value": "1"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "15"
-                    },
-                    {
-                      "key": "is_active",
-                      "value": "true"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "POST PPV Access Fee for PAYMENT Copy",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "dfecfcb6-4125-4ee3-81f8-e9ec35bc97df",
-                    "exec": [
-                      "let responseData = pm.response.json();",
-                      "",
-                      "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "1a74e5de-2efc-4711-a653-bad25eb32a5a",
-                    "exec": [
-                      "let rndInt = Math.floor(Math.random() * 8) + 2",
-                      "",
-                      "",
-                      "pm.environment.set(\"priceForPayment\", rndInt);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "5d735165-c9af-4e59-a939-5256a92c38e9",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{Merchant_Token}}"
-                  }
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "access_type_id",
-                      "value": "1",
-                      "type": "text"
-                    },
-                    {
-                      "key": "amount",
-                      "value": "{{priceForPayment}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "currency",
-                      "value": "EUR",
-                      "type": "text"
-                    },
-                    {
-                      "key": "description",
-                      "value": "test fee for payments",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_quantity",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_period",
-                      "value": "",
-                      "type": "text"
-                    },
-                    {
-                      "key": "trial_period_description",
-                      "value": "",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
-              },
-              "response": []
-            },
-            {
-              "name": "New Request",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "342ed33c-f18d-40cd-9a22-5c221d154aee",
-                    "exec": [
-                      "let moment = require(`moment`); // momentJS library",
-                      "let jquery = require('jQuery');",
-                      "let randomNumber = Math.floor(Math.random() * 100);",
-                      "pm.environment.set(\"discountVoucher\", `${randomNumber}`);",
-                      "",
-                      "let moment = require(`moment`);",
-                      "let codeGenerator = Math.floor(Math.random() * 10000);",
-                      "let negRandom = Math.floor(Math.random() *10 *(-1));",
-                      "",
-                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"startDate\", \"currentDate\");",
-                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
-                      "pm.environment.set(\"privateCode\", \"private\");",
-                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
-                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "66af89c0-542c-4ac5-99ef-3eff99a7a76d",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": []
-                },
-                "url": {
-                  "raw": "https://{{baseUrl}}/vouchers?-d name%3D'Voucher title' \\=&-d length%3D7 \\=&-d perfix%3DAB17 \\=&-d perfix%3DBA17 \\=&-d discount%3D30 \\=&-d start_date%3D2017-01-10 \\=&-d end_date%3D2017-03-12 \\=&-d usage_limit%3D50=",
-                  "protocol": "https",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "vouchers"
-                  ],
-                  "query": [
-                    {
-                      "key": "-d name%3D'Voucher title' \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d length%3D7 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d perfix%3DAB17 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d perfix%3DBA17 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d discount%3D30 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d start_date%3D2017-01-10 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d end_date%3D2017-03-12 \\",
-                      "value": ""
-                    },
-                    {
-                      "key": "-d usage_limit%3D50",
-                      "value": ""
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ],
-          "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
-        },
-        {
           "name": "Stripe",
           "item": [
             {
@@ -15367,6 +14882,491 @@
                 }
               ],
               "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+            },
+            {
+              "name": "Credit Card Payment + Discount code",
+              "item": [
+                {
+                  "name": "Register Fan Account Copy",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "1584bc9f-74bd-4e8d-8ae9-a69ff8d12de6",
+                        "exec": [
+                          "console.log(\"This is a pre request script for Creating Account\");",
+                          "pm.environment.set(\"password\", \"Password123\");",
+                          "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
+                          "let randomNumber = Math.floor(Math.random() * 10000);",
+                          "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
+                          "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "d48e48a1-85a2-4f08-a44a-46430e4485db",
+                        "exec": [
+                          "console.log(\"-----Executing Finished-----\");",
+                          "var responseData = JSON.parse(responseBody);",
+                          "console.log(\"adding auth Token value\")",
+                          "pm.environment.set(\"authToken\", responseData.access_token);",
+                          "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
+                          "pm.environment.set(\"consumerID\", responseData.account.id);",
+                          "pm.test(\"Successfull POST Request\", function (){",
+                          "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+                          "});",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "e2e9c804-a9ca-457f-8060-f9b90104711a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "full_name",
+                          "value": "{{CreateAccFullName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "username",
+                          "value": "{{CreateAccountEmail}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{password}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password_confirmation",
+                          "value": "{{password}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "type",
+                          "value": "consumer",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{clientID}}",
+                          "type": "text",
+                          "description": "oliver.pinev+connected@email.com"
+                        },
+                        {
+                          "key": "metadata[phone]",
+                          "value": "",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[datePicker]",
+                          "value": "2021-09-17",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Authenticate/Login with Fan Copy",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "1257b306-21a5-43c8-bc89-fa5d1dfb1686",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {",
+                          "    pm.response.to.have.status(200);",
+                          "});",
+                          "var responseData = JSON.parse(responseBody);",
+                          "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "c6c3979a-21cb-4871-a4ff-30fcc17607ad",
+                        "exec": [
+                          "console.log(\"-----Executing Authenticate POST Request-----\");",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "f33795ab-68fb-42dc-bc85-d27d7e95647d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "username",
+                          "value": "{{CreateAccountEmail}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{password}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{clientID}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts/authenticate"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Authenticate/Login with Merchant Copy",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "c55f6e32-a3cb-4b72-a6ca-67fef28713ed",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {",
+                          "    pm.response.to.have.status(200);",
+                          "});",
+                          "var responseData = JSON.parse(responseBody);",
+                          "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                          "",
+                          "pm.environment.set(\"Merchant_Token\", responseData.access_token)"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "c71fc924-0901-4cf4-82e7-db9a6bfd129c",
+                        "exec": [
+                          "console.log(\"-----Executing Authenticate POST Request-----\");",
+                          "",
+                          "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
+                          "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "a096d286-40bc-4995-af6e-b6b26a0d359a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "username",
+                          "value": "{{MerchantUser}}",
+                          "type": "text",
+                          "description": "oliver.pinev+connected@email.com"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{password}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{SystemInPlayerAcc}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts/authenticate"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET all items Copy",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "9c4fefc4-a7ed-41ae-9543-8969f64d8391",
+                        "exec": [
+                          "let responseData = pm.response.json();",
+                          "let counter = responseData.collection.length;",
+                          "console.log(counter)",
+                          "let var1 = responseData.collection[0].id;",
+                          "console.log(var1)",
+                          "",
+                          "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "31ba82b6-bed5-4886-9784-50927e995b57",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "{{Merchant_Token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                    },
+                    "url": {
+                      "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
+                      "protocol": "https",
+                      "host": [
+                        "staging-v2",
+                        "inplayer",
+                        "com"
+                      ],
+                      "path": [
+                        "items",
+                        "collection"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "15"
+                        },
+                        {
+                          "key": "is_active",
+                          "value": "true"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "POST PPV Access Fee for PAYMENT Copy",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "dfecfcb6-4125-4ee3-81f8-e9ec35bc97df",
+                        "exec": [
+                          "let responseData = pm.response.json();",
+                          "",
+                          "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "1a74e5de-2efc-4711-a653-bad25eb32a5a",
+                        "exec": [
+                          "let rndInt = Math.floor(Math.random() * 8) + 2",
+                          "",
+                          "",
+                          "pm.environment.set(\"priceForPayment\", rndInt);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "5d735165-c9af-4e59-a939-5256a92c38e9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{Merchant_Token}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "access_type_id",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{priceForPayment}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "currency",
+                          "value": "EUR",
+                          "type": "text"
+                        },
+                        {
+                          "key": "description",
+                          "value": "test fee for payments",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_quantity",
+                          "value": "",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_period",
+                          "value": "",
+                          "type": "text"
+                        },
+                        {
+                          "key": "trial_period_description",
+                          "value": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "New Request",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "342ed33c-f18d-40cd-9a22-5c221d154aee",
+                        "exec": [
+                          "let moment = require(`moment`); // momentJS library",
+                          "let jquery = require('jQuery');",
+                          "let randomNumber = Math.floor(Math.random() * 100);",
+                          "pm.environment.set(\"discountVoucher\", `${randomNumber}`);",
+                          "",
+                          "let moment = require(`moment`);",
+                          "let codeGenerator = Math.floor(Math.random() * 10000);",
+                          "let negRandom = Math.floor(Math.random() *10 *(-1));",
+                          "",
+                          "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                          "pm.environment.set(\"startDate\", \"currentDate\");",
+                          "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                          "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
+                          "pm.environment.set(\"privateCode\", \"private\");",
+                          "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
+                          "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "66af89c0-542c-4ac5-99ef-3eff99a7a76d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                    },
+                    "url": {
+                      "raw": "https://{{baseUrl}}/vouchers?-d name%3D'Voucher title' \\=&-d length%3D7 \\=&-d perfix%3DAB17 \\=&-d perfix%3DBA17 \\=&-d discount%3D30 \\=&-d start_date%3D2017-01-10 \\=&-d end_date%3D2017-03-12 \\=&-d usage_limit%3D50=",
+                      "protocol": "https",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "vouchers"
+                      ],
+                      "query": [
+                        {
+                          "key": "-d name%3D'Voucher title' \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d length%3D7 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d perfix%3DAB17 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d perfix%3DBA17 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d discount%3D30 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d start_date%3D2017-01-10 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d end_date%3D2017-03-12 \\",
+                          "value": ""
+                        },
+                        {
+                          "key": "-d usage_limit%3D50",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
             }
           ],
           "id": "b4b01fa3-cfee-4177-bfa7-a0a26c0cd7f0"
@@ -15385,6 +15385,11 @@
           "name": "Paypal",
           "item": [],
           "id": "759f5013-e45f-46b6-aefb-d532749e1f25"
+        },
+        {
+          "name": "New Folder",
+          "item": [],
+          "id": "3ccbeaae-aacd-4db1-bd6c-b4b7fcd68235"
         }
       ],
       "id": "a0ef51e6-1ece-4042-a9cb-b3f0cdc20903",
@@ -15459,77 +15464,77 @@
   ],
   "variable": [
     {
-      "id": "901cf59c-49f0-466f-9dff-ef3c663f0894",
+      "id": "f489e293-ac38-4e1d-80f0-a80267a3b93c",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "da361387-6fbd-45f1-8429-5ff3f73deac9",
+      "id": "d6e37a08-6df0-4f8c-9392-37abbe730d8b",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "39e0cb96-c71d-4179-aa91-9270d2107990",
+      "id": "0a7deee3-6149-433b-9fd8-966fce9ad8cd",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "51359681-a2ce-44ca-b2b5-ebd99ddc8e48",
+      "id": "187b9f7c-e4d3-4d4f-950a-9aabd91adc3d",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "414f7eb2-0317-4383-aee2-006d4b57218b",
+      "id": "5e0dd894-7b86-42d8-88ca-e85c7af8628a",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "536baa31-e18b-4ce7-82e3-bf3cdf7e0c56",
+      "id": "caa47c95-2b40-4d5d-9789-cc2c5beab3ff",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "6110ef31-fd67-46e7-b5ed-4064bb398037",
+      "id": "fc02aca3-3800-4578-9da2-338d58e3f5c9",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "7939c3eb-464b-4160-892e-bc85a12019cd",
+      "id": "f4a1abb0-9683-4b18-a230-cd993bdd4302",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "f5095645-981e-484e-be16-116fa72e00f6",
+      "id": "6498e1f0-8e55-441a-8d8e-e82e3b62d901",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "c8676df2-757b-437c-bc9e-b6d4c249a351",
+      "id": "d032dfd5-7a43-455a-9e53-3e4d611f7db7",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "638ec740-bccc-434e-9f3d-115cc73dfbc5",
+      "id": "0c81ad1d-0be8-42eb-a9d7-9cf073777bc6",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "05649528-8131-438f-85d1-6a220cc893b4",
+      "id": "39334587-5795-4d07-8ac8-b7377d1dbf6d",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "a29c4cf3-e86c-4b2e-82db-b9252ea2a907",
+      "id": "354cc14d-0420-4cc7-9b27-6d29303f0dca",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "dc23079c-06fa-4cfe-8cf7-f064014ed1bf",
+      "id": "2b273aa8-cc40-40f1-85f6-86c05d94875f",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "a0883b50-0a54-4318-a4d1-7ca93605eb96",
+      "id": "cfa42f2a-f748-490c-89b1-10e545d33a69",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
