@@ -13109,255 +13109,6 @@
           "id": "09350618-ecfe-4e49-8357-099145210f7d"
         },
         {
-          "name": "createAssetsStage",
-          "item": [
-            {
-              "name": "Authenticate",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "a503642a-2f53-49b5-882a-9eee26c944ab",
-                    "exec": [
-                      "let responseData = JSON.parse(responseBody);",
-                      "let username = responseData.account.email;",
-                      "let validate = pm.variables.get(\"realUser\")",
-                      "let Order;",
-                      "",
-                      "",
-                      "console.log(\"adding auth Token value\")",
-                      "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
-                      "",
-                      "pm.test(\"Validate user is Active\", function () { // account is active",
-                      "    pm.expect(responseData.account.active).to.be.true;",
-                      "});",
-                      "",
-                      "pm.test(\"Validate Correct user is logged in\", function () {",
-                      "    pm.expect(username).to.be.eql(`${validate}`)",
-                      "});",
-                      "",
-                      "pm.test(\"Validate email is equal to username\", function () {",
-                      "    pm.expect(responseData.account.email).to.be.eql(responseData.account.username);",
-                      "});",
-                      "",
-                      "for (let filter of responseData.account.meta){ // iteration for every value under meta array",
-                      "    console.log(filter);",
-                      "    if(filter.key == \"register_source\"){",
-                      "        Order = filter;",
-                      "        console.log(Order);",
-                      "    }",
-                      "}",
-                      "",
-                      "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
-                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
-                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
-                      "});",
-                      "",
-                      "pm.test(\"verify key-value are correct if User is registered on our Platform\", function(){ // validate register source on platform is inplayer",
-                      "    pm.expect(Order.key).to.eql(\"register_source\"),",
-                      "    pm.expect(Order.value).to.be.eql(\"inplayer\");",
-                      "});",
-                      "",
-                      "",
-                      "",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "58aacca8-db34-4105-a67e-b1ff5066a295",
-                    "exec": [
-                      "let usernamev1 = \"oliver.pinev@inplayer.com\";",
-                      "",
-                      "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "b9e4ed74-df24-4497-b3b9-a6b0b05dd016",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "client_id",
-                      "value": "3b39b5ab-b5fc-4ba3-b770-73155d20e61f",
-                      "type": "text"
-                    },
-                    {
-                      "key": "grant_type",
-                      "value": "password",
-                      "type": "text"
-                    },
-                    {
-                      "key": "username",
-                      "value": "oliver.pinev@inplayer.com",
-                      "type": "text"
-                    },
-                    {
-                      "key": "password",
-                      "value": "Password123",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "https://{{baseUrl}}/v2/accounts/authenticate"
-              },
-              "response": []
-            },
-            {
-              "name": "Create-PaidAsset",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "id": "592b9e0f-5b7e-468c-ac3a-a1035501b5d5",
-                    "exec": [
-                      "const responseData = JSON.parse(responseBody);",
-                      "let evtDtls = responseData.event_details;",
-                      "pm.environment.set(\"itemID\", responseData.id);",
-                      "pm.environment.set(\"merchantUUID\", responseData.merchant_uuid);",
-                      "pm.environment.set(\"eventDetailsID\", responseData.event_details.id);",
-                      "",
-                      "    ",
-                      "    if (responseData.access_control_type.id == 1 && responseData.item_type.id == 2){ //item type for html asset is 2",
-                      "    pm.test(\"Validate asset type is Paid\", function () {",
-                      "        console.log(\"inside if\")",
-                      "        //postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
-                      "        });",
-                      "    }",
-                      "    else{",
-                      "            pm.test(\"Asset Type in response is different than 1\", function(){",
-                      "           // postman.setNextRequest(\"ENTRY-ASSET CODE\");",
-                      "            throw new Error(\"access_control_type and item_type are not equal\");",
-                      "        });  ",
-                      "",
-                      "    }",
-                      "    if (responseData.item_type.content_type == \"html\" && responseData.item_type.name == \"html_asset\"){",
-                      "    pm.test(\"Assertion that HTML asset were created\", function () {",
-                      "        });",
-                      "    }",
-                      "    pm.test(\"Validate default/initial value for event_type equals other\", function () {",
-                      "    pm.expect(responseData.event_type).to.be.eql(\"live\");",
-                      "});",
-                      "",
-                      "    pm.test(\"Verifying initial values for event details object\", function () {",
-                      "    pm.expect(evtDtls.event_name).to.be.eql(\"\"); // validate empty string for event_name",
-                      "    pm.expect(evtDtls.event_name).to.be.a(\"string\"); // validate value type for event_name",
-                      "    console.info(\"event name is empty\");",
-                      "    pm.expect(evtDtls.event_description).to.be.eql(\"\");",
-                      "    pm.expect(evtDtls.event_description).to.be.a(\"string\");",
-                      "    console.log(typeof evtDtls.event_description);",
-                      "    pm.expect(evtDtls.content_category).to.be.eql(\"\");",
-                      "    pm.expect(evtDtls.content_category).to.be.a(\"string\");",
-                      "    pm.expect(evtDtls.web_page).to.be.eql(\"\");",
-                      "    pm.expect(evtDtls.web_page).to.be.a(\"string\");",
-                      "    pm.expect(evtDtls.replay_available).to.be.eql(null);",
-                      "    console.log(typeof evtDtls.replay_available);",
-                      "    pm.expect(evtDtls.replay_available).to.be.null;",
-                      "    pm.expect(evtDtls.expected_viewership).to.be.eql(0);",
-                      "    pm.expect(evtDtls.expected_viewership).to.be.a(\"number\");",
-                      "    pm.expect(evtDtls.is_advertised).to.be.eql(false);",
-                      "    pm.expect(evtDtls.is_advertised).to.be.a(\"boolean\");",
-                      "    pm.expect(evtDtls.industry).to.be.eql(\"\");",
-                      "    pm.expect(evtDtls.industry).to.be.a(\"string\");",
-                      "});",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "id": "86475879-6d5e-49a6-b64e-db769e05f849",
-                    "exec": [
-                      "//generate random code from 1-3",
-                      "let randomNumber = Math.floor(Math.random() * 10000);",
-                      "pm.environment.set(\"titlePaidAsset\", \"Paid Asset\"+`${randomNumber}`);",
-                      "pm.environment.set(\"paid\", 1);",
-                      "//let rndInt = Math.floor(Math.random() * 3) + 2",
-                      "    //console.log(rndInt)",
-                      "   // pm.environment.set(\"rndControlTypeID\", rndInt);",
-                      "",
-                      "//postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
-                      "//postman.setNextRequest(\"ENTRY-ASSET CODE\");",
-                      "//postman.setNextRequest(\"Authenticate\");"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "id": "06211d9d-2082-46d2-91a9-5a7fd5024a3a",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": {
-                    "token": "{{authToken}}"
-                  }
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "urlencoded",
-                  "urlencoded": [
-                    {
-                      "key": "item_type",
-                      "value": "html_asset",
-                      "type": "text"
-                    },
-                    {
-                      "key": "access_control_type_id",
-                      "value": "{{paid}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "title",
-                      "value": "{{titlePaidAsset}}",
-                      "type": "text"
-                    },
-                    {
-                      "key": "is_giftable",
-                      "value": "1",
-                      "type": "text",
-                      "disabled": true
-                    },
-                    {
-                      "key": "gift_description",
-                      "value": "\"est gift desc\"",
-                      "type": "text",
-                      "disabled": true
-                    },
-                    {
-                      "key": "event_type",
-                      "value": "live",
-                      "type": "text"
-                    }
-                  ]
-                },
-                "url": "https://staging-v2.inplayer.com/v2/items",
-                "description": "This POST request create an Asset of type Live and have implemented some Assertion"
-              },
-              "response": []
-            }
-          ],
-          "id": "ebdc8287-a3dc-4324-840f-1d96a70d54bf",
-          "description": "This folder consist of basic API calls in order to easily generate Records/Assets for testing purpose. Using this folder we can create assets in timely manner"
-        },
-        {
           "name": "Registration/ Freemium",
           "item": [
             {
@@ -15682,77 +15433,77 @@
   ],
   "variable": [
     {
-      "id": "c5abe347-da03-4ae3-87f1-2662df96df68",
+      "id": "45994333-61b3-44d1-99bf-6687e7834725",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "fc2ecdd2-a932-4625-941e-65b0928b1c40",
+      "id": "57f2a98a-8f5e-4ae4-b3de-f89e96e2c13e",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "ad68fb0a-83bd-43a6-9a3c-9158a801a92b",
+      "id": "bb215015-f138-4651-bc1e-bc4f3f5eccab",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "7f70abb1-bea8-490c-a44e-15882a4ef459",
+      "id": "32c88a98-1348-4c75-af9a-ce88150e78e8",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "19983a7c-9426-4049-a1bc-13ad9b8d121f",
+      "id": "d148a1db-309e-40f4-a870-a18a29f660d1",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "a38175fa-3542-4605-b557-92eb5f0ed85f",
+      "id": "68065803-b7fd-4d2f-a6d7-e129cf07d4a9",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "c664f71a-dbe7-434e-88c4-2e1b49a459ec",
+      "id": "0def7dcc-2c4a-4589-be54-d3dcb6cd7d5f",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "80361d22-4585-4b08-a641-9075050576a3",
+      "id": "ec133fc7-0622-4b4f-8b3b-b8846866d439",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "93b0066d-6208-4208-b0db-38ea947af496",
+      "id": "34254a21-3898-4796-9601-843ca2abbf54",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "272f5f80-2d51-4d12-acc6-966830a3ecbe",
+      "id": "3e7894e6-179c-45d8-8ec6-1d18da5d0fbf",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "423d6a75-4ae5-4959-8f15-7ccec6cc353b",
+      "id": "8c5efe77-075a-49e3-a7ee-0fc2d93adaa8",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "ccf04e36-b1f0-4305-acbb-bcb4966a9fca",
+      "id": "087d7b06-7ca1-46ff-b8cd-2ed4fc769ebd",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "8d6d8c34-41e5-4c9c-831e-17ae061da849",
+      "id": "f2347d2e-c28a-4836-be62-d2c92a3cfd46",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "f225b45c-73cc-4459-a134-8ac1314bee22",
+      "id": "828adbad-826b-45a1-9388-c9192405c090",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "5e175ff9-b2db-484c-9abe-12b69105e790",
+      "id": "c1cc6343-9a67-4794-a1cd-6df12596fa3c",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
