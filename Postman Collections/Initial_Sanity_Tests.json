@@ -10569,6 +10569,147 @@
           "description": "Postman Echo is service you can use to test your REST clients and make sample API calls. It provides endpoints for `GET`, `POST`, `PUT`, various auth mechanisms and other utility endpoints.\n\nThe most basic request in this entire collection is the very first `GET` request under the `Request Methods` folder, called [\"Get Request\"](https://devrel.postman.co/workspace/10-Postman-Features~41f602ab-1a0b-423e-8d6f-1ba20bb27b31/request/14272639-1d215a7f-8403-457d-812b-804e1ee6c808).\n\nThe documentation for the endpoints as well as example responses can be found at [https://postman-echo.com](https://postman-echo.com/?source=echo-collection-app-onboarding)"
         },
         {
+          "name": "3. Postman Visualizer",
+          "item": [
+            {
+              "name": "1. Basic visualizer demo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "b56d4656-8864-4fd8-b587-8c65837f6dc6",
+                    "exec": [
+                      "const template = `",
+                      "<ul>",
+                      "",
+                      "{{#each response.data.data}}",
+                      "",
+                      "<li>{{this.message}}</li>",
+                      "",
+                      "{{/each}}",
+                      "",
+                      "</ul>",
+                      "",
+                      "`",
+                      "",
+                      "pm.visualizer.set(template, {response: pm.response.json()})",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "082ad98d-f0d3-4692-bc70-e3c8e4b5bb8d",
+                    "exec": [
+                      "console.log('hello');"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "66273a09-5806-46b7-ba72-cfa65a6270bb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"data\": [\n        {\n            \"owner\": {\n                \"id\": \"jpxJ6CnDgBUcqmMTczMh\",\n                \"email\": \"edina.barbosa@example.com\",\n                \"firstName\": \"Édina\",\n                \"title\": \"ms\",\n                \"lastName\": \"Barbosa\",\n                \"picture\": \"https://randomuser.me/api/portraits/women/28.jpg\"\n            },\n            \"id\": \"yPyeyGhXNcn8dZP6e87o\",\n            \"message\": \"😉😉😍😍 Pretty photo\",\n            \"publishDate\": \"2020-05-19T17:11:14.284Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"IrNhFLyOw2a6R10BntKW\",\n                \"picture\": \"https://randomuser.me/api/portraits/women/66.jpg\",\n                \"lastName\": \"Çetiner\",\n                \"title\": \"miss\",\n                \"email\": \"oya.cetiner@example.com\",\n                \"firstName\": \"Oya\"\n            },\n            \"id\": \"04aA0p5xh5Gj6SqXB8tB\",\n            \"message\": \"😊👍👍 Awesome shot\",\n            \"publishDate\": \"2020-04-12T20:01:41.212Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"URaBcSCMpXr96fpmjCjk\",\n                \"lastName\": \"Vega\",\n                \"email\": \"roberto.vega@example.com\",\n                \"firstName\": \"Roberto\",\n                \"picture\": \"https://randomuser.me/api/portraits/men/25.jpg\",\n                \"title\": \"mr\"\n            },\n            \"id\": \"ZQX9bfvymVusi36Go9D9\",\n            \"message\": \"😁😁😌😌 Impressive image\",\n            \"publishDate\": \"2020-03-20T02:34:25.132Z\"\n        },\n        {\n            \"owner\": {\n                \"id\": \"yLyiEdhLwMn5tOPA447y\",\n                \"email\": \"andre.robert@example.com\",\n                \"title\": \"mr\",\n                \"firstName\": \"André\",\n                \"lastName\": \"Robert\",\n                \"picture\": \"https://randomuser.me/api/portraits/men/9.jpg\"\n            },\n            \"id\": \"OQVzaZEOJkqwP26KMET0\",\n            \"message\": \"Cool pic\",\n            \"publishDate\": \"2020-01-17T03:42:22.157Z\"\n        }\n    ],\n    \"total\": 4,\n    \"page\": 0,\n    \"limit\": 10,\n    \"offset\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "postman-echo.com/post",
+                "description": "Send the data you want to visualize in the **Body** as **raw** `JSON` then pass it into the visualizer template via the `data` object in the response.\n\n* Open the request **Tests** to see how Postman builds the response JSON into the visualizer template.\n\nTry tweaking it by changing to a 'line' or 'pie' chart, then send different types of data and visualize them your own way!"
+              },
+              "response": []
+            },
+            {
+              "name": "2. Basic visualizer chart demo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "ef1a0c5e-21cd-4e27-972e-d376ec5af567",
+                    "exec": [
+                      "var template = `",
+                      "<h1>Visualizer chart example</h1>",
+                      "<!--use handlebars to reference the response data passed via pm.visualizer.set at the bottom of this script-->",
+                      "<div>{{response.url}}</div>",
+                      "",
+                      "<!--example uses chart.js-->",
+                      "<canvas id=\"myChart\"></canvas>",
+                      "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js\"></script> ",
+                      "<script>",
+                      "var ctx = document.getElementById('myChart');",
+                      "//the getData function provides access to the response data via the value object",
+                      "pm.getData(function (err, value) {",
+                      "    //tip: try changing 'bar' to 'line' or 'pie'",
+                      "    var myChart = new Chart(ctx, {",
+                      "\t    type: 'line',",
+                      "    \tdata: {",
+                      "    \t    labels: value.response.data.names,",
+                      "    \t\tdatasets: [{ ",
+                      "\t    \t\tlabel: 'Data',",
+                      "\t    \t\tbackgroundColor: '#ff000066',",
+                      "\t    \t\tborderWidth: 1,",
+                      "\t    \t\tdata: value.response.data.nums",
+                      "\t    \t}]",
+                      "    \t},",
+                      "         options: {",
+                      "            scales: {",
+                      "                yAxes: [{",
+                      "                    ticks: {",
+                      "                        beginAtZero: true",
+                      "                    }",
+                      "                }]",
+                      "            }",
+                      "        }",
+                      "    });",
+                      "});",
+                      "</script>`;",
+                      "",
+                      "//pass the response data into the template",
+                      "pm.visualizer.set(template, {",
+                      "    response: pm.response.json()",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "67073235-be41-4b55-9478-41ff2d0b0ecf",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"names\": [\n        \"Dorothea\", \"Rose\", \"Blanche\", \"Sophia\"\n    ],\n    \"nums\": [\n        1, 3, 2, 4\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "postman-echo.com/post",
+                "description": "Send the data you want to visualize in the **Body** as **raw** `JSON` then pass it into the visualizer template via the `data` object in the response.\n\n* Open the request **Tests** to see how Postman builds the response JSON into the visualizer template.\n\nTry tweaking it by changing to a 'line' or 'pie' chart, then send different types of data and visualize them your own way!"
+              },
+              "response": []
+            }
+          ],
+          "id": "b6556ddf-80bc-477a-ae99-1df7161cb27c",
+          "description": "Two simple requests showing how you can learn to use the [Postman Visualizer](https://learning.postman.com/docs/sending-requests/visualizer/) - by sending the data you want to visualize to the Postman Echo API.\n\n* The [Postman Echo API](https://docs.postman-echo.com/) helps you learn Postman by echoing back whatever you send it.\n* This template uses a `POST` request with **raw** `JSON` in the **Body** to send the data you want to visualize.\n* Check out the **Body** of the request to access and change the visualization data.\n* Open the request **Tests** to see how Postman builds the response data into a visualization. Change it to tweak your chart display!"
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -14787,77 +14928,77 @@
   ],
   "variable": [
     {
-      "id": "50235b75-57c0-4208-84b1-5550ead81d7e",
+      "id": "bb839747-5d65-4dc2-956d-2b012a9436fb",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "ea628eeb-4ab7-4d43-93f2-aaf6ba3b6196",
+      "id": "90322b65-eba9-45d8-aee2-33a5845d4140",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "b0bdd105-a112-4730-8b33-e459bf25e0f2",
+      "id": "c90d8ab3-c49d-4416-a410-d768a49bd900",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "7dc97c6a-f723-4315-9449-84ad4438fa74",
+      "id": "a3f2ff02-a71c-4cf9-a73b-89535e7a2a47",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "be739d17-ac17-486f-a844-b395a5707892",
+      "id": "5acfd94b-7c65-49b0-87cb-8481abe993e9",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "a5878c5a-e75a-4fc1-82e0-713a9942e479",
+      "id": "b9b2ed73-433f-4338-af1d-3e7d5113cf1b",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "93a02560-6b8b-490f-907c-77bc5fb6d5e8",
+      "id": "9316db69-9043-40f8-baca-f536ef0a74f1",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "9f8fad42-2fa9-4bc8-aec9-bc718f888fc0",
+      "id": "b3c9014f-ee14-48f1-bed0-2a1c8931d3a5",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "cbef84b3-a5c4-4f54-85c8-e9d658150511",
+      "id": "24a40a8a-2f7a-4529-b6e9-df20d6d32418",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "3ac451bb-5372-478b-bb64-1af1fed91372",
+      "id": "2dd1440d-9b49-4bf6-8e23-2e54ab103904",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "c29d5e38-766f-4af4-be81-e05d6309ea15",
+      "id": "ace5bc09-2d8a-4c2d-8756-b2d917f67652",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "ef42b9c7-6500-4919-87df-f0839645331c",
+      "id": "97c1964b-14c4-47e6-843b-dd3492ec3849",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "2dc5f9cd-5393-4ee6-b7f3-84d240753e61",
+      "id": "3b32fb16-36dc-4370-9cd8-7075493d7682",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "dd272f35-7133-472e-853d-ed347b3263e0",
+      "id": "0a75160b-58af-4736-894c-d571a9df4621",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "982279b5-1cc0-4a0e-b2a1-c9098ca6cbc5",
+      "id": "c9c13ce9-93af-4e47-b6fe-c19b4599c3ed",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
