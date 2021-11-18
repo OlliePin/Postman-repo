@@ -10799,6 +10799,433 @@
           "description": "This collection shows some very basic examples of using some of the external libraries available within the Postman testing sandbox. \n\nThe libraries shown in this collection include:\n- [Faker.js](https://github.com/marak/Faker.js/) in the params tab of the request, used to generate fake data.\n- [Lodash](https://lodash.com/) in the Tests tab of the request, which is a JavaScript library providing utility functions for common programming tasks.\n- [Moment.js](https://momentjs.com/) in the Tests tab of the request, which helps format and display dates in JavaScript.\n- [chai.js](https://www.chaijs.com/) in the Tests tab of the request, which is a BDD/TDD assertion library.\n- [crypto-js](https://www.npmjs.com/package/crypto-js) in the Tests tab of the request, which is a growing collection of standard and secure cryptographic algorithms.\n\nFor libraries demonstrated in the Tests tab, uncomment the code below the library name, run the request, and then open the console to see the results.\n\nFor more information on using external libraries, check out [the documentation](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#using-external-libraries) on external libraries."
         },
         {
+          "name": "5. Workflow Control",
+          "item": [
+            {
+              "name": "First request",
+              "id": "220d8ad2-44ee-4e51-b48a-19eaa15d500d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=1",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Second request",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "35822d32-be58-4a41-a43f-6a8a2b2028d6",
+                    "exec": [
+                      "postman.setNextRequest(\"Fourth request\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "aaafba77-b33c-46a8-b57e-8102ecd1005a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=2",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Third request",
+              "id": "3bfd4ef6-5270-4bae-8f43-428565aded3d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=3",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "3",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fourth request",
+              "id": "8fb0559e-659f-454d-a81d-a057b70ab59d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?request=4",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "request",
+                      "value": "4"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "0307205b-890a-4d16-bbac-e3a622cfa3d3",
+          "description": "Postman provides some JavaScript APIs that you can use in request scripts to customize your [workflow control](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#sending-requests-from-scripts). The `postman` object provides functionality for testing your request and response data and workflow control. If you have conditional logic, you can highly customize the workflow. Just be careful not to end up in an endless loop!\n\nThe second request has the following code under the Tests tab: `postman.setNextRequest(\"Fourth request\");`. If you run the \"5. Set Next Request Flow\" folder in the Runner, that code will execute after the response is received in the second request, and the next request in the collection run will be \"Fourth request\", completely skipping over \"Third request\".\n\nSee the run order below where all requests are selected:\n\n![Image of run order](https://i.imgur.com/VBwzGih.png)\n\nBut because of the code in the Tests tab of the second request, the runner ran \"Fourth request\" immediately after \"Second request\", completely skipping \"Third request\":\n![Image of result order](https://i.imgur.com/YjHwpZP.png)"
+        },
+        {
+          "name": "6. Collaboration Features",
+          "item": [
+            {
+              "name": "Add comment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "34d29944-2583-4ad0-b5ca-3df18df09e54",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response time is less than 200ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "39d23f41-fb1e-410a-82d4-b8ed7e0e935b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://postman-echo.com/get?foo=bar",
+                  "protocol": "https",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "foo",
+                      "value": "bar",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "0aab3fbc-042e-4845-abd7-84b62711903b",
+          "description": "Let's do some work together! How fun!\n\nPostman used to be a platform that people worked on in isolation and tested APIs on their own. With commenting, branching, pull requests, and more, you shoudn’t work alone anymore! Let’s add a comment. Fork, change, PR, tag person, comment, approve, merge. Magic!\n\nTo learn more about comments, check out [the docs](https://learning.postman.com/docs/collaborating-in-postman/commenting-on-collections/#:~:text=In%20Postman%2C%20open%20the%20request,%2C%20Resolved%20Comments%2C%20or%20both). To see the comments on this folder, you can click the \"comments\" icon right below the documentation icon, or you can go directly to the [link here](https://devrel.postman.co/workspace/10-Postman-Features~41f602ab-1a0b-423e-8d6f-1ba20bb27b31/folder/14272639-0d9b9d24-df12-43c9-9611-de9c6f230b5f?ctx=comments). \n\nAnd to see the comments on the actual request, switch from `build mode` to `comment mode`. If you're in build mode, you won't see the comments on a request.\n![Image of run order](https://i.imgur.com/vkbfpVl.gif)"
+        },
+        {
+          "name": "7. Collection-Level Information",
+          "item": [
+            {
+              "name": "Get echo name 1",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "39c727c7-caeb-4f76-9e5b-2aa15678274e",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "eb6a4197-5ee8-4e5c-9ada-cfe06833765e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?name=Sean",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "Sean",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get echo name 2",
+              "id": "465809b4-a729-4ffa-bfb1-c6d895cd3425",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?name={{$randomFirstName}}",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "{{$randomFirstName}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get echo name 3",
+              "id": "39d08587-f921-45ca-b375-49f1d148def3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?name={{$randomFirstName}}",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "{{$randomFirstName}}",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get echo name 4",
+              "id": "7e3cc4bc-a1cf-46bb-b47c-75146488df27",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?name={{$randomFirstName}}",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "{{$randomFirstName}}",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "15dab1f6-e17e-4077-92cf-05e9bd0b20be",
+          "description": "This collection shows how you can perform actions at the collection level. This includes storing, accessing, and changing variables at the collection level as well as creating tests that can be repeated for each specific request in the collection.\n\nIn this basic example, under the Tests tab of the folder \"7. Collection Level Stuff\", there's only one test that checks for a status code of 200. Each of the individual requests do not have a test in the Pre-request or Tests tab. However if you run the entire folder with the runner, you'll get 4 passed tests! This is because the code in the Tests tab of the folder will run after each and every request in the folder.\n\nStay **DRY**!",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "7d875302-f395-4289-ba15-75cb0bd25624",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "8d0995b1-62e4-4928-ab74-795888552669",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Body matches string\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Sean\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Monitors for Regression Testing",
+          "item": [
+            {
+              "name": "Get random number",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "845de616-8f9b-4a5a-881d-54c3bcdd009e",
+                    "exec": [
+                      "let randomNumber = parseInt(pm.response.json().args.number);",
+                      "let numberLimit = parseInt(pm.environment.get(\"testInteger\"));",
+                      "",
+                      "pm.test(`Random number is larger than ${numberLimit}`, function () {",
+                      "    pm.expect(randomNumber).to.be.greaterThan(numberLimit);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "24f6e825-33a4-4210-8902-16859b802449",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "postman-echo.com/get?number={{$randomInt}}",
+                  "host": [
+                    "postman-echo",
+                    "com"
+                  ],
+                  "path": [
+                    "get"
+                  ],
+                  "query": [
+                    {
+                      "key": "number",
+                      "value": "{{$randomInt}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "687f04a6-6435-452d-bf4e-6161d7bef3ff",
+          "description": "You may know [monitors](https://learning.postman.com/docs/designing-and-developing-your-api/monitoring-your-api/intro-monitors/) exist or even use them. Monitors are a great way to stay up to date on the health and performance of your APIs. They run through your collections and give you the status of your tests. They’re really only as good as your tests.\n\nThey can essentially be used as automated regression testing. You can improve this pretty easily to do continuous regression testing using monitors by having it automatically run in different environments throughout the day to flag issues early.\n\nThis collection attempts to highlight a very basic use case. It is a simple request that generates a random number and sends it to Postman Echo. We can test if the number was above a certain threshold. And if we want to check if the number is above multiple thresholds, one way to do this automatically is with multiple monitors. \n\nClick the \"Monitors\" section in the left pane. There are two monitors running the exactly same collection (this one called \"9. Fun with Monitors\"), but they just run off of different environments. The key here is that the environments have different values set for `testInteger`. This means the same collection can be run and tested throughout the day against different values. If any of these tests fail, monitors can notify immediately.\n\nThe code in the Tests tab gets the environment variable called `testInteger` and compares the random integer from the request params to the `testInteger` value. There are two environments that have a different value for `testInteger`.\n- `High Value Environment` sets the `testInteger` value to 500.\n- `Low Value Environment` sets the `testInteger` value to 200.\n\nRunning this collection in multiple monitors in the two different environments listed above allows us test against multiple scenarios throughout the day.\n\n<p>\n  <img height=\"300\" src=\"https://i.imgur.com/KMZ9Tix.png\">\n</p>",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "59c89bc8-cbf9-4234-ab23-d6e0b79a8839",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "0c32fa14-9533-42d6-b1ab-8d509b6e2c94",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Get all Workspaces",
           "id": "c68e5a0d-3c1f-4cc7-8751-552867504d96",
           "protocolProfileBehavior": {
@@ -15017,77 +15444,77 @@
   ],
   "variable": [
     {
-      "id": "67872764-082d-4af2-8457-de169515dec4",
+      "id": "09fee1cf-28e9-4335-a943-f8c1af3f3d03",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "295c5bf5-f5a3-4745-ba27-f40dd3e62f04",
+      "id": "0a1b37ed-705a-4fa5-a3f4-716adfd158ac",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "ebd3a86a-ac8c-4161-aeba-b7b68eec173f",
+      "id": "c84745df-f25d-48bd-9e4f-2268f13d0e03",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "21e2f70b-f17b-48ef-8432-37252d797068",
+      "id": "3ab767de-de6c-4f51-b22b-6c56bb28393b",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "c9497f3e-c81b-4910-b4e1-e8028fe1900e",
+      "id": "3722ddf3-1d15-49bd-b90f-a7f0d4d7a4ba",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "d50aa167-3b60-49f3-a1b9-6a2e0790b10b",
+      "id": "6ac8bba2-fdbf-45ff-81a0-55dd4b17b11f",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "c9b8991d-1643-4584-8f23-144673d0f5f6",
+      "id": "e5d124f9-d77b-41f0-86f7-a637e95100bf",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "b8ad0efe-bb10-4f0f-8278-92a90076632d",
+      "id": "d3c44e20-96ef-4a13-ac62-f3df20861ce2",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "09b3b070-9674-408e-a30f-ac66ba54b876",
+      "id": "6d4aa12f-f700-4e3a-95d9-6c1b94323bd1",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "5bb5315a-79e6-431e-885b-eca9235277b3",
+      "id": "687d78f5-3b48-4c72-962b-b6d17a600a7c",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "46d3542a-7414-4827-8b67-3ac34a9ddc18",
+      "id": "ce6528b6-08af-4826-956a-fbb387ee1b36",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "105f1786-c455-4f8b-abb4-794efabe82c9",
+      "id": "2b80379b-0d63-4e5d-ada0-f87b3ed450eb",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "6a7e77c4-40a7-4436-9721-53a358070311",
+      "id": "d99208ba-9f60-4117-8d47-34b76049ee89",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "fdf74e73-4c54-4b73-9967-852388373496",
+      "id": "60c4937f-4ca0-4a2c-8d4b-9cef532f3aaf",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "4164d0a5-52a0-4caf-b340-b262b1453447",
+      "id": "6e797e4f-76b7-48b6-a631-60cf65b5e4ec",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
