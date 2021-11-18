@@ -13358,7 +13358,7 @@
           "description": "This folder consist of basic API calls in order to easily generate Records/Assets for testing purpose. Using this folder we can create assets in timely manner"
         },
         {
-          "name": "Freemium",
+          "name": "Registration/ Freemium",
           "item": [
             {
               "name": "Authenticate",
@@ -15682,77 +15682,77 @@
   ],
   "variable": [
     {
-      "id": "479c287d-3ba3-4528-b949-6815c8ca6e9d",
+      "id": "97054ad5-9758-4b42-9d98-9b3c480353ae",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "2ce79472-6d89-40db-bf4b-a1eb50c0dc30",
+      "id": "fd348dea-b760-43ec-9160-98480c53502e",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "acd8d279-097a-41bc-af8e-7d9de5b1f7b8",
+      "id": "02f6a507-27fb-47ea-a3b4-51f999df815b",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "3bc0bdf3-ac86-405b-9dcf-1ad02356fc3c",
+      "id": "ebe186da-3dd9-41b6-af00-a24387e79a5a",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "ce356d2b-efba-4d52-95e4-441dfecb91d3",
+      "id": "5bca2941-2fae-486e-a2dd-e705f859b708",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "e5cc2690-c58b-460b-88a9-3af41e0fff25",
+      "id": "4f3c80b6-2ade-4e8e-a036-1a1d8961d25e",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "44fb9a99-40b1-45a5-abd2-657de46c3123",
+      "id": "f7650bce-8fd4-4398-82f2-576c38eb449d",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "b97b48af-04da-42c5-a121-5c0d00a20490",
+      "id": "0b68c411-04be-4a29-969c-296ae9746e93",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "00030d9c-4e72-45df-bc67-c1c37e6c3b30",
+      "id": "f16a7f89-97c1-4a7c-b775-ade72d654dd8",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "33fdefde-40c4-4991-95e5-75d422ef8188",
+      "id": "b92cb402-f313-44b3-bfa1-12e217d7cb83",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "4e9696c8-7e01-48d5-b412-9621a9084087",
+      "id": "9064d3b5-287b-4e02-839a-e07d0dab4c28",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "4a663e32-b6ea-4879-b8a7-f4263cafe687",
+      "id": "26927c38-e82b-4411-a945-5dbc81a06529",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "c3b404b5-3a9c-41b4-a191-4128b9bdaf48",
+      "id": "36ab8f6f-e36d-4dee-98bf-f5514adc3c0b",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "d665d9eb-7aed-47d8-97c3-3982a69acbed",
+      "id": "ddda2b8f-2518-42bd-8ec7-bcaa285f834a",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "00c64efa-1405-4ee7-925a-ea98df9c676a",
+      "id": "af695c7b-ed49-4798-afd8-5b107053cc59",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     }
