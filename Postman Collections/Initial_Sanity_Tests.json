@@ -13330,12 +13330,12 @@
                     "exec": [
                       "let responseData = JSON.parse(responseBody);",
                       "let username = responseData.account.email;",
-                      "let validate = pm.variables.get(\"realUser\")",
+                      "let validate = pm.variables.get(\"passcode_MerchantEmail\")",
                       "let Order;",
                       "",
                       "",
                       "console.log(\"adding auth Token value\")",
-                      "pm.environment.set(\"authToken\", responseData.access_token) // store Token into variable",
+                      "pm.collectionVariables.set(\"passcode_MerchantToken\", responseData.access_token) // store Token into variable",
                       "",
                       "pm.test(\"Validate user is Active\", function () { // account is active",
                       "    pm.expect(responseData.account.active).to.be.true;",
@@ -13377,9 +13377,7 @@
                   "script": {
                     "id": "f3bff98c-5747-44f4-a884-dbf04f76e267",
                     "exec": [
-                      "let usernamev1 = \"oliver.pinev@inplayer.com\";",
-                      "",
-                      "pm.environment.set(\"realUser\", usernamev1);//save username before login on platform",
+                      "pm.collectionVariables.set(\"passcode_MerchantEmail\", \"oliver.pinev@inplayer.com\");//save username before login on platform",
                       ""
                     ],
                     "type": "text/javascript"
@@ -13418,7 +13416,7 @@
                     }
                   ]
                 },
-                "url": "https://{{baseUrl}}/v2/accounts/authenticate"
+                "url": "{{baseUrl}}/v2/accounts/authenticate"
               },
               "response": []
             },
@@ -13431,7 +13429,7 @@
                     "id": "8a49a11a-b631-4657-b888-ebeb76df30a6",
                     "exec": [
                       "let responseData = JSON.parse(responseBody);",
-                      "pm.environment.set(\"itemID\", responseData.id);",
+                      "pm.collectionVariables.set(\"passcode_ItemID\", responseData.id);",
                       "    ",
                       "    if (responseData.access_control_type.id == 2 && responseData.item_type.id ==2){",
                       "    pm.test(\"Validate asset type is Code (Passcode)\", function () {",
@@ -13465,7 +13463,7 @@
                       "//generate random code from 1-3",
                       "let rndInt = Math.floor(Math.random() * 3) + 1",
                       "    console.log(rndInt)",
-                      "    pm.environment.set(\"rndControlTypeID\", rndInt);",
+                      "    pm.collectionVariables.set(\"passcode_ControlTypeID\", rndInt);",
                       "",
                       "postman.setNextRequest(\"CREATE-Positive_PRIVATE_ASSET CODE\");",
                       "postman.setNextRequest(\"ENTRY-ASSET CODE\");"
@@ -13517,7 +13515,7 @@
                     }
                   ]
                 },
-                "url": "https://staging-v2.inplayer.com/v2/items"
+                "url": "{{baseUrl}}/v2/items"
               },
               "response": []
             },
@@ -13533,13 +13531,13 @@
                       "let codeGenerator = Math.floor(Math.random() * 10000);",
                       "let negRandom = Math.floor(Math.random() *10 *(-1));",
                       "",
-                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"startDate\", \"currentDate\");",
-                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
-                      "pm.environment.set(\"privateCode\", \"private\");",
-                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
-                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);",
+                      "pm.collectionVariables.set(\"passcode_CurrentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.collectionVariables.set(\"passcode_StartDate\", \"currentDate\");",
+                      "pm.collectionVariables.set(\"passcode_EndDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.collectionVariables.set(\"passcode_Code\", \"CODE\"+codeGenerator+\"TEST\");",
+                      "pm.collectionVariables.set(\"passcode_PrivateCode\", \"private\");",
+                      "pm.collectionVariables.set(\"passcode_NegativeRandom\", `${negRandom}`);",
+                      "pm.collectionVariables.set(\"passcode_PositiveRandom\", `${negRandom*(-1)}`);",
                       ""
                     ],
                     "type": "text/javascript"
@@ -13555,7 +13553,7 @@
                       "let codeUUID = responseData.id;",
                       "",
                       "",
-                      "pm.environment.set(\"codeUUID\", codeUUID);",
+                      "pm.collectionVariables.set(\"passcode_CodeUuid\", codeUUID);",
                       "",
                       "console.log(pm.variables.get(\"positiveRandom\"))",
                       "console.log(pm.variables.get(\"negativeRandom\"));",
@@ -13594,7 +13592,7 @@
                 "auth": {
                   "type": "bearer",
                   "bearer": {
-                    "token": "{{authToken}}"
+                    "token": "{{passcode_MerchantToken}}"
                   }
                 },
                 "method": "POST",
@@ -13604,37 +13602,37 @@
                   "urlencoded": [
                     {
                       "key": "item_id",
-                      "value": "{{itemID}}",
+                      "value": "{{passcode_ItemID}}",
                       "type": "text"
                     },
                     {
                       "key": "code",
-                      "value": "{{code}}",
+                      "value": "{{passcode_Code}}",
                       "type": "text"
                     },
                     {
                       "key": "start_date",
-                      "value": "{{currentDate}}",
+                      "value": "{{passcode_CurrentDate}}",
                       "type": "text"
                     },
                     {
                       "key": "end_date",
-                      "value": "{{endDate}}",
+                      "value": "{{passcode_EndDate}}",
                       "type": "text"
                     },
                     {
                       "key": "type",
-                      "value": "{{privateCode}}",
+                      "value": "{{passcode_PrivateCode}}",
                       "type": "text"
                     },
                     {
                       "key": "concurrent_sessions",
-                      "value": "{{positiveRandom}}",
+                      "value": "{{passcode_PositiveRandom}}",
                       "type": "text"
                     }
                   ]
                 },
-                "url": "https://staging-v2.inplayer.com/items/access/codes/create"
+                "url": "{{baseUrl}}/items/access/codes/create"
               },
               "response": []
             },
@@ -13910,13 +13908,13 @@
                       "let codeGenerator = Math.floor(Math.random() * 10000);",
                       "let negRandom = Math.floor(Math.random() *10 *(-1));",
                       "",
-                      "pm.environment.set(\"currentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"startDate\", \"currentDate\");",
-                      "pm.environment.set(\"endDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
-                      "pm.environment.set(\"code\", \"CODE\"+codeGenerator+\"TEST\");",
-                      "pm.environment.set(\"privateCode\", \"private\");",
-                      "pm.environment.set(\"negativeRandom\", `${negRandom}`);",
-                      "pm.environment.set(\"positiveRandom\", `${negRandom*(-1)}`);",
+                      "pm.collectionVariables.set(\"passcode_CurrentDate\", moment().format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.collectionVariables.set(\"passcode_StartDate\", \"currentDate\");",
+                      "pm.collectionVariables.set(\"passcode_EndDate\", moment().add(2, 'days').format((\"YYYY-MM-DD 00:00:00\")));",
+                      "pm.collectionVariables.set(\"passcode_Code\", \"CODE\"+codeGenerator+\"TEST\");",
+                      "pm.collectionVariables.set(\"passcode_PrivateCode\", \"private\");",
+                      "pm.collectionVariables.set(\"passcode_NegativeRandom\", `${negRandom}`);",
+                      "pm.collectionVariables.set(\"passcode_PositiveRandom\", `${negRandom*(-1)}`);",
                       ""
                     ],
                     "type": "text/javascript"
@@ -13928,10 +13926,10 @@
                     "id": "40d6d434-e8ba-49d8-bfbe-1d41f3f70656",
                     "exec": [
                       "let responseData = JSON.parse(responseBody);",
-                      "let initialCode = pm.variables.get(\"code\");",
+                      "let initialCode = pm.variables.get(\"passcode_Code\");",
                       "",
-                      "console.log(pm.variables.get(\"positiveRandom\"))",
-                      "console.log(pm.variables.get(\"negativeRandom\"));",
+                      "console.log(pm.variables.get(\"passcode_PositiveRandom\"))",
+                      "console.log(pm.variables.get(\"passcode_NegativeRandom\"));",
                       "",
                       "pm.test(\"Validate UUID format using regex\", function () {",
                       "    pm.expect(responseData.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i);",
@@ -13967,7 +13965,7 @@
                 "auth": {
                   "type": "bearer",
                   "bearer": {
-                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjBlYmNlZjZlLTk5YjUtNDljMy04M2VmLWRkMTc4MzM4YmQ5YiJ9.eyJhdWQiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJqdGkiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJpYXQiOjE2MjkzNzc2NjYsIm5iZiI6MTYyOTM3NzY2NiwiZXhwIjoxNjMxOTczMjY2LCJzdWIiOiJvbGl2ZXIucGluZXZAaW5wbGF5ZXIuY29tIiwic2NvcGVzIjpbXSwibWlkIjoxLCJhaWQiOjUxNDg2LCJtdWkiOiIzYjM5YjVhYi1iNWZjLTRiYTMtYjc3MC03MzE1NWQyMGU2MWYiLCJjdHgiOlsibWVyY2hhbnQiLCJtYXN0ZXIiXSwidGlkIjo1MTQ4NiwidHV1aWQiOiIwZWJjZWY2ZS05OWI1LTQ5YzMtODNlZi1kZDE3ODMzOGJkOWIiLCJvaWQiOjB9.uc8xofa40O9MZBSwSJAFG-5dG76KOle1683XMwMOT_Q"
+                    "token": "{{passcode_MerchantToken}}"
                   }
                 },
                 "method": "POST",
@@ -13977,37 +13975,37 @@
                   "urlencoded": [
                     {
                       "key": "item_id",
-                      "value": "{{itemID}}",
+                      "value": "{{passcode_ItemID}}",
                       "type": "text"
                     },
                     {
                       "key": "code",
-                      "value": "{{code}}",
+                      "value": "{{passcode_Code}}",
                       "type": "text"
                     },
                     {
                       "key": "start_date",
-                      "value": "{{currentDate}}",
+                      "value": "{{passcode_CurrentDate}}",
                       "type": "text"
                     },
                     {
                       "key": "end_date",
-                      "value": "{{endDate}}",
+                      "value": "{{passcode_EndDate}}",
                       "type": "text"
                     },
                     {
                       "key": "type",
-                      "value": "{{privateCode}}",
+                      "value": "{{passcode_PrivateCode}}",
                       "type": "text"
                     },
                     {
                       "key": "concurrent_sessions",
-                      "value": "{{negativeRandom}}",
+                      "value": "{{passcode_NegativeRandom}}",
                       "type": "text"
                     }
                   ]
                 },
-                "url": "https://staging-v2.inplayer.com/items/access/codes/create"
+                "url": "{{baseUrl}}//items/access/codes/create"
               },
               "response": []
             },
@@ -15367,6 +15365,1180 @@
                 }
               ],
               "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
+            },
+            {
+              "name": "PPV with Scheduled Start with Stripe",
+              "item": [
+                {
+                  "name": "Authenticate Merchant",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "de3fdd28-e6f8-4aee-9531-3476a8827c14",
+                        "exec": [
+                          "let responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_MerchantAccessToken\", responseData.access_token)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_MerchantId\", responseData.account.id)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_MerchantUuid\", responseData.account.uuid)"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "95e061ae-d889-40c9-954e-61a66f4ed5e3",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_MerchantUserName\", \"elena_gj_automation@mail.com\");//username for loging to MP   \r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_ClientId01\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\");//client id for loging to MP\r",
+                          "} else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_MerchantUserName\", \"elena.gjeorgievska@inplayer.com\");//username for loging to MP\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_ClientId01\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\");//client id for loging to MP\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "    pm.collectionVariables.get(\"ppvScheduledStart_ClientId01\")\r",
+                          "    pm.collectionVariables.get(\"ppvScheduledStart_MerchantUserName\")\r",
+                          "}\r",
+                          "\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "27f93112-edf1-43ba-a71f-6fdabedfaac7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "username",
+                          "value": "{{ppvScheduledStart_MerchantUserName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "test1234",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{ppvScheduledStart_ClientId01}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts/authenticate",
+                    "description": "# === Overview ===\nWith this test we are checking the `Authenticate` functionality for `Merchant Panel`.\n\n# === Variables ===\nCollection Variables that are set here are:\n1. `collectionVariables` (`\"mp.access_token_El\"`)\n1. `collectionVariables` (`\"merchantId_El\"`)\n1. `collectionVariables` (`\"clientId_El\"`)\n1. `collectionVariables` (`\"usernameMP_El\"`)\n1. `collectionVariables` (`\"clientId01_El \"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Authenticate Admin",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "7d1004dc-423c-4ad0-b844-f2e07a64d4df",
+                        "exec": [
+                          "let responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_AdminAccessToken\", responseData.access_token)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_AdminId\", responseData.account.id)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_AdminUuid\", responseData.account.uuid)\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "ebccfa86-2d8a-44a6-b7b6-5247d5bb36a9",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_AdminUserName\", \"elena.gjeorgievska+adminTEST@inplayer.com\");//username for loging to MP\r",
+                          "} else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_AdminUserName\", \"elena.gjeorgievska+adminPRODUKCIJA@inplayer.com\");//username for loging to MP\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "}\r",
+                          "\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "8351130a-0d4f-4a73-bb9e-866e5ad1e360",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "username",
+                          "value": "{{ppvScheduledStart_AdminUserName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "test1234",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{ppvScheduledStart_ClientId01}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts/authenticate",
+                    "description": "# === Overview ===\nWith this test we are checking the `Authenticate` functionality for `Admin Panel`.\n\n# === Variables ===\nCollection Variables that are set here are:\n1. `collectionVariables` (`\"usernameAP_El\"`)\n1. `collectionVariables` (`\"ap.access_token_El\"`)\n1. `collectionVariables` (`\"adminId_El\"`)\n1. `collectionVariables` (`\"adminclientId_El\"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Register Paywall User",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "3472b7b0-1b7f-40b4-a092-7740aa46ceec",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_PaywallUserAccessToken\", responseData.access_token)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_PaywallUserId\", responseData.account.id)"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "8139a22e-9e14-407e-94ca-e5cb132c77e3",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "console.log(checkEnv)\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    pm.collectionVariables.get(\"ppvScheduledStart_MerchantUuid\");//client id for loging to MP\r",
+                          "    let randomNumber = Math.floor(Math.random() * 10000);\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CreatePaywallUser\", \"el.gj.STAGE\" + `${randomNumber}` + \"@inplayer.com\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_PaywallUserName\", \"el gj STAGE automation user\" + `${randomNumber}`);\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_BrandingId\", \"1986\");\r",
+                          "} else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        pm.collectionVariables.get(\"ppvScheduledStart_MerchantUuid\");//client id for loging to MP\r",
+                          "        let randomNumber = Math.floor(Math.random() * 10000);\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CreatePaywallUser\", \"el.gj.LIVE\" + `${randomNumber}` + \"@inplayer.com\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_PaywallUserName\", \"el gj LIVE automation user\" + `${randomNumber}`);\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_BrandingId\", \"161\");\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "}\r",
+                          "\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "01015855-c8bf-45c1-a9ec-419a65dd2b3a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "full_name",
+                          "value": "{{ppvScheduledStart_PaywallUserName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "username",
+                          "value": "{{ppvScheduledStart_CreatePaywallUser}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "test1234",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password_confirmation",
+                          "value": "test1234",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{ppvScheduledStart_MerchantUuid}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "type",
+                          "value": "consumer",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[clientId]",
+                          "value": "{{ppvScheduledStart_MerchantUuid}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "branding_id",
+                          "value": "{{ppvScheduledStart_BrandingId}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "referrer",
+                          "value": "https://event.inplayer.com/v3/sandbox?asset=105726",
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "metadata[fullName]",
+                          "value": "Automation user",
+                          "type": "text",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts",
+                    "description": "# === Overview ===\nWith this test we are checking the `Accounts - register` functionality for `Paywall user`.\n\n# === Variables ===\nCollection Variables that are set here are:\n1. `collectionVariables` (`\"CreateAccountEmail_El\"`)\n1. `collectionVariables` (`\"full_name_El\"`)\n1. `collectionVariables` (`\"brandingId_El\"`)\n1. `collectionVariables` (`\"pw.access_token_El\"`)\n1. `collectionVariables` (`\"pw.consumerId_El\"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create asset via merchant",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "6b21dbef-b1f8-4ca6-9b01-12b19afc8581",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    pm.collectionVariables.get(\"ppvScheduledStart_MerchantAccessToken\");\r",
+                          "    let randomNumber = Math.floor(Math.random() * 10000);\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_ItemTitle\", \"sheduled start ppv\" + `${randomNumber}` + \" el gj\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_ItemContent\", \"This is your content\");\r",
+                          "}\r",
+                          "else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        pm.collectionVariables.get(\"ppvScheduledStart_MerchantAccessToken\");\r",
+                          "        let randomNumber = Math.floor(Math.random() * 10000);\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_ItemTitle\", \"sheduled start ppv\" + `${randomNumber}` + \" el gj\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_ItemContent\", \"This is your content\");\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "}"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "863d03a7-1aae-4059-acc4-a8903484e17a",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_ItemId\", responseData.id);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "4c6b98d4-ed17-44d5-8ed7-99ddb899038e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "item_type",
+                          "value": "html_asset",
+                          "type": "text"
+                        },
+                        {
+                          "key": "title",
+                          "value": "{{ppvScheduledStart_ItemTitle}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[preview_description]",
+                          "value": "{{ppvScheduledStart_ItemTitle}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[preview_title]",
+                          "value": "{{ppvScheduledStart_ItemTitle}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[paywall_cover_photo]",
+                          "value": "https://inplayer-paywall-v2.s3.amazonaws.com/images/ip-preview-premium.jpg",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[preview_button_label]",
+                          "value": "Buy",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[preview_image_name]",
+                          "value": "preview image",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[thumbnail_image]",
+                          "value": "https://inplayer-paywall-v2.s3.amazonaws.com/images/ip-preview-premium.jpg",
+                          "type": "text"
+                        },
+                        {
+                          "key": "metadata[thumbnail_image_name]",
+                          "value": "thumbnail image",
+                          "type": "text"
+                        },
+                        {
+                          "key": "access_control_type_id",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "event_type",
+                          "value": "",
+                          "type": "text"
+                        },
+                        {
+                          "key": "template_id",
+                          "value": "0",
+                          "type": "text"
+                        },
+                        {
+                          "key": "content",
+                          "value": "{{ppvScheduledStart_ItemContent}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/items",
+                    "description": "# === Overview ===\nWith this test we are checking the `v2 Items - POST/ create asset` functionality with `Marchant user`.\n\n# === Variables ===\nCollection Variables that are set here are:\n1. `collectionVariables` (`\"itemTitle_El\"`)\n1. `collectionVariables` (`\"itemId_El\"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create asset ppv price via merchant",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "8b2c5e5f-3312-419d-a19b-c46bb1d4ac8d",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_AccessFeeId\", responseData.id)\r",
+                          "\r",
+                          "if (pm.response.to.have.status(200)) {\r",
+                          "\r",
+                          "    let ppvScheduledStart_VarCurrentTime = Date.parse(new Date())\r",
+                          "    let ppvScheduledStart_VarStartsAt = responseData.starts_at + \"000\"\r",
+                          "\r",
+                          "    pm.test(\"Starts_at is bigger than current time\", function () {\r",
+                          "        pm.expect(ppvScheduledStart_VarStartsAt).to.not.equal(`${ppvScheduledStart_VarCurrentTime}`);\r",
+                          "    });\r",
+                          "} else {\r",
+                          "    pm.test(\"Starts_at is equal with current time when it should be bigger, test is fail\", function () {\r",
+                          "        pm.expect(ppvScheduledStart_VarStartsAt).to.equal(`${ppvScheduledStart_VarCurrentTime}`);\r",
+                          "    })\r",
+                          "};"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "35599fb5-e2ba-4edd-adde-a89dbba56655",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    let getRandomArbitrary = (Math.random() * (3 - 1) + 1);\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_AccessType\", 7);\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_AccessFeeAmount\", getRandomArbitrary);\r",
+                          "}\r",
+                          "else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        let getRandomArbitrary = (Math.random() * (3 - 1) + 1);\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_AccessType\", 4);\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_AccessFeeAmount\", getRandomArbitrary);\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "}\r",
+                          "\r",
+                          "let ppvScheduledStart_CurrentTime = new Date()\r",
+                          "ppvScheduledStart_CurrentTime.setMinutes(ppvScheduledStart_CurrentTime.getMinutes() + 1);\r",
+                          "let ppvScheduledStart_StartsAt = ppvScheduledStart_CurrentTime;\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_StartsAt\", ppvScheduledStart_StartsAt.toISOString());"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "7099ba54-a1a9-46ed-af5c-3c5a1a74bc4d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "access_type_id",
+                          "value": "{{ppvScheduledStart_AccessType}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "description",
+                          "value": "PPV scheduled start automation",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{ppvScheduledStart_AccessFeeAmount}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "currency",
+                          "value": "EUR",
+                          "type": "text"
+                        },
+                        {
+                          "key": "starts_at",
+                          "value": "{{ppvScheduledStart_StartsAt}}",
+                          "type": "text",
+                          "description": "example time: 2021-11-30T12:00:00.000Z ; "
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/items/{{ppvScheduledStart_ItemId}}/access-fees",
+                    "description": "# === Overview ===\nWith this test we are checking the `v2 Items - POST/ create access fee` functionality with `Marchant user`.\n\n# === Variables ===\nCollection Variables that are set here are:\n1. `collectionVariables` (`\"itemTitle_El\"`) - edited asset name\n1. `collectionVariables` (`\"accessType_El\"`)\n1. `collectionVariables` (`\"accessFee_El\"`)\n1. `collectionVariables` (`\"accessFee_Amount_El\"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Execute PPV scheduled start payment",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "0d9cfbe2-ea29-4eb8-9e15-8f7ecac55f48",
+                        "exec": [
+                          "checkEnv = pm.environment.get(\"baseUrl\")\r",
+                          "console.log(checkEnv)\r",
+                          "\r",
+                          "if (checkEnv == 'https://staging-v2.inplayer.com') {\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CardNumber\", \"4242424242424242\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CardName\", \"Card stage 42\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CardExpireMonth\", \"12\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CardExpireYear\", \"2025\");\r",
+                          "    pm.collectionVariables.set(\"ppvScheduledStart_CardExpireCVV\", \"222\");\r",
+                          "}\r",
+                          "else {\r",
+                          "    if (checkEnv == 'https://services.inplayer.com') {\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CardNumber\", \"4277478074944196\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CardName\", \"filip n prod\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CardExpireMonth\", \"12\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CardExpireYear\", \"2024\");\r",
+                          "        pm.collectionVariables.set(\"ppvScheduledStart_CardExpireCVV\", \"578\");\r",
+                          "    }\r",
+                          "    else {\r",
+                          "        //here to be populated Customer ID and Merchant ID for the given dev environment\r",
+                          "    }\r",
+                          "}"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "49bcb89a-0e68-40b7-b704-abd006d9485b",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.test(\"to have payment submited message - Submitted for payment\", function () {\r",
+                          "    pm.expect(responseData.message).to.be.include(\"Submitted for payment\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "b1ce15fc-6018-4c30-831b-bb726dd32c00",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_PaywallUserAccessToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "number",
+                          "value": "{{ppvScheduledStart_CardNumber}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "card_name",
+                          "value": "{{ppvScheduledStart_CardName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "exp_month",
+                          "value": "{{ppvScheduledStart_CardExpireMonth}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "exp_year",
+                          "value": "{{ppvScheduledStart_CardExpireYear}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "cvv",
+                          "value": "{{ppvScheduledStart_CardExpireCVV}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "access_fee",
+                          "value": "{{ppvScheduledStart_AccessFeeId}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "payment_method",
+                          "value": "1",
+                          "type": "text"
+                        },
+                        {
+                          "key": "referrer",
+                          "value": "automation smoke test postman, item {{ppvScheduledStart_ItemId}} , access fee {{ppvScheduledStart_AccessFeeId}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "branding_id",
+                          "value": "{{ppvScheduledStart_BrandingId}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "return_url",
+                          "value": "https://sca-payments-staging.inplayer.com/?inplayer_sca=true&ippwat=ppv",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/payments"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Check access at moment of purchase - scheduled time is true",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "86ba33ad-568f-4520-a4be-69eccc7c71f9",
+                        "exec": [
+                          "setTimeout(function () { }, [5000]);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "5abc1ee1-9112-4339-81f6-99ec1438463d",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "pm.collectionVariables.get(\"ppvScheduledStart_StartsAt\");\r",
+                          "\r",
+                          "if (pm.response.to.have.status(200)) {\r",
+                          "\r",
+                          "    pm.test(\"Check TRUE for schedule_time in access response\", function () {\r",
+                          "        pm.expect(responseData.item.starts_at).to.be.undefined;\r",
+                          "    });\r",
+                          "\r",
+                          "    pm.test(\"Content to be FALSE/ not to exist because it is scheduled start ppv asset\", function () {\r",
+                          "        pm.expect(responseData.item.content).to.not.exist;\r",
+                          "    });\r",
+                          "} else {\r",
+                          "    pm.test(\"if TRUE for content in access response test is fail\", function () {\r",
+                          "        pm.expect(responseData.item.content).to.eql(\"This is your content\");\r",
+                          "    })\r",
+                          "};"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "52dd9e76-832c-42a4-b86f-cbb45bc99a09",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_PaywallUserAccessToken}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": "{{baseUrl}}/items/{{ppvScheduledStart_ItemId}}/access"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Check access after scheduled start - content is granted",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "d746a8d4-d41f-43c3-971e-b47f60639b24",
+                        "exec": [
+                          "setTimeout(function () { }, [60000]);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "f57986b4-7737-4ebb-a7c2-533dbb6f117b",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "pm.collectionVariables.get(\"ppvScheduledStart_ItemContent\");\r",
+                          "\r",
+                          "if (pm.response.to.have.status(200)) {\r",
+                          "\r",
+                          "    pm.test(\"Content is TRUE/ exist because the time for scheduled start have passed\", function () {\r",
+                          "        pm.expect(responseData.item.content).to.eql(\"This is your content\");//??????????????\r",
+                          "    });\r",
+                          "} else {\r",
+                          "    pm.test(\"FALSE for content in access response - means test is fail\", function () {\r",
+                          "        pm.expect(responseData.item.content).to.not.exist;\r",
+                          "    })\r",
+                          "};"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "ef922ccf-5d2f-4458-bec2-9f9b91814ae9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_PaywallUserAccessToken}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": "{{baseUrl}}/items/{{ppvScheduledStart_ItemId}}/access"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Revoke asset access via Merchant",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "429f1000-96df-47f6-8c49-2583622fe81e",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.test(\"Status code is 200\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"to have revoke access message - Asset access was successfully deleted\", function () {\r",
+                          "    pm.expect(responseData.message).to.eql(\"Asset access was successfully deleted.\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "694c4ec2-2089-4389-9ffd-319a36c139d6",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "872aa1d2-edc6-4d28-abc9-6b06bfaf2588",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "consumer_id",
+                          "value": "{{ppvScheduledStart_PaywallUserId}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/items/{{ppvScheduledStart_ItemId}}/access",
+                    "description": "# === Overview ===\nWith this test we are checking deleition of the `items/access` functionality with `Merchant user`.\nHere tests are only based only on checking status code and status message.\n\n# === Variables ===\nNo collection variables are set in this request."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Errase viewer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "3f548a58-9c73-44eb-9b15-4907c71259f2",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.test(\"message account erased\", function () {\r",
+                          "    pm.expect(responseData.message).to.eql(\"Account data was successfully erased.\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "e8a3c1e6-8b54-4c14-af23-e55134e64e46",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "password",
+                          "value": "test1234",
+                          "type": "text"
+                        },
+                        {
+                          "key": "customer_id",
+                          "value": "{{ppvScheduledStart_PaywallUserId}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/accounts/erase",
+                    "description": "# === Overview ===\nWith this test we are checking the `deletion in accounts` functionality.\nThe test generated here are regarding the status code and message for the erased user. \n\n# === Variables ===\nNo collection variables are set in this request."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete asset",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "18e825da-691a-4ea4-bfb7-e0b62d379389",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.test(\"message account erased\", function () {\r",
+                          "    pm.expect(responseData.message).to.eql(\"OK\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "ff2e69ca-794e-4a74-85a1-da2638661019",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "url": "{{baseUrl}}/v2/items/{{ppvScheduledStart_ItemId}}",
+                    "description": "# === Overview ===\nWith this test we are checking the `deletion in v2/items` functionality.\nThe test generated here are regarding the status code and message for the deleted item. \n\n# === Variables ===\nNo collection variables are set in this request."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get trx_token PPV",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "f1d97603-d195-4dfa-8f6f-2977950502ed",
+                        "exec": [
+                          "setTimeout(function () { }, [10000]);\r",
+                          "\r",
+                          "//{{trxToken_El}} is set in this test\r",
+                          "//{{transactionAmount_El}} is set in this test"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "b5d2834e-468e-44ac-831c-2d15f4a5f3ee",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "var a = [];\r",
+                          "var b = []\r",
+                          "var list = responseData.collection.length;\r",
+                          "\r",
+                          "for (let i = 0; i < list; i++) {\r",
+                          "    var counter = responseData.collection[i];\r",
+                          "    ppvScheduledStart_TrxToken = counter.trx_token\r",
+                          "    ppvScheduledStart_transactionAmount = counter.charged_amount\r",
+                          "\r",
+                          "    a.push(ppvScheduledStart_TrxToken);\r",
+                          "    b.push(ppvScheduledStart_transactionAmount);\r",
+                          "}\r",
+                          "\r",
+                          "\r",
+                          "let trxToken = a[0]\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_TrxToken\", trxToken);\r",
+                          "\r",
+                          "let transactionamount = b[0]\r",
+                          "let formattedValue = utils.formatFunction(transactionamount, 2)\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_transactionAmount\", formattedValue)\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "ef453b7e-0ed4-48cf-af51-f1f5a85a63f1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/payments/transactions?filter[]=consumer_id:{{ppvScheduledStart_PaywallUserId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "key": "filter[]",
+                          "value": "consumer_id:{{ppvScheduledStart_PaywallUserId}}"
+                        }
+                      ]
+                    },
+                    "description": "# === Overview ===\nWith this request `Payments/Transaction` we are only setting collection variables: `trx_token` and `charged amount`. \nThose parameters are required for executing the refund in the next request.\nHere the main test is only the one on collection level, where we check if status code is 200.\n\n# === Variables ===\nCollection Variables that are set here are - all regarding the card details:\n1. `collectionVariables` (`\"trxToken_El\"`)\n1. `collectionVariables` (`\"transactionAmount_El\"`)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Refund PPV payment",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "ceed4939-0984-4dd0-8150-0bf4880bb801",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "\r",
+                          "pm.test(\"refund success message\", function () {\r",
+                          "    pm.expect(responseData.message).to.eql(\"Submitted for refund\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "075540d7-af1a-4d45-b3f5-dc196d38177d",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);\r",
+                          "pm.collectionVariables.get(\"ppvScheduledStart_transactionAmount\")\r",
+                          "pm.collectionVariables.get(\"ppvScheduledStart_TrxToken\")\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "3ed5d2d5-2139-4780-b7c8-458ee6adc45e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_AdminAccessToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "id",
+                          "value": "{{ppvScheduledStart_TrxToken}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "reason",
+                          "value": "test automation qa",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{ppvScheduledStart_transactionAmount}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/accounting/refund",
+                    "description": "# === Overview ===\nWith this test we are checking the `accounting/refund` functionality with `Admin user`.\nHere tests are only based only on checking status code and status message, because this endpoint only submits refund. \nSo the actual \"success refund\" we are checking it with the next request `Check refund` via `Get transaction on merchant panel`. \n\n\n# === Variables ===\nNo collection variables are set in this request."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Check if PPV payment is refunded",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "b9f3bcf0-a617-4523-b629-9590f01bb557",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);\r",
+                          "\r",
+                          "\r",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "357554e9-3265-4a1a-9481-6d1c7ba87417",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);\r",
+                          "var a=[];\r",
+                          "var list = responseData.collection.length;\r",
+                          "\r",
+                          "for (let i=0;i<list; i++)\r",
+                          "{\r",
+                          "    var counter = responseData.collection[i];\r",
+                          "    ppvScheduledStart_ActionTypeRefund=counter.action_type \r",
+                          "    a.push(ppvScheduledStart_ActionTypeRefund);\r",
+                          "}\r",
+                          "\r",
+                          "let actiontypeRefund = a[0]\r",
+                          "pm.collectionVariables.set(\"ppvScheduledStart_ActionTypeRefund\", actiontypeRefund);\r",
+                          "let var1 = pm.collectionVariables.get(\"ppvScheduledStart_ActionTypeRefund\")\r",
+                          "\r",
+                          "pm.test(\"if transaction is refunded\", function () {\r",
+                          "    pm.expect(\"refund\").to.be.eql(var1)\r",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "1365f879-a04e-4594-b1c3-d4a5cac9e704",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvScheduledStart_MerchantAccessToken}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": []
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/payments/transactions?filter[]=consumer_id:{{ppvScheduledStart_PaywallUserId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "key": "filter[]",
+                          "value": "consumer_id:{{ppvScheduledStart_PaywallUserId}}"
+                        }
+                      ]
+                    },
+                    "description": "# === Overview ===\nWith this test we are checking the refunded transaction if it's executed and we do that by checking the last transaction record with `GET payments/transactions` functionality with `Marchant user`.\nThe last record should be \"refunded\".\n\n# === Variables ===\nNo collection variables are set in this request."
+                  },
+                  "response": []
+                }
+              ],
+              "id": "8ef16119-20b1-4374-8e1e-64f730165bd9",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "6b015915-477f-4feb-99bc-5b57da7fb401",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "fd7067f2-1f2e-498d-9534-28bc1bafa4a1",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ]
             }
           ],
           "id": "b4b01fa3-cfee-4177-bfa7-a0a26c0cd7f0"
@@ -15469,78 +16641,283 @@
   ],
   "variable": [
     {
-      "id": "e2786b5e-b5b1-4db7-aba9-749e5627ce78",
+      "id": "d23ce5f3-83a5-45b9-b56a-9a12e9795c6d",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "5a7e3415-4a57-4f04-9de8-b22a253d4b6f",
+      "id": "e70cd52f-11b8-4cbc-918f-e2f63d973827",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "ab9e241a-d2ef-4970-8f30-de96fca44aa5",
+      "id": "3ef9f878-3457-4d95-88a1-2efcd2d3aff8",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "e001d487-9a33-4e53-a144-58e2210f8a4c",
+      "id": "5429ddf2-956e-4d14-96a7-68676774a9cf",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "3793802c-8a22-445f-8d53-f2300eb7382d",
+      "id": "cc9b54ea-6d4e-408e-9b9c-87961ff23522",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "fc0a2a88-bbaa-4a9a-b9d1-ffa451493fe5",
+      "id": "6b9fe875-405e-4b09-87c6-678c7a855968",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "e343ca15-2cf7-479f-93c6-726085bba580",
+      "id": "18228254-786c-4cae-817e-2c2c0cdefcf4",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "f3589cd4-7e6a-4213-a43e-e3df9431b0c7",
+      "id": "61a6de9a-6503-4d7c-a4ea-9b6d2e8c1d37",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "4ae3748a-4ed1-4145-8d5b-a001f73c3220",
+      "id": "adc21b46-44f2-44df-88b3-e9b4011c0164",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "6efd98f0-1422-4065-ac08-d077ab1dbfeb",
+      "id": "a0ccf685-408c-47b3-a1d4-0ad2c148f019",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "f8074812-ccab-46c9-b260-2eefdb1db45d",
+      "id": "85bb6465-7f0c-488f-a20e-75f8221565fc",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "468ddfcf-9588-415b-b9a7-ce489464347b",
+      "id": "f322817d-12cd-4a31-9524-98e2579ccd8e",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "b1aa98a2-0483-4431-816d-ca9c4d3aed24",
+      "id": "86861a6e-7020-4664-975d-c1e450af7111",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "499260ba-4be8-4ace-9df3-9fca8f7d8c19",
+      "id": "27858776-4664-4b55-9b8d-2eadd395f4d2",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "8e8de681-a80f-47a9-917f-bcce0f6050d3",
+      "id": "d8b6ef27-a9bf-4d91-be92-e11420480917",
       "key": "refundSeasonAmount_SanitySeason",
+      "value": ""
+    },
+    {
+      "id": "bb55143a-9c7c-488f-8aab-afc9390c2efa",
+      "key": "passcode_MerchantEmail",
+      "value": ""
+    },
+    {
+      "id": "f5f96fad-649a-43f6-9555-1babf2822372",
+      "key": "passcode_MerchantToken",
+      "value": ""
+    },
+    {
+      "id": "283564c2-45bc-4855-bc40-6a32e882d80e",
+      "key": "passcode_ControlTypeID",
+      "value": ""
+    },
+    {
+      "id": "fa83e2b4-b912-4d15-9efb-60fbf745d86d",
+      "key": "passcode_ItemID",
+      "value": ""
+    },
+    {
+      "id": "9acc78e8-0352-4466-a489-14f2c1ae19f1",
+      "key": "passcode_CurrentDate",
+      "value": ""
+    },
+    {
+      "id": "36995d7b-2d8e-4695-9553-2c02cbec0e6d",
+      "key": "passcode_StartDate",
+      "value": ""
+    },
+    {
+      "id": "c50e3d8f-48dd-46d8-b49c-b455980329f3",
+      "key": "passcode_EndDate",
+      "value": ""
+    },
+    {
+      "id": "098ab8d3-25ea-4e41-aa65-8b60b41bc006",
+      "key": "passcode_Code",
+      "value": ""
+    },
+    {
+      "id": "67ff06e1-a7f9-4be4-9906-9bec4b0aa54d",
+      "key": "passcode_PrivateCode",
+      "value": ""
+    },
+    {
+      "id": "330f4d11-199b-4ac4-8ee4-91e785f2aab8",
+      "key": "passcode_NegativeRandom",
+      "value": ""
+    },
+    {
+      "id": "85060585-3ebc-4bb7-8aed-bd8bcc9f7571",
+      "key": "passcode_PositiveRandom",
+      "value": ""
+    },
+    {
+      "id": "2632ae2e-5576-4a9d-97aa-4b9bd8ec50a2",
+      "key": "passcode_CodeUuid",
+      "value": ""
+    },
+    {
+      "id": "8e0e417a-1d21-4571-91a2-67e733c24878",
+      "key": "ppvScheduledStart_MerchantUserName",
+      "value": ""
+    },
+    {
+      "id": "c05b5df9-a453-434d-93b3-c5930b186621",
+      "key": "ppvScheduledStart_ClientId01",
+      "value": ""
+    },
+    {
+      "id": "272c7042-d6a1-4ebb-9ebb-6c2cd5f6bba8",
+      "key": "ppvScheduledStart_MerchantAccessToken",
+      "value": ""
+    },
+    {
+      "id": "122b20cd-c759-46b8-bb84-caca043eebaa",
+      "key": "ppvScheduledStart_MerchantId",
+      "value": ""
+    },
+    {
+      "id": "9b84fb09-be43-4187-96ac-323a36d594fa",
+      "key": "ppvScheduledStart_MerchantUuid",
+      "value": ""
+    },
+    {
+      "id": "8b6077ac-c8ee-4b2d-8dd6-5f8c94c29466",
+      "key": "ppvScheduledStart_ItemTitle",
+      "value": ""
+    },
+    {
+      "id": "e6bda8eb-7e6c-4bac-92b1-553462bae62f",
+      "key": "ppvScheduledStart_ItemId",
+      "value": ""
+    },
+    {
+      "id": "7203de45-aa0d-484a-bf2d-7a3c95627d46",
+      "key": "ppvScheduledStart_AccessType",
+      "value": ""
+    },
+    {
+      "id": "b7069342-b4b0-4f67-afb7-8e2db435449e",
+      "key": "ppvScheduledStart_AccessFeeAmount",
+      "value": ""
+    },
+    {
+      "id": "24388348-6a6e-4720-9650-7a25b4dffcb6",
+      "key": "ppvScheduledStart_StartsAt",
+      "value": ""
+    },
+    {
+      "id": "f74ec509-1ce6-4895-866a-589d8fa9c3ae",
+      "key": "ppvScheduledStart_AccessFeeId",
+      "value": ""
+    },
+    {
+      "id": "286bb410-43f4-42f6-9621-d5d8771efe5c",
+      "key": "ppvScheduledStart_CreatePaywallUser",
+      "value": ""
+    },
+    {
+      "id": "acbc521a-48cb-4480-8d30-ee10359a2459",
+      "key": "ppvScheduledStart_PaywallUserName",
+      "value": ""
+    },
+    {
+      "id": "99f82853-11fc-4a13-a815-eca45624f73d",
+      "key": "ppvScheduledStart_BrandingId",
+      "value": ""
+    },
+    {
+      "id": "1bbbf84f-2ad4-48c2-a338-3a48d76a1e5b",
+      "key": "ppvScheduledStart_PaywallUserAccessToken",
+      "value": ""
+    },
+    {
+      "id": "8b983e1e-58ce-4a99-b854-25921896d326",
+      "key": "ppvScheduledStart_PaywallUserId",
+      "value": ""
+    },
+    {
+      "id": "06d5f606-646d-4db2-84dc-596031e90843",
+      "key": "ppvScheduledStart_CardNumber",
+      "value": ""
+    },
+    {
+      "id": "e96ae936-e7d5-487e-b238-dc56c1140c92",
+      "key": "ppvScheduledStart_CardName",
+      "value": ""
+    },
+    {
+      "id": "f9a6657e-2f7b-438a-a03f-fc7a700d749d",
+      "key": "ppvScheduledStart_CardExpireMonth",
+      "value": ""
+    },
+    {
+      "id": "e866ad63-5448-4f16-953b-e83f368083f8",
+      "key": "ppvScheduledStart_CardExpireYear",
+      "value": ""
+    },
+    {
+      "id": "09772499-4844-4999-953d-e02c08392496",
+      "key": "ppvScheduledStart_CardExpireCVV",
+      "value": ""
+    },
+    {
+      "id": "82dd6e4e-a2f8-4e87-9744-64adaa6e80d7",
+      "key": "ppvScheduledStart_ItemContent",
+      "value": ""
+    },
+    {
+      "id": "fff4fe3c-775b-4be9-bcc4-6401db0c6ffe",
+      "key": "ppvScheduledStart_AdminUserName",
+      "value": ""
+    },
+    {
+      "id": "ee2b4c93-cf07-4190-896d-c77e2cfba8b7",
+      "key": "ppvScheduledStart_AdminAccessToken",
+      "value": ""
+    },
+    {
+      "id": "3ad61fac-7f58-40f8-97f4-63551eb5c9f5",
+      "key": "ppvScheduledStart_AdminId",
+      "value": ""
+    },
+    {
+      "id": "c9b2ce42-fa70-4632-a432-cafacd74c753",
+      "key": "ppvScheduledStart_AdminUuid",
+      "value": ""
+    },
+    {
+      "id": "03d4b3ef-8724-4af3-8101-58304d16479f",
+      "key": "ppvScheduledStart_TrxToken",
+      "value": ""
+    },
+    {
+      "id": "77207d4a-c1c1-4e51-ad3f-d76cf91e5526",
+      "key": "ppvScheduledStart_transactionAmount",
+      "value": ""
+    },
+    {
+      "id": "20f000fd-7290-4012-8eb3-2d9d6087b7e4",
+      "key": "ppvScheduledStart_ActionTypeRefund",
       "value": ""
     }
   ]
