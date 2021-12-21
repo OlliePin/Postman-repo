@@ -14285,22 +14285,29 @@
           "name": "PPV payments",
           "item": [
             {
-              "name": "Regular PPV with Stripe",
+              "name": "Regular PPV Payment with Stripe",
               "item": [
                 {
-                  "name": "Register Fan Account",
+                  "name": "Admin Authenticate",
                   "event": [
                     {
                       "listen": "prerequest",
                       "script": {
-                        "id": "a734ad18-b720-4727-9d58-78163158fa36",
+                        "id": "6b81bddc-a796-4fa4-a864-ea7b934ac699",
                         "exec": [
-                          "console.log(\"This is a pre request script for Creating Account\");",
-                          "pm.environment.set(\"password\", \"Password123\");",
-                          "pm.environment.set(\"clientID\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
-                          "let randomNumber = Math.floor(Math.random() * 10000);",
-                          "pm.environment.set(\"CreateAccountEmail\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
-                          "pm.environment.set(\"CreateAccFullName\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
+                          "env = pm.environment.get(\"name\")",
+                          "",
+                          "if (env == 'staging') {",
+                          "    pm.collectionVariables.set(\"ppvRegular_AdminUserName\", \"oliver.pinev+adminTest@inplayer.com\");",
+                          "    let passwordAdmin = \"Password123\"",
+                          "    pm.collectionVariables.set(\"passwordAdmin\", passwordAdmin)",
+                          "} else {",
+                          "    (env == 'production')",
+                          "    pm.collectionVariables.set(\"ppvRegular_AdminUserName\", \"oliver.pinev+admin@inplayer.com\");",
+                          "    let passwordAdmin = \"Password@3!\"",
+                          "    pm.collectionVariables.set(\"passwordAdmin\", passwordAdmin)",
+                          "}",
+                          ""
                         ],
                         "type": "text/javascript"
                       }
@@ -14308,18 +14315,83 @@
                     {
                       "listen": "test",
                       "script": {
-                        "id": "da01ab3a-f674-4847-9d3c-6a06c485e0af",
+                        "id": "151f5b21-51c3-48f6-9244-fe7030726adf",
                         "exec": [
-                          "console.log(\"-----Executing Finished-----\");",
-                          "var responseData = JSON.parse(responseBody);",
-                          "console.log(\"adding auth Token value\")",
-                          "pm.environment.set(\"authToken\", responseData.access_token);",
-                          "pm.environment.set(\"formatedAuthToken\", \"Bearer \"+responseData.access_token);",
-                          "pm.environment.set(\"consumerID\", responseData.account.id);",
-                          "pm.test(\"Successfull POST Request\", function (){",
-                          "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
-                          "});",
+                          "let responseData = JSON.parse(responseBody);",
+                          "",
+                          "pm.collectionVariables.set(\"ppvRegular_AdminAccessToken\", responseData.access_token)",
+                          "pm.collectionVariables.set(\"ppvRegular_AdminId\", responseData.account.id)",
+                          "pm.collectionVariables.set(\"ppvRegular_AdminUuid\", responseData.account.uuid)",
                           ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "7b568ef6-9aeb-4f4d-b703-fc360485fe6f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "username",
+                          "value": "{{ppvRegular_AdminUserName}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{passwordAdmin}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "client_id",
+                          "value": "{{systemInPlayerAcc}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "password",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/v2/accounts/authenticate"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Register Viewer Account",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "cc6fbeac-5125-43a6-b9b9-b789e49659d9",
+                        "exec": [
+                          "console.log(\"This is a pre request script for Creating Account\");",
+                          "pm.collectionVariables.set(\"password_viewer\", \"Password123\");",
+                          "pm.collectionVariables.set(\"client_ID_viewer\", \"f6be7cea-5dd3-4362-927d-f10ba859819c\")",
+                          "let randomNumber = Math.floor(Math.random() * 10000);",
+                          "pm.collectionVariables.set(\"createAccountEmail_Viewer\", \"oliver.pinev+\"+`${randomNumber}`+\"@inplayer.com\");",
+                          "pm.collectionVariables.set(\"createAccFullName_Viewer\", \"Oliver Pinev\" + \" \"+`${randomNumber}`);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "6ca5862b-467c-4aba-91fd-f969da3f5e16",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "console.log(\"adding rasponse value for authToken into variable \")",
+                          "pm.collectionVariables.set(\"auth_Token\", responseData.access_token);",
+                          "pm.collectionVariables.set(\"formated_Auth_Token\", \"Bearer \" + responseData.access_token);",
+                          "pm.collectionVariables.set(\"consumer_ID\", responseData.account.id);"
                         ],
                         "type": "text/javascript"
                       }
@@ -14337,22 +14409,22 @@
                       "urlencoded": [
                         {
                           "key": "full_name",
-                          "value": "{{CreateAccFullName}}",
+                          "value": "{{createAccFullName_Viewer}}",
                           "type": "text"
                         },
                         {
                           "key": "username",
-                          "value": "{{CreateAccountEmail}}",
+                          "value": "{{createAccountEmail_Viewer}}",
                           "type": "text"
                         },
                         {
                           "key": "password",
-                          "value": "{{password}}",
+                          "value": "{{password_viewer}}",
                           "type": "text"
                         },
                         {
                           "key": "password_confirmation",
-                          "value": "{{password}}",
+                          "value": "{{password_viewer}}",
                           "type": "text"
                         },
                         {
@@ -14367,7 +14439,7 @@
                         },
                         {
                           "key": "client_id",
-                          "value": "{{clientID}}",
+                          "value": "{{client_ID_viewer}}",
                           "type": "text",
                           "description": "oliver.pinev+connected@email.com"
                         },
@@ -14388,18 +14460,15 @@
                   "response": []
                 },
                 {
-                  "name": "Authenticate/Login with Fan",
+                  "name": "Authenticate/Login with Viewer",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "id": "96a4fea9-90db-4249-86c3-c679da604653",
                         "exec": [
-                          "pm.test(\"Status code is 200\", function () {",
-                          "    pm.response.to.have.status(200);",
-                          "});",
                           "var responseData = JSON.parse(responseBody);",
-                          "pm.environment.set(\"Fan_Token\", responseData.access_token)"
+                          "pm.environment.set(\"Viewer_Token\", responseData.access_token)"
                         ],
                         "type": "text/javascript"
                       }
@@ -14409,7 +14478,7 @@
                       "script": {
                         "id": "658f47ad-491a-41e3-b005-5cf5a1ad73b8",
                         "exec": [
-                          "console.log(\"-----Executing Authenticate POST Request-----\");",
+                          "",
                           ""
                         ],
                         "type": "text/javascript"
@@ -14428,12 +14497,12 @@
                       "urlencoded": [
                         {
                           "key": "username",
-                          "value": "{{CreateAccountEmail}}",
+                          "value": "{{createAccountEmail_Viewer}}",
                           "type": "text"
                         },
                         {
                           "key": "password",
-                          "value": "{{password}}",
+                          "value": "{{password_viewer}}",
                           "type": "text"
                         },
                         {
@@ -14443,7 +14512,7 @@
                         },
                         {
                           "key": "client_id",
-                          "value": "{{clientID}}",
+                          "value": "{{client_ID_viewer}}",
                           "type": "text"
                         }
                       ]
@@ -14464,9 +14533,9 @@
                           "    pm.response.to.have.status(200);",
                           "});",
                           "var responseData = JSON.parse(responseBody);",
-                          "pm.environment.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
+                          "pm.collectionVariables.set(\"formatedAuthToken1stLogin\", \"Bearer \"+responseData.access_token);",
                           "",
-                          "pm.environment.set(\"Merchant_Token\", responseData.access_token)",
+                          "pm.collectionVariables.set(\"Merchant_Token\", responseData.access_token)",
                           ""
                         ],
                         "type": "text/javascript"
@@ -14477,10 +14546,8 @@
                       "script": {
                         "id": "af8e932a-cd93-47fd-a8c0-d81ba54f2366",
                         "exec": [
-                          "console.log(\"-----Executing Authenticate POST Request-----\");",
-                          "",
-                          "pm.environment.set(\"MerchantUser\", \"oliver.pinev+connected@email.com\")",
-                          "pm.environment.set(\"SystemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
+                          "pm.collectionVariables.set(\"merchant_User\", \"oliver.pinev+connected@email.com\")",
+                          "pm.collectionVariables.set(\"systemInPlayerAcc\", \"3b39b5ab-b5fc-4ba3-b770-73155d20e61f\" )"
                         ],
                         "type": "text/javascript"
                       }
@@ -14498,13 +14565,13 @@
                       "urlencoded": [
                         {
                           "key": "username",
-                          "value": "{{MerchantUser}}",
+                          "value": "{{merchant_User}}",
                           "type": "text",
                           "description": "oliver.pinev+connected@email.com"
                         },
                         {
                           "key": "password",
-                          "value": "{{password}}",
+                          "value": "{{password_viewer}}",
                           "type": "text"
                         },
                         {
@@ -14514,7 +14581,7 @@
                         },
                         {
                           "key": "client_id",
-                          "value": "{{SystemInPlayerAcc}}",
+                          "value": "{{systemInPlayerAcc}}",
                           "type": "text"
                         }
                       ]
@@ -14537,7 +14604,8 @@
                           "let var1 = responseData.collection[0].id;",
                           "console.log(var1)",
                           "",
-                          "pm.environment.set(\"latestItem\", responseData.collection[0].id)",
+                          "pm.collectionVariables.set(\"latest_Item\", responseData.collection[0].id)",
+                          "",
                           ""
                         ],
                         "type": "text/javascript"
@@ -14565,12 +14633,9 @@
                       "urlencoded": []
                     },
                     "url": {
-                      "raw": "https://staging-v2.inplayer.com/items/collection?page=1&limit=15&is_active=true",
-                      "protocol": "https",
+                      "raw": "{{baseUrl}}/items/collection?page=1&limit=15&is_active=true",
                       "host": [
-                        "staging-v2",
-                        "inplayer",
-                        "com"
+                        "{{baseUrl}}"
                       ],
                       "path": [
                         "items",
@@ -14604,7 +14669,7 @@
                         "exec": [
                           "let responseData = pm.response.json();",
                           "",
-                          "pm.environment.set(\"PAYMENTS_feeID\", responseData.id)"
+                          "pm.collectionVariables.set(\"PAYMENTS_feeID\", responseData.id)"
                         ],
                         "type": "text/javascript"
                       }
@@ -14616,8 +14681,27 @@
                         "exec": [
                           "let rndInt = Math.floor(Math.random() * 8) + 2",
                           "",
+                          "pm.collectionVariables.get(\"latestItem\")",
+                          "pm.collectionVariables.set(\"priceForPayment\", rndInt);",
                           "",
-                          "pm.environment.set(\"priceForPayment\", rndInt);"
+                          "env = pm.environment.get(\"name\")",
+                          "",
+                          "if (env == 'staging') {",
+                          "    pm.collectionVariables.set(\"cardNumber_regular\", \"4242424242424242\");",
+                          "    pm.collectionVariables.set(\"card_name_regular\", \"Card stage 42\");",
+                          "    pm.collectionVariables.set(\"cardExpireMonth_regular\", \"12\");",
+                          "    pm.collectionVariables.set(\"cardExpireYear_regular\", \"2025\");",
+                          "    pm.collectionVariables.set(\"cardExpireCVV_regular\", \"222\");",
+                          "}",
+                          "else {",
+                          "    if (env == 'production') {",
+                          "        pm.collectionVariables.set(\"cardNumber_regular\", \"4277478074944196\");",
+                          "        pm.collectionVariables.set(\"card_name_regular\", \"filip n prod\");",
+                          "        pm.collectionVariables.set(\"cardExpireMonth_regular\", \"12\");",
+                          "        pm.collectionVariables.set(\"cardExpireYear_regular\", \"2024\");",
+                          "        pm.collectionVariables.set(\"cardExpireCVV_regular\", \"578\");",
+                          "    }",
+                          "}"
                         ],
                         "type": "text/javascript"
                       }
@@ -14676,7 +14760,7 @@
                         }
                       ]
                     },
-                    "url": "https://{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
+                    "url": "{{baseUrl}}/v2/items/{{latestItem}}/access-fees"
                   },
                   "response": []
                 },
@@ -14692,7 +14776,7 @@
                           "",
                           "console.log(\"this is just a validation that the given user doesnt have an access before he purchase the asset\")",
                           "",
-                          "pm.test(`Status code is ${responseData.code} but its ok, since we need to ensure the Fan doesn't ahve access for this asset`, function () {",
+                          "pm.test(`Status code is ${responseData.code} but its ok, since we need to ensure the Fan doesn't have access for this asset`, function () {",
                           "    pm.response.to.have.status(402);",
                           "});",
                           "",
@@ -14710,7 +14794,7 @@
                     "auth": {
                       "type": "bearer",
                       "bearer": {
-                        "token": "{{Fan_Token}}"
+                        "token": "{{Viewer_Token}}"
                       }
                     },
                     "method": "GET",
@@ -14740,6 +14824,33 @@
                         ],
                         "type": "text/javascript"
                       }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "0a49b259-c243-4a46-a70b-94e3d5d29cf1",
+                        "exec": [
+                          "env = pm.environment.get(\"name\")",
+                          "",
+                          "if (env == 'staging') {",
+                          "    pm.collectionVariables.set(\"cardNumber_regular\", \"4242424242424242\");",
+                          "    pm.collectionVariables.set(\"card_name_regular\", \"Card stage 42\");",
+                          "    pm.collectionVariables.set(\"cardExpireMonth_regular\", \"12\");",
+                          "    pm.collectionVariables.set(\"cardExpireYear_regular\", \"2025\");",
+                          "    pm.collectionVariables.set(\"cardExpireCVV_regular\", \"222\");",
+                          "}",
+                          "else {",
+                          "    if (env == 'production') {",
+                          "        pm.collectionVariables.set(\"cardNumber_regular\", \"4277478074944196\");",
+                          "        pm.collectionVariables.set(\"card_name_regular\", \"filip n prod\");",
+                          "        pm.collectionVariables.set(\"cardExpireMonth_regular\", \"12\");",
+                          "        pm.collectionVariables.set(\"cardExpireYear_regular\", \"2024\");",
+                          "        pm.collectionVariables.set(\"cardExpireCVV_regular\", \"578\");",
+                          "    }",
+                          "}"
+                        ],
+                        "type": "text/javascript"
+                      }
                     }
                   ],
                   "id": "00620ab4-3d51-4449-ba49-ece992afdb1b",
@@ -14750,7 +14861,7 @@
                     "auth": {
                       "type": "bearer",
                       "bearer": {
-                        "token": "{{Fan_Token}}"
+                        "token": "{{Viewer_Token}}"
                       }
                     },
                     "method": "POST",
@@ -14770,27 +14881,27 @@
                         },
                         {
                           "key": "number",
-                          "value": "4242424242424242",
+                          "value": "{{cardNumber_regular}}",
                           "type": "text"
                         },
                         {
                           "key": "cvv",
-                          "value": "123",
+                          "value": "{{cardExpireCVV_regular}}",
                           "type": "text"
                         },
                         {
                           "key": "exp_month",
-                          "value": "11",
+                          "value": "{{cardExpireMonth_regular}}",
                           "type": "text"
                         },
                         {
                           "key": "exp_year",
-                          "value": "22",
+                          "value": "{{cardExpireYear_regular}}",
                           "type": "text"
                         },
                         {
                           "key": "card_name",
-                          "value": "api card",
+                          "value": "{{card_name_regular}}",
                           "type": "text"
                         },
                         {
@@ -14801,7 +14912,7 @@
                         }
                       ]
                     },
-                    "url": "https://{{baseUrl}}/payments"
+                    "url": "{{baseUrl}}/payments"
                   },
                   "response": []
                 },
@@ -14840,28 +14951,329 @@
                   "response": []
                 },
                 {
-                  "name": "Get Access Fees for Previous Item",
+                  "name": "Revoke Access from MP",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "471330df-7531-4b4b-835d-03da2de80999",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "efc72694-1802-4836-957f-5bca7e642896",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "",
+                          "pm.test(\"Status code is 200\", function () {",
+                          "    pm.response.to.have.status(200);",
+                          "});",
+                          "",
+                          "pm.test(\"to have revoke access message - Asset access was successfully deleted\", function () {",
+                          "    pm.expect(responseData.message).to.eql(\"Asset access was successfully deleted.\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "0a13f417-1f00-40ec-aaf5-fa5b201cbedf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{Merchant_Token}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "consumer_id",
+                          "value": "{{consumer_ID}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/items/{{latestItem}}/access"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Erase Viewer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "aa119fa5-fc7c-4289-821c-db69bc40b1bd",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "",
+                          "pm.test(\"message account erased\", function () {",
+                          "    pm.expect(responseData.message).to.eql(\"Account data was successfully erased.\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "518b1bfb-736f-47a4-b7e9-288a04391af2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{Merchant_Token}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "password",
+                          "value": "Password123",
+                          "type": "text"
+                        },
+                        {
+                          "key": "customer_id",
+                          "value": "{{consumer_ID}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/accounts/erase"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete Asset",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "90c0848b-5dee-4ce2-bb66-b56828c5dfa6",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "",
+                          "pm.test(\"message account erased\", function () {",
+                          "    pm.expect(responseData.message).to.eql(\"OK\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "c727de64-a480-4903-8a1a-133e6f1d7fe9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{Merchant_Token}}"
+                      }
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "url": "{{baseUrl}}/v2/items/{{latestItem}}"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET ppv TRX Token",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "5e410a07-2453-40d7-bdfb-a39d9b499154",
+                        "exec": [
+                          "setTimeout(function () { }, [10000]);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "ce202a56-0d32-41ce-84b3-b8924f7b1a3f",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "var a = [];",
+                          "var b = []",
+                          "var list = responseData.collection.length;",
+                          "",
+                          "for (let i = 0; i < list; i++) {",
+                          "    var counter = responseData.collection[i];",
+                          "    ppvRegular_TrxToken = counter.trx_token",
+                          "    ppvRegular_transactionAmount = counter.charged_amount",
+                          "",
+                          "    a.push(ppvRegular_TrxToken);",
+                          "    b.push(ppvRegular_transactionAmount);",
+                          "}",
+                          "",
+                          "",
+                          "let trxToken = a[0]",
+                          "pm.collectionVariables.set(\"ppvRegular_TrxToken\", trxToken);",
+                          "",
+                          "let transactionamount = b[0]",
+                          "let formattedValue = utils.formatFunction(transactionamount, 4)",
+                          "pm.collectionVariables.set(\"ppvRegular_transactionAmount\", formattedValue)",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "55406878-2af5-492b-ab56-344b9b726d32",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{Merchant_Token}}"
+                      }
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/payments/transactions?filter[]=consumer_id:{{consumer_ID}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "key": "filter[]",
+                          "value": "consumer_id:{{consumer_ID}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Refund Payment",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "4e141c81-11a8-4212-bd84-97e13b12536f",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);",
+                          "pm.collectionVariables.get(\"ppvRegular_transactionAmount\")",
+                          "pm.collectionVariables.get(\"ppvRegular_TrxToken\")"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "ab6d93f2-e943-4546-a8d6-df7481eeeada",
+                        "exec": [
+                          "const responseData = JSON.parse(responseBody);",
+                          "",
+                          "pm.test(\"refund success message\", function () {",
+                          "    pm.expect(responseData.message).to.eql(\"Submitted for refund\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "id": "73c4e554-d872-4ce2-806d-1cd5232a5167",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvRegular_AdminAccessToken}}"
+                      }
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "id",
+                          "value": "{{ppvRegular_TrxToken}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "reason",
+                          "value": "Postman Automation",
+                          "type": "text"
+                        },
+                        {
+                          "key": "amount",
+                          "value": "{{ppvRegular_transactionAmount}}",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": "{{baseUrl}}/accounting/refund"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Verify Refund is successfull",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "id": "40d7a8e1-5032-4293-af8d-7665f01e9d4f",
                         "exec": [
-                          "let responseData = pm.response.json()",
-                          "let responseData1 = pm.response.json()",
+                          "const responseData = JSON.parse(responseBody);",
+                          "var a=[];",
+                          "var list = responseData.collection.length;",
                           "",
-                          "if(responseData.length){",
-                          "    pm.test(\"array is empty next Request will be Requested\", function () {",
+                          "for (let i=0;i<list; i++)",
+                          "{",
+                          "    var counter = responseData.collection[i];",
+                          "    ppvScheduledStart_ActionTypeRefund=counter.action_type ",
+                          "    a.push(ppvScheduledStart_ActionTypeRefund);",
+                          "}",
                           "",
-                          "    });",
+                          "let actiontypeRefund = a[0]",
+                          "pm.collectionVariables.set(\"ppvRegular_ActionTypeRefund\", actiontypeRefund);",
+                          "let var1 = pm.collectionVariables.get(\"ppvRegular_ActionTypeRefund\")",
                           "",
-                          "}else{",
-                          "    //let var1 = responseData1.collection[0].id;",
-                          "   // console.log(var1)",
-                          "    pm.test(\"else statement\", function () {",
-                          "        throw new Error(\"this item doesn't have Fee\")",
-                          "    });",
-                          "}"
+                          "pm.test(\"if transaction is refunded\", function () {",
+                          "    pm.expect(\"refund\").to.be.eql(var1)",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "63be61ab-1d97-4144-8a97-ffe3c26606ba",
+                        "exec": [
+                          "setTimeout(function(){}, [10000]);"
                         ],
                         "type": "text/javascript"
                       }
@@ -14872,14 +15284,57 @@
                     "disableBodyPruning": true
                   },
                   "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": {
+                        "token": "{{ppvRegular_AdminAccessToken}}"
+                      }
+                    },
                     "method": "GET",
                     "header": [],
-                    "url": "https://staging-v2.inplayer.com/v2/items/105648/access-fees"
+                    "url": {
+                      "raw": "{{baseUrl}}/payments/transactions?filter[]=consumer_id:{{consumer_ID}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "key": "filter[]",
+                          "value": "consumer_id:{{consumer_ID}}"
+                        }
+                      ]
+                    }
                   },
                   "response": []
                 }
               ],
-              "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f"
+              "id": "e14492d5-fa97-470a-b8ca-4fb7d439cd4f",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "9bc915d2-4ffc-4886-9174-6be9a74a57c8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "console.log(\"this is prerequest on folder level\")"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "b885bce1-e70b-46fa-be7d-eb5d18c22b9d",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "Regular PPV with Stripe + Discount code",
@@ -15365,6 +15820,11 @@
                 }
               ],
               "id": "4df24e6a-29d7-4d3b-a901-eaa4554ff1cd"
+            },
+            {
+              "name": "Failed PPV Payment with Stripe",
+              "item": [],
+              "id": "dfcada42-ba79-4201-b4a6-1695c644e5ca"
             },
             {
               "name": "PPV with Scheduled Start with Stripe",
@@ -16605,7 +17065,7 @@
     {
       "listen": "prerequest",
       "script": {
-        "id": "7eabd88c-ec8d-41c5-8227-33aee39ae0ea",
+        "id": "725aae81-b2ac-4b0a-9838-a77d560ad8af",
         "type": "text/javascript",
         "exec": [
           "utils = {",
@@ -16634,292 +17094,294 @@
     {
       "listen": "test",
       "script": {
-        "id": "fc497946-ee3e-4861-8a94-2e5e3128ebbe",
+        "id": "6fb32dfa-ad8f-408e-9d3a-11a51f1d304c",
         "type": "text/javascript",
         "exec": [
-          ""
+          "pm.test(\"Request's code to be OK, one of 200, 201, 202\", function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+          "});"
         ]
       }
     }
   ],
   "variable": [
     {
-      "id": "ae309b35-94c4-4ded-bdba-8c46e028837c",
+      "id": "38e414c6-13c7-4585-a86b-bdcf017de68b",
       "key": "mp_UserName_SanitySeason",
       "value": ""
     },
     {
-      "id": "580b4554-61f9-4780-98a3-effe5485f7c3",
+      "id": "b777951c-1037-4c10-b112-d61d6c35c808",
       "key": "clientId01_SanitySeason",
       "value": ""
     },
     {
-      "id": "cf7fe92e-a7ef-4f9c-91fe-ab9ae5227167",
+      "id": "dd380a6a-728c-4ad8-b22c-a01ba7bf5997",
       "key": "mp_AccessToken_SanitySeason",
       "value": ""
     },
     {
-      "id": "a5e833e8-e583-4220-ad43-f4e437f58408",
+      "id": "c943def3-5e2e-4a51-8b55-e50b1101b5a5",
       "key": "merchantId_SanitySeason",
       "value": ""
     },
     {
-      "id": "cae8980c-4f47-4893-85b8-9b3a9ca7cfa5",
+      "id": "b7da8ef4-c2d5-42ff-ae88-e4cb2523fd74",
       "key": "itemTitle_SanitySeason",
       "value": ""
     },
     {
-      "id": "0f9b8178-38ff-4e66-b76a-4b99638b432f",
+      "id": "d5798a51-02d0-48c6-a629-e9d9a8997b27",
       "key": "itemId_SanitySeason",
       "value": ""
     },
     {
-      "id": "97f5cf20-6036-4f20-9aaa-25d080142f8b",
+      "id": "d95af671-2632-46f2-80cd-34612adea368",
       "key": "accessType_SanitySeason",
       "value": ""
     },
     {
-      "id": "30f8068d-854a-4700-a013-cc2a9962c204",
+      "id": "caecfbcf-b809-44d8-b3dd-984bf458546a",
       "key": "accessFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "76cc9638-eb27-44b7-88e7-6d24642ca0c8",
+      "id": "cdad3092-389e-4952-8546-bb3fb9386b68",
       "key": "seasonFeeAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "31db6cdb-00ec-4d2f-9893-27c4447fe22a",
+      "id": "36d79488-30cc-49fe-a5fa-c39d4e91d40b",
       "key": "seasonStartsAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "3f35233b-d5f0-4278-bec5-5f6829fdf8f3",
+      "id": "48b6b6ed-d1fd-4e7a-90b1-4d3ddd4678b0",
       "key": "seasonExpiresAt_SanitySeason",
       "value": ""
     },
     {
-      "id": "48c61eb4-f3ad-4d61-a4c7-7e16b616778b",
+      "id": "d113c824-1803-442f-8d64-d4cfcaf89f94",
       "key": "seasonAnchorDate_SanitySeason",
       "value": ""
     },
     {
-      "id": "62fad05e-9ec3-486e-b2ff-837f3386e000",
+      "id": "d05f8f2e-b1c0-4984-a389-83f75eea88c2",
       "key": "accessFeeId_SanitySeason",
       "value": ""
     },
     {
-      "id": "7a15b947-6d04-4fb1-a730-8bb5977e8882",
+      "id": "f07e21cb-a8ee-4c8a-8a13-452e62c1c175",
       "key": "refundAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "b7cfcdd0-2a0c-4b00-9c35-8e22f78daf56",
+      "id": "38b8c561-b5a5-4a9d-811e-06efb4713920",
       "key": "refundSeasonAmount_SanitySeason",
       "value": ""
     },
     {
-      "id": "8a482671-b244-4e7e-b5ae-c09c95959a29",
+      "id": "9fca8d3a-ffd8-41a3-a053-6bf1a06455c7",
       "key": "passcode_MerchantEmail",
       "value": ""
     },
     {
-      "id": "4b36d87f-937f-4dd9-9907-d3f5937653a6",
+      "id": "db70d3d5-725c-4389-8a93-e6648aaa27d6",
       "key": "passcode_MerchantToken",
       "value": ""
     },
     {
-      "id": "1bac2008-57cc-41d3-bec9-a7d9435bde9a",
+      "id": "b52722e8-4f2e-465e-991e-566b09cd85a6",
       "key": "passcode_ControlTypeID",
       "value": ""
     },
     {
-      "id": "406eabca-36fe-4594-801c-e87082064561",
+      "id": "6af9e9ac-07d1-471c-a8ab-bb529beb8864",
       "key": "passcode_ItemID",
       "value": ""
     },
     {
-      "id": "4c06e25f-60c4-4382-8b6c-7ce2b06f7081",
+      "id": "94ac135b-e07a-46d8-b0cf-e49a86343e0a",
       "key": "passcode_CurrentDate",
       "value": ""
     },
     {
-      "id": "ece39432-efa0-460b-af3e-3320ad5dff31",
+      "id": "e6e91c05-5415-4d40-a0cb-55936f281465",
       "key": "passcode_StartDate",
       "value": ""
     },
     {
-      "id": "5177da61-27c7-4bee-aad7-a09116937a42",
+      "id": "11102149-998e-4410-bc0e-738ab2b4601a",
       "key": "passcode_EndDate",
       "value": ""
     },
     {
-      "id": "3eabda54-fc4a-47b2-9788-27d6dbe2fcef",
+      "id": "bf65cd7a-4596-4041-b496-675cdede84f6",
       "key": "passcode_Code",
       "value": ""
     },
     {
-      "id": "03a859da-ba5d-4176-ad4f-3f23576480ad",
+      "id": "ea5931e3-4e54-479a-9dab-10d9a90dc116",
       "key": "passcode_PrivateCode",
       "value": ""
     },
     {
-      "id": "2fdf31af-18c6-4639-99df-e6e54f95173f",
+      "id": "f93a048f-4d64-4e38-a9ac-cf97e1e5cf76",
       "key": "passcode_NegativeRandom",
       "value": ""
     },
     {
-      "id": "127d9ba2-5d89-4c1b-b26e-350514f980a3",
+      "id": "4ff58df7-a97b-4223-b606-499025c20120",
       "key": "passcode_PositiveRandom",
       "value": ""
     },
     {
-      "id": "7741b1ea-e95d-4b89-914f-ff04355abff5",
+      "id": "bc874d0b-38e7-4df2-9be6-ef0845207eb3",
       "key": "passcode_CodeUuid",
       "value": ""
     },
     {
-      "id": "a1ac1750-5d23-43bc-9851-a3f5f3e6e9e3",
+      "id": "a0dccb02-8816-4daa-b4f3-7927ed757227",
       "key": "ppvScheduledStart_MerchantUserName",
       "value": ""
     },
     {
-      "id": "f82baae9-facb-4294-8923-0cef98d92a5a",
+      "id": "8e094139-4161-4f06-91bd-dd6cf033087e",
       "key": "ppvScheduledStart_ClientId01",
       "value": ""
     },
     {
-      "id": "3c789767-06f9-4928-a014-94d2c5f047ac",
+      "id": "8d14f735-51eb-472b-ade1-40ee03e29d7d",
       "key": "ppvScheduledStart_MerchantAccessToken",
       "value": ""
     },
     {
-      "id": "3b0a8c75-47f0-4036-8584-1965fdf2fabd",
+      "id": "bf7ab2de-9569-469c-a9b7-74e378a4cfa8",
       "key": "ppvScheduledStart_MerchantId",
       "value": ""
     },
     {
-      "id": "368270b4-f882-4c5b-a147-08d5411c82e4",
+      "id": "68f808d8-0ab6-4557-ab61-14c886e9c874",
       "key": "ppvScheduledStart_MerchantUuid",
       "value": ""
     },
     {
-      "id": "743be7f4-9001-4178-a45c-cc3876cf4cbf",
+      "id": "c981740e-7e8a-42c5-95ff-c4e312a58d95",
       "key": "ppvScheduledStart_ItemTitle",
       "value": ""
     },
     {
-      "id": "83024b87-7734-4926-98e3-9fa3f09cc633",
+      "id": "b9c56b79-d7a2-42d6-a311-47428cd7ede6",
       "key": "ppvScheduledStart_ItemId",
       "value": ""
     },
     {
-      "id": "ea14fc67-795a-469f-9253-f57fcc3c33ca",
+      "id": "ed650404-171e-404b-89a5-69d5fc0fa6d8",
       "key": "ppvScheduledStart_AccessType",
       "value": ""
     },
     {
-      "id": "90c46447-8edd-4c3b-b7cb-1821974ec50e",
+      "id": "d366432a-40ed-4da1-8590-e2188b2c0505",
       "key": "ppvScheduledStart_AccessFeeAmount",
       "value": ""
     },
     {
-      "id": "565a7a2d-5dda-4a1c-bc51-d2c3404e8c85",
+      "id": "68ad87ff-28dc-4484-b3f4-e9ca54a0b08e",
       "key": "ppvScheduledStart_StartsAt",
       "value": ""
     },
     {
-      "id": "a88ab52f-3559-4cd7-9b3b-9cab3c101f09",
+      "id": "a00ad2d8-84f9-48d7-a764-c7823f97e4bf",
       "key": "ppvScheduledStart_AccessFeeId",
       "value": ""
     },
     {
-      "id": "1226d4a1-1dc4-47f0-b82b-533263a6f8d8",
+      "id": "348edcab-e7b9-479c-96f8-c87289b230a3",
       "key": "ppvScheduledStart_CreatePaywallUser",
       "value": ""
     },
     {
-      "id": "31335b71-c4fe-4694-802f-b6885018df00",
+      "id": "d5bf8df6-3491-4b40-8b40-1fd04b0dad5c",
       "key": "ppvScheduledStart_PaywallUserName",
       "value": ""
     },
     {
-      "id": "1f9ffb03-fd60-4f9a-99f1-42dc7c0659e2",
+      "id": "2a956cf1-2993-47cf-a4df-b66689e08872",
       "key": "ppvScheduledStart_BrandingId",
       "value": ""
     },
     {
-      "id": "64051a1a-bd13-41ae-add6-407f8c36cbe4",
+      "id": "15617d7b-dd9c-4c64-b1da-1258597b4e3d",
       "key": "ppvScheduledStart_PaywallUserAccessToken",
       "value": ""
     },
     {
-      "id": "678526f3-f989-4959-8c97-ba6282d45924",
+      "id": "1d95d882-d8d3-4c0a-a0cf-562eba881396",
       "key": "ppvScheduledStart_PaywallUserId",
       "value": ""
     },
     {
-      "id": "7d833f69-24cb-431e-b43a-62347a016e62",
+      "id": "ff637450-9f32-4db5-8b87-1e7b6eea8183",
       "key": "ppvScheduledStart_CardNumber",
       "value": ""
     },
     {
-      "id": "e1c3d03d-d147-457b-8a54-a2a93f5e2c11",
+      "id": "9f9f2dd9-b7ba-406f-9ef4-9561f3955eb8",
       "key": "ppvScheduledStart_CardName",
       "value": ""
     },
     {
-      "id": "3f4d3b2c-e1ff-479c-95b2-19e3d86b2bcd",
+      "id": "24fa6db1-761a-4937-aa14-5affd2b123fa",
       "key": "ppvScheduledStart_CardExpireMonth",
       "value": ""
     },
     {
-      "id": "86cc8383-8c35-46bc-916b-5fc2b6c20616",
+      "id": "84ed2af0-6717-474d-9a2c-dffb87d92332",
       "key": "ppvScheduledStart_CardExpireYear",
       "value": ""
     },
     {
-      "id": "10bae513-6b4c-40b5-add6-18b2484cd3c4",
+      "id": "789caca3-6841-4b82-a4a2-8e35b230b245",
       "key": "ppvScheduledStart_CardExpireCVV",
       "value": ""
     },
     {
-      "id": "a33de13a-7832-4dc8-bc8a-e1f4a8fbd03e",
+      "id": "605e67a0-f879-402b-b486-ea2441549c63",
       "key": "ppvScheduledStart_ItemContent",
       "value": ""
     },
     {
-      "id": "a051c5e2-5b9a-409d-9d56-8acd4b1d771a",
+      "id": "e68170a3-0cb4-4c56-be00-a3ba111d0eb0",
       "key": "ppvScheduledStart_AdminUserName",
       "value": ""
     },
     {
-      "id": "88fd3c8c-0eec-4544-82b3-b6c5bc0095dc",
+      "id": "ffab2416-4d08-4a60-b15e-a5f56e46e924",
       "key": "ppvScheduledStart_AdminAccessToken",
       "value": ""
     },
     {
-      "id": "7f0de9f7-3ba5-4791-9d83-97b9ba12f86f",
+      "id": "2e9b35f1-f969-45cc-a08f-e7d770b6f33c",
       "key": "ppvScheduledStart_AdminId",
       "value": ""
     },
     {
-      "id": "4145a1de-36d9-479b-9982-6761540e4a15",
+      "id": "1c922147-356a-40de-b182-0bd79402d24d",
       "key": "ppvScheduledStart_AdminUuid",
       "value": ""
     },
     {
-      "id": "a74c9668-446a-4328-87b3-9a319f4acea2",
+      "id": "73b012f9-9e7c-46b5-ab41-d0b46587765b",
       "key": "ppvScheduledStart_TrxToken",
       "value": ""
     },
     {
-      "id": "c8e0633f-9a7f-4339-a2ec-14a6a6bbc9d4",
+      "id": "a6d24eeb-f31d-4c14-ac3a-71d96ca967cf",
       "key": "ppvScheduledStart_transactionAmount",
       "value": ""
     },
     {
-      "id": "313f8659-12fa-4f51-8d94-a97a75cab8a0",
+      "id": "be936964-6cab-4067-8470-aac7ff78ed2f",
       "key": "ppvScheduledStart_ActionTypeRefund",
       "value": ""
     }
